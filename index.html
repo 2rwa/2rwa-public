@@ -7,17 +7,37 @@
 <style>
 body{font-family:system-ui,-apple-system,sans-serif;max-width:760px;margin:0 auto;padding:40px 20px;line-height:1.7;background:#111;color:#eee}
 a{color:#9dd7ff}.card{border:1px solid #444;border-radius:14px;padding:18px;margin:18px 0;background:#181818}
-small{color:#aaa}
+small{color:#aaa}.tag{font-size:.82rem;color:#bbb}
 </style>
 </head>
 <body>
 <h1>2rwa public</h1>
 <p>ゲーム、音、実験、文書などの公開置き場です。整理は必要になってから。</p>
+
 <div class="card">
 <h2>大太鼓 Mobile</h2>
 <p>スマホ向けのマルチタッチ大太鼓。物理音源 + WASM。</p>
 <p><a href="./audio/odaiko-mobile/">開く</a></p>
 </div>
+
+<div class="card">
+<h2>大太鼓 Rhythm Machine — Realtime</h2>
+<p>WASMを音声コールバックで逐次計算するリアルタイム版。</p>
+<p><a href="./audio/odaiko-rhythm-realtime/">開く</a></p>
+</div>
+
+<div class="card">
+<h2>大太鼓 Rhythm Machine — Buffer</h2>
+<p>演奏前にレンダリングし、AudioBufferとして再生するスマホ向け版。</p>
+<p><a href="./audio/odaiko-rhythm-buffer/">開く</a></p>
+</div>
+
+<div class="card">
+<h2>和太鼓 Rhythm Machine — Research</h2>
+<p>All Presets / Golden Policy の研究版。<span class="tag">実験・検証用</span></p>
+<p><a href="./audio/odaiko-rhythm-research/">開く</a></p>
+</div>
+
 <small>work in progress</small>
 </body>
 </html>
