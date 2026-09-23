@@ -74,15 +74,18 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
 .loader b{display:block;font-size:28px;color:#ffe4b4;margin-bottom:7px}
 @media(max-width:900px){
  header{align-items:start;flex-direction:column}.subtitle{text-align:left}
- .layout{grid-template-columns:1fr}
- .stage{min-height:52dvh;height:52dvh;border-radius:22px}
- #globe{min-height:52dvh;height:52dvh}
- .side{display:contents}
- .timelineCard{order:2;margin-top:12px}
- .story{order:3;margin-top:12px;min-height:auto}
- .controls{grid-template-columns:auto auto 1fr}
- .controls .romBtn{grid-column:1/-1}
- .rangeLine{margin-left:90px}
+ .layout{grid-template-columns:minmax(0,1fr)}
+ .stage{height:clamp(300px,52svh,480px);min-height:300px;border-radius:22px}
+ #globe{height:100%;min-height:0}
+ .side{display:flex;flex-direction:column;min-width:0;width:100%}
+ .timelineCard{order:1;margin-top:12px;min-width:0;width:100%}
+ .story{order:2;margin-top:12px;min-height:auto;min-width:0;width:100%}
+ .controls{grid-template-columns:auto 44px minmax(72px,1fr) 44px;gap:6px}
+ .controls .romBtn{grid-column:1/-1;grid-row:2}
+ .btn{min-height:44px}
+ .rangeLine{margin:8px 2px 0}
+ .eventRail{min-width:0;max-width:100%}
+ .stageHint{max-width:calc(100% - 32px)}
  .footerGrid{grid-template-columns:1fr}
 }
 @media(max-width:520px){
@@ -90,11 +93,15 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
  h1{font-size:29px}.subtitle{font-size:12px}
  .stageTop{inset:10px 10px auto 10px}.legend{gap:7px;padding:8px;font-size:9px}
  .badge{padding:8px 9px}.badge strong{font-size:15px}
- .stageHint{left:10px;bottom:9px;font-size:9px}
+ .stageHint{left:10px;bottom:9px;max-width:calc(100% - 20px);font-size:9px}
  .story{padding:18px 16px}.desc{font-size:15px;line-height:1.8}
  .timelineCard{padding:11px 10px}
- .btn{padding:8px 9px}
- .rangeLine{margin-left:78px}
+ .controls{grid-template-columns:auto 42px minmax(56px,1fr) 42px;gap:5px}
+ .btn{padding:8px 7px;min-height:44px}
+ .rangeLine{margin:8px 2px 0}
+}
+@media(max-width:900px) and (orientation:landscape){
+ .stage{height:clamp(240px,70svh,320px);min-height:240px}
 }
 </style>
 </head>
@@ -382,7 +389,11 @@ function updateStory(e, move=true){
  storyEls.pe.innerHTML=e.pe.map(x=>`<span class="person">${x}</span>`).join("");
  focusName.textContent=e.p.split("（")[0].split("／")[0];
  document.querySelectorAll(".eventChip").forEach((el,i)=>el.classList.toggle("active",events[i]===e));
- const chip=document.querySelector(`.eventChip[data-y="${e.y}"]`); if(chip)chip.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+ const chip=document.querySelector(`.eventChip[data-y="${e.y}"]`);
+ if(chip){
+   const railTarget=Math.max(0,chip.offsetLeft-(rail.clientWidth-chip.offsetWidth)/2);
+   rail.scrollTo({left:railTarget,behavior:"smooth"});
+ }
  if(move && performance.now()>manualUntil){
    targetRotation=[-e.c[0],-e.c[1],0];
    zoomK=e.z;
