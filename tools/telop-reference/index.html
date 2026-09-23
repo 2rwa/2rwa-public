@@ -1,0 +1,2887 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>日本のテレビテロップ用語リファレンス — Foundation v0.7</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#0e1014;
+  --panel:#171a20;
+  --panel2:#20242c;
+  --line:#323845;
+  --text:#eef2f6;
+  --muted:#aab3bf;
+  --accent:#7db4ff;
+  --warn:#ffce73;
+  --danger:#ff7d7d;
+  --ok:#85d9a6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif}
+button,input,select{font:inherit}
+button,select,input[type="text"],input[type="number"]{
+  border:1px solid var(--line);background:#11151b;color:var(--text);border-radius:7px;padding:.48rem .6rem
+}
+button{cursor:pointer}
+button:hover{border-color:#5b6778}
+.app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+.topbar{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);background:#12151a;position:sticky;top:0;z-index:5
+}
+.title{font-weight:700;margin-right:auto}
+.badge{font-size:.78rem;border:1px solid var(--line);padding:.2rem .42rem;border-radius:999px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:250px minmax(460px,1fr) 340px;min-height:0}
+.left,.right{background:var(--panel);padding:12px;overflow:auto}
+.left{border-right:1px solid var(--line)}
+.right{border-left:1px solid var(--line)}
+.center{padding:14px;overflow:auto}
+.search{width:100%;margin-bottom:8px}
+.category-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.category-row button{padding:.32rem .5rem;font-size:.82rem}
+.term-list{display:grid;gap:5px}
+.term{
+  text-align:left;width:100%;padding:.58rem .65rem;background:#12161d;border:1px solid transparent;border-radius:7px;color:var(--text)
+}
+.term small{display:block;color:var(--muted);margin-top:2px}
+.term.active{border-color:var(--accent);background:#172234}
+.preview-shell{max-width:1180px;margin:0 auto}
+.preview-head{
+  display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px
+}
+.preview-title{font-size:1.02rem;font-weight:700}
+.preview-meta{font-size:.82rem;color:var(--muted);text-align:right}
+.canvas-wrap{width:100%;aspect-ratio:16/9;background:#000;border:1px solid #3a414e;border-radius:10px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+#preview{display:block;width:100%;height:100%}
+.status-grid{
+  margin-top:10px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px
+}
+.status-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:62px}
+.status-card .k{font-size:.75rem;color:var(--muted)}
+.status-card .v{font-size:.92rem;margin-top:3px;font-variant-numeric:tabular-nums}
+.status-card.warn{border-color:#8d6f37}
+.status-card.bad{border-color:#8f4444}
+.controls{max-width:1180px;margin:12px auto 0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+.controls h3,.right h3{margin:.2rem 0 .65rem;font-size:.95rem}
+.control-grid{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px}
+.control{display:grid;grid-template-columns:1fr;gap:4px}
+.control label{font-size:.76rem;color:var(--muted)}
+.inline{display:grid;grid-template-columns:1fr 68px;gap:6px;align-items:center}
+input[type="range"]{width:100%}
+.right h2{font-size:1.3rem;margin:.1rem 0 .25rem}
+.reading{color:var(--muted);font-size:.84rem}
+.term-badges{display:flex;gap:5px;flex-wrap:wrap;margin:.6rem 0}
+.term-badges span{border:1px solid var(--line);border-radius:999px;padding:.22rem .45rem;font-size:.72rem}
+.description{line-height:1.72;font-size:.9rem}
+.note{padding:9px 10px;background:#11151b;border-left:3px solid var(--warn);font-size:.82rem;line-height:1.6;margin:9px 0}
+.source{font-size:.78rem;color:var(--muted);line-height:1.55}
+.source a{color:var(--accent)}
+.divider{height:1px;background:var(--line);margin:12px 0}
+.checkrow{display:flex;gap:8px;align-items:center;font-size:.82rem;color:var(--muted)}
+.pill-ok{color:var(--ok)} .pill-bad{color:var(--danger)}
+.footer{max-width:1180px;margin:12px auto 24px;color:var(--muted);font-size:.78rem;line-height:1.6}
+@media(max-width:1100px){
+  .layout{grid-template-columns:220px 1fr}
+  .right{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}
+  .status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .control-grid{grid-template-columns:repeat(2,minmax(150px,1fr))}
+}
+@media(max-width:760px){
+  .layout{display:block}
+  .left,.right{border:0;border-bottom:1px solid var(--line)}
+  .center{padding:10px}
+  .status-grid,.control-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="title">日本のテレビテロップ用語リファレンス</div>
+    <span class="badge">Foundation v0.6</span>
+    <span class="badge">Reference raster 1920×1080</span>
+    <span class="badge" id="coverageBadge">Coverage --/--</span>
+    <button id="randomSampleBtn">文章をランダム切替</button>
+  </header>
+
+  <main class="layout">
+    <aside class="left">
+      <input id="searchInput" class="search" type="text" placeholder="検索：エッジ / 字間 / セーフ…">
+      <div class="category-row" id="categoryButtons"></div>
+      <div class="term-list" id="termList"></div>
+    </aside>
+
+    <section class="center">
+      <div class="preview-shell">
+        <div class="preview-head">
+          <div>
+            <div class="preview-title" id="demoTitle">テロップ</div>
+            <div style="font-size:.8rem;color:var(--muted)" id="demoSubtitle">1920×1080基準Canvas</div>
+          </div>
+          <div class="preview-meta" id="previewMeta"></div>
+        </div>
+        <div class="canvas-wrap" id="canvasWrap">
+          <canvas id="preview"></canvas>
+        </div>
+
+        <div class="status-grid">
+          <div class="status-card"><div class="k">Canvas</div><div class="v" id="canvasStatus"></div></div>
+          <div class="status-card"><div class="k">Telop bounds</div><div class="v" id="boundsStatus"></div></div>
+          <div class="status-card"><div class="k">Screen occupancy</div><div class="v" id="occupancyStatus"></div></div>
+          <div class="status-card" id="safeCard"><div class="k">Safe area</div><div class="v" id="safeStatus"></div></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <h3>Full HD基準パラメータ</h3>
+        <div class="control-grid" id="controlGrid"></div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <label class="checkrow"><input id="showSafe" type="checkbox" checked> セーフ領域を表示</label>
+          <label class="checkrow"><input id="showMeasure" type="checkbox" checked> 計測ガイドを表示</label>
+          <label class="checkrow"><input id="showBase" type="checkbox" checked> 座布団を表示</label>
+        </div>
+      </div>
+
+      <div class="footer">
+        v0.7では、スーパー／テロッパーのレイヤー概念図、複数セーフ領域比較、良い例／悪い例、関連語ナビゲーション、初期指定用語の収録チェックを追加しています。
+        数値は「規格・技術資料由来」と「教材比較値」を区別し、映画字幕の慣行値を放送字幕の絶対規格として扱いません。
+        日本語組版はJLReqを参照した教材サブセットであり、JIS X 4051の完全実装ではありません。
+      </div>
+    </section>
+
+    <aside class="right">
+      <h2 id="termName"></h2>
+      <div class="reading" id="termReading"></div>
+      <div class="term-badges" id="termBadges"></div>
+      <div class="description" id="termDescription"></div>
+      <div class="note" id="termNote"></div>
+      <h3>Canvasで見るポイント</h3>
+      <div class="description" id="termDemo"></div>
+      <div class="divider"></div>
+      <h3>関連用語</h3>
+      <div class="term-badges" id="relatedTerms"></div>
+      <div class="divider"></div>
+      <h3>数値の出自</h3>
+      <div class="source" id="termProvenance"></div>
+      <div class="divider"></div>
+      <h3>参考資料</h3>
+      <div class="source">
+        <div>ARIB TR-B4「アスペクト比16:9の画面におけるセーフティゾーン」</div>
+        <div><a href="https://www.arib.or.jp/kikaku/kikaku_hoso/desc/tr-b4.html" target="_blank" rel="noreferrer">ARIB概要ページ</a></div>
+        <div style="margin-top:7px">W3C JLReq「日本語組版処理の要件」</div>
+        <div><a href="https://www.w3.org/International/jlreq/" target="_blank" rel="noreferrer">JLReq</a> — 3.1.7 行頭禁則 / 3.1.8 行末禁則 / 3.8 行の調整処理</div>
+        <div style="margin-top:7px">ITU-R BT.1848 Safe areas</div>
+        <div><a href="https://www.itu.int/rec/R-REC-BT.1848/en" target="_blank" rel="noreferrer">ITU Recommendation</a></div>
+        <div style="margin-top:7px">放送字幕とオープン／クローズドキャプション</div>
+        <div><a href="https://www.fujitv.co.jp/company/action/jimaku.html" target="_blank" rel="noreferrer">フジテレビ 字幕放送</a></div>
+        <div style="margin-top:7px">サイドスーパー／ロールスーパー</div>
+        <div><a href="https://ad.ntv.co.jp/guide/words/index-sa.html" target="_blank" rel="noreferrer">日本テレビ テレビ営業用語集</a></div>
+        <div style="margin-top:7px">L字画面</div>
+        <div><a href="https://www.ytv.co.jp/action/report/458.html" target="_blank" rel="noreferrer">読売テレビ 番組審議会報告</a></div>
+        <div style="margin-top:7px">ARIB STD-B24「字幕・文字スーパーの符号化」</div>
+        <div><a href="https://www.arib.or.jp/kikaku/kikaku_hoso/desc/std-b24.html" target="_blank" rel="noreferrer">ARIB STD-B24概要</a></div>
+        <div style="margin-top:7px">字幕翻訳の文字数制限・ハコ書き</div>
+        <div><a href="https://www.jstage.jst.go.jp/article/iits/18/0/18_1802/_article/-char/ja/" target="_blank" rel="noreferrer">J-STAGE: 1秒4文字の検証</a></div>
+        <div><a href="https://www.jtf.jp/tips/glossary" target="_blank" rel="noreferrer">JTF: ハコ書き用語解説</a></div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+"use strict";
+
+const LOGICAL_W = 1920;
+const LOGICAL_H = 1080;
+const SCREEN_AREA = LOGICAL_W * LOGICAL_H;
+
+const referenceCanvas = document.createElement("canvas");
+referenceCanvas.width = LOGICAL_W;
+referenceCanvas.height = LOGICAL_H;
+const refCtx = referenceCanvas.getContext("2d", { alpha: false });
+
+const programCanvas = document.createElement("canvas");
+programCanvas.width = LOGICAL_W;
+programCanvas.height = LOGICAL_H;
+const programCtx = programCanvas.getContext("2d", { alpha: false });
+
+const previewCanvas = document.getElementById("preview");
+const previewCtx = previewCanvas.getContext("2d", { alpha: false });
+const canvasWrap = document.getElementById("canvasWrap");
+
+const SAMPLE_TEXTS = {
+  news: [
+    "大型台風 あす関東に接近のおそれ",
+    "関東では夕方から激しい雨のおそれ",
+    "各地で気温上昇 熱中症に注意",
+    "鉄道各線でダイヤに乱れ",
+    "政府が新たな支援策を発表",
+    "市場では円相場が大きく変動"
+  ],
+  breaking: [
+    "速報　東海道新幹線 運転再開",
+    "速報　大雨警報を発表",
+    "速報　高速道路の通行止め解除",
+    "速報　日本代表が決勝進出",
+    "速報　午後3時から記者会見",
+    "速報　沿岸部で強い風に注意"
+  ],
+  info: [
+    "冷蔵庫に入れる前にひと手間！",
+    "冷凍すると野菜の甘みがアップ",
+    "余ったパンをおいしく保存する方法",
+    "朝の5分でできる簡単ストレッチ",
+    "旬のトマトをもっとおいしく",
+    "洗濯物を早く乾かす意外なコツ"
+  ],
+  wide: [
+    "街の人100人に聞きました",
+    "いま話題の商品を徹底調査",
+    "専門家に聞く 今後のポイント",
+    "現地ではいま何が起きている？",
+    "気になる最新事情を詳しく解説",
+    "週末のお出かけ先を生中継"
+  ],
+  variety: [
+    "結局1行じゃ足らなかった！",
+    "まさかの結果にスタジオ騒然",
+    "ここで予想外の展開が！",
+    "本当にそんなことある？",
+    "最後の一問で大逆転！",
+    "本人も思わずこの表情"
+  ],
+  sports: [
+    "ここで一気に逆転！",
+    "残り時間はあと30秒",
+    "首位との差を一気に縮めます",
+    "勝負を決める最後の一球",
+    "自己ベスト更新なるか",
+    "後半開始から猛攻が続きます"
+  ],
+  documentary: [
+    "海辺の町で受け継がれる夏の祭り",
+    "この森には貴重な生き物が暮らしています",
+    "職人は毎朝同じ時間に工房へ向かいます",
+    "小さな駅を地域の人々が守っています",
+    "雪解けとともに畑の一年が始まります",
+    "川の流れが町の暮らしを支えてきました"
+  ],
+  education: [
+    "水は温めると体積が変化します",
+    "光が曲がる現象を屈折といいます",
+    "このグラフから変化を読み取ってみましょう",
+    "植物は光を使って養分をつくります",
+    "分母が同じなら分子を比べます",
+    "次に実験結果を確認してみましょう"
+  ],
+  cm: [
+    "今だけ期間限定キャンペーン",
+    "毎日の食卓をもっと手軽に",
+    "新しい香りで気分をリフレッシュ",
+    "詳しくは店頭でご確認ください",
+    "家族みんなで楽しめる新登場",
+    "明日の暮らしをもっと便利に"
+  ],
+  subtitle: [
+    "明日の朝、もう一度ここに来よう",
+    "ずっと君に話したいことがあった",
+    "急がないと最終電車に間に合わない",
+    "あの灯りが見える場所まで歩こう",
+    "今日はもう帰ったほうがいい",
+    "ここなら誰にも聞かれない"
+  ]
+};
+
+const TERMS = [
+  {
+    id:"telop", name:"テロップ", reading:"てろっぷ", category:"放送",
+    status:["放送業界","演出テロップ"],
+    description:"映像に重ねる文字・図形を広く指す現場語。ニュース見出し、人物名、場所、注記、バラエティの発話フォローなど用途は非常に広い。",
+    note:"ARIBの字幕・文字スーパーという規格上のカテゴリと、演出テロップの一般的な現場呼称は同一概念として固定しない。",
+    demo:"通常の画面下部テロップを描き、文字・エッジ・座布団を含む実寸外接矩形と画面占有率を測定する。",
+    demoType:"single",
+    provenance:"文字サイズ・エッジ幅などは教材比較値。1920×1080は本教材の基準ラスター。",
+    defaults:{fontSize:80,tracking:0,lineGap:20,edge:4,x:132,y:812,width:1654,baseAlpha:0.72,basePad:24,maxLines:2}
+  },
+  {
+    id:"base", name:"座布団", reading:"ざぶとん", category:"デザイン",
+    status:["放送業界","デザイン"],
+    description:"文字の後ろに敷く背景面の俗称・現場語。複雑な映像上でも文字の視認性を安定させやすい。",
+    note:"「黒半透明が正解」という規格ではない。番組デザインや背景条件によって適切な色・透明度・余白は変わる。",
+    demo:"同じ文章を、なし／半透明黒／不透明白／青系の4条件で同時比較する。",
+    demoType:"baseCompare",
+    provenance:"透明度・余白は教材比較値。",
+    defaults:{fontSize:68,tracking:0,lineGap:18,edge:3,x:120,y:790,width:1680,baseAlpha:0.7,basePad:24,maxLines:2}
+  },
+  {
+    id:"edge", name:"エッジ／縁取り", reading:"えっじ／ふちどり", category:"デザイン",
+    status:["放送業界","デザイン"],
+    description:"文字輪郭の外側へ色を付加して背景との分離を助ける表現。CanvasではstrokeText()相当で再現できる。",
+    note:"4pxや8pxを業界共通規格として扱わない。文字サイズに対する相対比も同時に見る。",
+    demo:"0 / 2 / 4 / 8 / 12 pxを同一Full HD画面上で比較する。",
+    demoType:"edgeCompare",
+    provenance:"0/2/4/8/12pxは教材比較値。",
+    defaults:{fontSize:72,tracking:0,lineGap:16,edge:4,x:120,y:780,width:1680,baseAlpha:0.55,basePad:18,maxLines:1}
+  },
+  {
+    id:"tracking", name:"字間／字送り", reading:"じかん／じおくり", category:"日本語組版",
+    status:["日本語組版","デザイン"],
+    description:"字間は隣接文字間の空き、字送りは文字の基準位置から次の基準位置までの進み量として観察する。固定文字数×幅ではなく実測する。",
+    note:"tracking=0ではフォント本来の字幅・カーニングを優先し、追加字間がある場合だけグラフェム単位で位置を制御する。",
+    demo:"-4 / 0 / +4 / +8 pxの追加字間を同時表示し、各行の実測幅を表示する。",
+    demoType:"trackingCompare",
+    provenance:"-4/0/+4/+8pxは教材比較値。文字幅はCanvas measureText()による実測。",
+    defaults:{fontSize:72,tracking:0,lineGap:18,edge:3,x:120,y:780,width:1680,baseAlpha:0.45,basePad:18,maxLines:1}
+  },
+  {
+    id:"linegap", name:"行間／行送り", reading:"ぎょうかん／ぎょうおくり", category:"日本語組版",
+    status:["日本語組版"],
+    description:"複数行テロップで行と行の空き、またはベースライン間隔を比較する項目。文字サイズと同じ値で語らず、実際のベースライン位置を表示する。",
+    note:"この基盤版では fontSize + lineGap を行送りとして扱う。後段でfont metricsを使ったより厳密な表示へ拡張する。",
+    demo:"0 / 16 / 32 pxの行間を3条件で比較し、ベースラインを可視化する。",
+    demoType:"lineGapCompare",
+    provenance:"0/16/32pxは教材比較値。",
+    defaults:{fontSize:64,tracking:0,lineGap:16,edge:3,x:120,y:720,width:1680,baseAlpha:0.55,basePad:20,maxLines:2}
+  },
+  {
+    id:"safe", name:"セーフティゾーン", reading:"せーふてぃぞーん", category:"デザイン",
+    status:["ARIB技術資料","放送制作"],
+    description:"受像機等での画面再現範囲を考慮して重要情報を配置するための制作ガイド。絶対的な単一値ではなく、制作・納品条件に応じて扱う。",
+    note:"ARIB TR-B4 2.0改定概要では現行セーフティゾーンの重要情報範囲を水平・垂直90%へ変更したことが公表されている。ITU-R BT.1848ではgraphics safe margin 5%、action safe margin 3.5%の考え方が示される。",
+    demo:"選択した領域をFull HD上に描き、テロップ本体・エフェクト・座布団のはみ出し量をpxで判定する。",
+    demoType:"safe",
+    provenance:"ARIB 90%重要情報範囲はARIB TR-B4改定概要由来。ITU 5%/3.5% marginはITU-R BT.1848由来。Customはユーザー指定。",
+    defaults:{fontSize:78,tracking:0,lineGap:18,edge:6,x:70,y:850,width:1780,baseAlpha:0.72,basePad:28,maxLines:1}
+  },
+  {
+    id:"occupancy", name:"画面を食う", reading:"がめんをくう", category:"字幕",
+    status:["現場俗称","教材解析"],
+    description:"テロップや字幕が映像領域を大きく占有する状態を指す俗な表現。本教材では感覚語を外接矩形面積の割合として可視化する。",
+    note:"外接矩形占有率は『実際に不透明なpixelの割合』ではない。まず矩形占有率として明示し、後段でunion面積やα加重被覆量へ拡張する。",
+    demo:"同じ幅で1行→2行へ増えた場合の高さと占有率の増分をFull HD画面上で比較する。",
+    demoType:"occupancy",
+    provenance:"占有率 = テロップ外接矩形面積 ÷ 2,073,600。教材独自の計測指標。",
+    defaults:{fontSize:86,tracking:0,lineGap:22,edge:5,x:170,y:820,width:1580,baseAlpha:0.78,basePad:28,maxLines:2}
+  },
+  {
+    id:"kinsoku", name:"禁則処理", reading:"きんそくしょり", category:"日本語組版",
+    status:["日本語組版","JLReq参照"],
+    description:"行頭禁則・行末禁則・分割禁止など、和文で不自然な改行位置を避けるための処理。本教材では文字クラスと改行境界の判定を分離して観察する。",
+    note:"JLReqでは行頭に終わり括弧・句読点等を置かず、行末に始め括弧を置かないことを原則とする。一方、小書き仮名・長音・々などを緩和する組み方もあるため、単一の絶対ルールにはしない。",
+    demo:"同じ文章を禁則OFF／基本禁則／緩和で比較し、違反する行頭・行末文字を赤で表示する。句点と長音を意図的に改行境界へ置く2ケースを表示する。",
+    demoType:"kinsokuCompare",
+    provenance:"文字クラスの考え方はW3C JLReq 3.1.7/3.1.8を参照。実装対象は教材で頻出する横組文字のサブセット。",
+    defaults:{fontSize:54,tracking:0,lineGap:18,edge:2,x:100,y:260,width:520,baseAlpha:0.50,basePad:16,maxLines:3}
+  },
+  {
+    id:"linehead", name:"行頭禁則", reading:"ぎょうとうきんそく", category:"日本語組版",
+    status:["日本語組版","JLReq参照"],
+    description:"終わり括弧、句読点など特定の文字が行頭へ現れることを避ける規則。小書き仮名・長音記号・々などは処理系や組版方針による緩和例がある。",
+    note:"本デモの『緩和』は小書き仮名・長音・々・中点を主に緩和する教材モード。JLReqの全文字クラス／全レベルを完全再現したものではない。",
+    demo:"句点が次行先頭へ落ちる例と、長音記号が行頭になる例を比較する。",
+    demoType:"kinsokuCompare",
+    provenance:"W3C JLReq 3.1.7および文字クラスcl-02〜cl-11を参照。",
+    defaults:{fontSize:54,tracking:0,lineGap:18,edge:2,x:100,y:260,width:520,baseAlpha:0.50,basePad:16,maxLines:3}
+  },
+  {
+    id:"lineend", name:"行末禁則", reading:"ぎょうまつきんそく", category:"日本語組版",
+    status:["日本語組版","JLReq参照"],
+    description:"始め括弧などを行末へ置かない規則。開き括弧だけを前行末へ残すような改行を避ける。",
+    note:"JLReq 3.1.8では始め括弧類を行末に配置しないことを原則としている。",
+    demo:"禁則処理の改行候補判定では、次行先頭だけでなく前行末側の文字クラスも確認する。",
+    demoType:"kinsokuCompare",
+    provenance:"W3C JLReq 3.1.8を参照。",
+    defaults:{fontSize:54,tracking:0,lineGap:18,edge:2,x:100,y:260,width:520,baseAlpha:0.50,basePad:16,maxLines:3}
+  },
+  {
+    id:"lineadjust", name:"追込み／追出し", reading:"おいこみ／おいだし", category:"日本語組版",
+    status:["日本語組版","JLReq参照","教材モデル"],
+    description:"指定行長に合わせるため、調整可能な字間を詰める処理が追込み、空ける処理が追出し。単なる全文一律letter-spacingとは区別する。",
+    note:"JLReqでは通常、追込みを優先し、それだけで処理できない場合に追出しを行う。Canvasの一般フォントはJIS組版エンジンではないため、本版では調整可能位置とpx量を理解するための教材モデルとして可視化する。",
+    demo:"原組・48px追込み・48px追出しを比較し、各調整箇所の増減量、必要幅、使用幅を数値表示する。",
+    demoType:"lineAdjustment",
+    provenance:"W3C JLReq 3.8.2〜3.8.4を参照。調整量48pxは教材比較値。",
+    defaults:{fontSize:62,tracking:0,lineGap:18,edge:2,x:120,y:300,width:1580,baseAlpha:0.45,basePad:16,maxLines:1}
+  },
+  {
+    id:"hanging", name:"ぶら下げ", reading:"ぶらさげ", category:"日本語組版",
+    status:["日本語組版","JLReq参照"],
+    description:"行頭に句点・読点が来るのを避けるため、句読点だけを指定行長の外側へ配置する方法。",
+    note:"JLReqではぶら下げの対象を句点類（cl-06）・読点類（cl-07）に限定して説明し、JIS X 4051本文で正式規定された方法ではなく解説で扱われるとしている。",
+    demo:"通常禁則で前の文字ごと次行へ送る状態と、句点だけを行長外へ出すぶら下げを左右比較する。はみ出し幅もpx表示する。",
+    demoType:"hanging",
+    provenance:"W3C JLReq 3.8.2 Note（ぶら下げ組）を参照。",
+    defaults:{fontSize:72,tracking:0,lineGap:18,edge:2,x:100,y:350,width:760,baseAlpha:0.45,basePad:16,maxLines:2}
+  },
+  {
+    id:"yakumono", name:"約物", reading:"やくもの", category:"日本語組版",
+    status:["日本語組版","JLReq参照"],
+    description:"句読点・括弧・中点・長音など、文章中で用いられる記号類の総称。日本語組版では見た目だけでなく、文字クラスごとに行頭・行末・字間・行調整で異なる扱いを受ける。",
+    note:"本デモは横組テロップで遭遇しやすいJLReq文字クラスのサブセットを可視化する。すべての文字クラスを網羅する文字コード表ではない。",
+    demo:"始め括弧 cl-01、終わり括弧 cl-02、ハイフン cl-03、区切り約物 cl-04、中点 cl-05、句点 cl-06、読点 cl-07、繰返し cl-09、長音 cl-10、小書き仮名 cl-11を色分けして表示する。",
+    demoType:"punctuationClasses",
+    provenance:"文字クラス番号はW3C JLReq 3.9等を参照。",
+    defaults:{fontSize:58,tracking:0,lineGap:18,edge:2,x:100,y:260,width:1720,baseAlpha:0.42,basePad:16,maxLines:2}
+  },
+  {
+    id:"equalSpacing", name:"均等割り", reading:"きんとうわり", category:"日本語組版",
+    status:["日本語組版","JIS/JLReq参照"],
+    description:"指定した行長に対して、空ける調整が可能な箇所へ空きを均等に配分し、文字列の先頭を行頭、末尾を行末へ合わせるそろえ方法。",
+    note:"単純にCSSのletter-spacingを全字間へ足すのとは区別する。本教材では禁則上分割しにくい箇所やASCII語中を避けた『調整可能ギャップ』へ均等配分する簡略モデルを使う。",
+    demo:"自然幅と指定幅を表示し、余剰pxを何箇所へ何pxずつ配分したかを文字間ガイド付きで比較する。",
+    demoType:"equalSpacing",
+    provenance:"JLReq 3.5.3『そろえの処理』の均等割りを参照。指定幅は教材比較値。",
+    defaults:{fontSize:66,tracking:0,lineGap:18,edge:2,x:160,y:450,width:1540,baseAlpha:0.44,basePad:20,maxLines:1}
+  },
+  {
+    id:"mixedText", name:"和欧文混植", reading:"わおうぶんこんしょく", category:"日本語組版",
+    status:["日本語組版","放送テロップ"],
+    description:"日本語の中へ欧文・数字などを混在させる組版。テレビテロップでは日時、％、英語略語、商品名、スポーツ記録などで頻繁に現れる。",
+    note:"CanvasのmeasureText()でフォント実測し、日本語と欧数字でadvanceが同じと仮定しない。和欧文間の空きはフォント・制作基準により見え方が変わるため、0〜0.25em相当を教材比較する。",
+    demo:"『東京2026 AI研究会 98.5%』を0 / 0.125em / 0.25emの和欧境界アキで比較し、境界位置と全幅を表示する。",
+    demoType:"mixedText",
+    provenance:"JLReqは和文と欧文との字間を独立した組版要素として扱う。本デモの具体的アキ量は教材比較値。",
+    defaults:{fontSize:70,tracking:0,lineGap:18,edge:2,x:130,y:300,width:1660,baseAlpha:0.42,basePad:18,maxLines:1}
+  },
+  {
+    id:"subtitleBox", name:"ハコ／ハコ書き", reading:"はこ／はこがき", category:"字幕",
+    status:["字幕制作実務","映画字幕"],
+    description:"ハコは1枚の字幕として扱う時間・文章の単位。ハコ書き（ハコ割り／ハコ切り）は、スクリプトを区切って1枚の字幕にどこまでの台詞を入れるか決める作業。",
+    note:"JTFはハコ書きを、字幕翻訳でスクリプトに区切りを入れ、1枚の字幕にどこまでの台詞を表示するか決める業務と説明している。現在はスポッティング内で行われることも多い。",
+    demo:"8秒の会話を3つのハコへ分割し、各ハコの文章・IN・OUT・duration・CPSをタイムライン上に表示する。",
+    demoType:"subtitleTimeline",
+    provenance:"用語定義は日本翻訳連盟(JTF)の翻訳用語解説を参照。時間値は教材サンプル。",
+    defaults:{fontSize:58,tracking:0,lineGap:16,edge:3,x:180,y:820,width:1560,baseAlpha:0.60,basePad:18,maxLines:2}
+  },
+  {
+    id:"spotting", name:"スポッティング／IN／OUT", reading:"すぽってぃんぐ／いん／あうと", category:"字幕",
+    status:["字幕制作実務","タイミング"],
+    description:"字幕を表示する開始点と終了点を決める制作工程。本教材ではINを表示開始時刻、OUTを表示終了時刻として扱い、duration = OUT - IN を計算する。",
+    note:"『アウトにする＝字幕を付けない』という制作現場の別用法とは分ける。ここでのOUTはSpot-out、表示終了点。",
+    demo:"IN/OUTをスライダーで変更し、ハコ長とCPSがどう変わるかリアルタイム表示する。",
+    demoType:"spottingTimeline",
+    provenance:"IN/OUTの時刻値は教材値。字幕制作工程の用語として扱う。",
+    defaults:{fontSize:64,tracking:0,lineGap:16,edge:3,x:190,y:820,width:1540,baseAlpha:0.64,basePad:18,maxLines:2}
+  },
+  {
+    id:"cps", name:"1秒4文字／CPS", reading:"いちびょうよんもじ／しーぴーえす", category:"字幕",
+    status:["字幕翻訳慣行","研究対象","規格値ではない"],
+    description:"字幕の情報量を表示時間で割った読み速度の目安。CPS (characters per second)として比較できる。日本語字幕翻訳では『1秒4文字』が伝統的な目安として知られる。",
+    note:"4文字/秒を放送規格の絶対上限とはしない。2017年の検証研究自体が『1秒4文字は妥当か？』を研究課題としており、媒体・視聴条件・文章内容による差を教材上で観察する。",
+    demo:"同じ字幕文を3 / 4 / 5 / 6 CPSで表示する場合に必要なdurationを比較し、現在のIN/OUTから実CPSも計算する。",
+    demoType:"cpsCompare",
+    provenance:"『1秒4文字』は字幕翻訳実務・研究上の参照値。J-STAGE『字幕翻訳における文字数制限の妥当性についての検証』等を参照。",
+    defaults:{fontSize:62,tracking:0,lineGap:16,edge:3,x:180,y:800,width:1560,baseAlpha:0.60,basePad:18,maxLines:2}
+  },
+  {
+    id:"subtitleWidth", name:"1行12〜13文字／最大2行", reading:"いちぎょうじゅうにからじゅうさんもじ／さいだいにぎょう", category:"字幕",
+    status:["字幕翻訳慣行","媒体依存","規格値ではない"],
+    description:"日本語の映画字幕・翻訳字幕で使われることがある空間的な目安。文字数と実際のpixel幅は別なので、本教材では両方を同時表示する。",
+    note:"文献には1行13文字・最大2行という説明がある一方、テレビニュース字幕制作者への調査では1行9〜15文字程度など回答に幅がある。『テレビ共通規格』とは表示しない。",
+    demo:"10 / 12 / 13 / 15文字相当のガイドと、同じ文章のmeasureText()実幅を比較する。最大1/2/3行時の外接矩形占有率も表示する。",
+    demoType:"subtitleWidth",
+    provenance:"映画字幕の13文字・2行は実務文献の例。テレビニュース字幕の制作値には幅があるため参考値として扱う。",
+    defaults:{fontSize:62,tracking:0,lineGap:18,edge:3,x:180,y:780,width:1560,baseAlpha:0.62,basePad:18,maxLines:2}
+  },
+  {
+    id:"captionModes", name:"オープンキャプション／クローズドキャプション", reading:"おーぷんきゃぷしょん／くろーずどきゃぷしょん", category:"字幕",
+    status:["放送字幕","表示方式","概念比較"],
+    description:"オープンキャプションは映像として視聴者全員に見える文字、クローズドキャプションは字幕データを受信機側で表示・非表示できる方式として比較する。",
+    note:"テレビ局の説明でも、テロップ文字や映画字幕スーパーはオープンキャプション、字幕放送は視聴者が表示を切り替えられるクローズドキャプションとして区別される。",
+    demo:"左右に同じ番組映像を置き、左は映像へ焼き込まれた字幕、右は受信機の字幕ON/OFFで表示が変わる様子を比較する。",
+    demoType:"captionModes",
+    provenance:"概念区分は放送局の字幕放送解説を参照。文字サイズや配置は教材値。",
+    defaults:{fontSize:58,tracking:0,lineGap:14,edge:3,x:160,y:875,width:1600,baseAlpha:0.70,basePad:18,maxLines:2,receiverCaptionOn:1}
+  },
+  {
+    id:"captionCollision", name:"字幕放送とテロップの衝突", reading:"じまくほうそうとてろっぷのしょうとつ", category:"字幕",
+    status:["放送字幕","制作実務","配置検証"],
+    description:"クローズドキャプションの字幕位置と、映像に焼き込まれたネームスーパーや注記が重なると可読性が落ちる。字幕制作では画面内の既存テロップを見ながら位置を調整することがある。",
+    note:"字幕放送の位置は番組や受信環境で一律ではない。このデモは『重なりを検出する考え方』をFull HD座標で学ぶ教材で、特定局の配置規定を再現するものではない。",
+    demo:"ネームスーパーと字幕放送想定領域の交差面積を算出し、Overlap areaをpx²で表示する。字幕Yを動かすと衝突量が変化する。",
+    demoType:"captionCollision",
+    provenance:"字幕制作者がテロップ等との重なりを避けて字幕位置を調整する実務は放送局の字幕放送解説を参照。座標値は教材値。",
+    defaults:{fontSize:54,tracking:0,lineGap:14,edge:3,x:150,y:860,width:980,baseAlpha:0.76,basePad:20,maxLines:2,closedCaptionY:820}
+  },
+  {
+    id:"lowerThird", name:"ローワーサード／ネームスーパー", reading:"ろーわーさーど／ねーむすーぱー", category:"放送",
+    status:["映像デザイン","放送業界","人物紹介"],
+    description:"画面下部に人物名・肩書・所属などを階層化して表示する情報グラフィック。日本の放送現場では人物名表示をネームスーパーと呼ぶことがある。",
+    note:"『下3分の1を必ず全部使う』という意味ではない。人物の顔や重要被写体を避け、セーフ領域と情報量を見ながら幅・高さを調整する。",
+    demo:"所属・氏名・肩書をサイズ差で組み、文字外接矩形とベース外接矩形、セーフ領域との位置関係を表示する。",
+    demoType:"lowerThird",
+    provenance:"レイアウト寸法・文字サイズは教材比較値。",
+    defaults:{fontSize:70,tracking:0,lineGap:12,edge:2,x:120,y:855,width:1080,baseAlpha:0.82,basePad:24,maxLines:2}
+  },
+  {
+    id:"sideSuper", name:"サイドスーパー", reading:"さいどすーぱー", category:"放送",
+    status:["放送業界","配置"],
+    description:"画面中央を避けて側部に表示するスーパー。ニュースやワイドショー等で見出し・補助情報・提供表示などに使われる。",
+    note:"日テレのテレビ営業用語集では、画面中心以外に3分の1や4分の1程度の大きさでスーパーされる提供表示等をサイドスーパーと説明している。",
+    demo:"左／右のサイド配置を切り替え、幅・高さ・セーフ領域・中央被写体への干渉を観察する。",
+    demoType:"sideSuper",
+    provenance:"用語説明は日本テレビ営業用語集を参照。寸法は教材比較値。",
+    defaults:{fontSize:48,tracking:0,lineGap:10,edge:3,x:0,y:0,width:520,baseAlpha:0.78,basePad:22,maxLines:4,sidePosition:"right"}
+  },
+  {
+    id:"lShape", name:"L字画面／L字スーパー", reading:"えるじがめん／えるじすーぱー", category:"放送",
+    status:["放送業界","災害・緊急情報","画面再構成"],
+    description:"本編映像を縮小し、画面左端と下部などにL字状の情報帯を設けて、本編とは別の文字情報を表示する方式。",
+    note:"L字の幅・高さは局や運用で一律ではない。本教材ではFull HD上で本編面積と情報帯面積の変化を数値化する。",
+    demo:"左帯幅と下帯高さを変更し、本編表示面積・L字情報帯面積・画面占有率をリアルタイム表示する。",
+    demoType:"lShape",
+    provenance:"L字画面が左端と下部に文字情報を流す運用は読売テレビ等の公開説明を参照。寸法は教材値。",
+    defaults:{fontSize:38,tracking:0,lineGap:10,edge:1,x:0,y:0,width:0,baseAlpha:1,basePad:0,maxLines:6,lSideWidth:290,lBottomHeight:210}
+  },
+  {
+    id:"rollSuper", name:"ロールスーパー", reading:"ろーるすーぱー", category:"放送",
+    status:["放送業界","移動スーパー","アニメーション"],
+    description:"画面内を移動するスーパー。横方向に流れる情報テロップなどを、本教材では論理px/秒で速度指定して観察する。",
+    note:"実際の送出方式やフレーム同期を再現するものではない。CanvasのrequestAnimationFrameで教材用に連続移動させ、速度は1920×1080論理px/sとして扱う。",
+    demo:"『最新の交通情報…』を左右へ流し、320px/sなどの速度がFull HD画面でどの程度の移動量になるか確認する。",
+    demoType:"rollSuper",
+    provenance:"『画面の中を流れるスーパーをロール・スーパーという』という用語説明は日本テレビ営業用語集を参照。速度値は教材比較値。",
+    defaults:{fontSize:52,tracking:1,lineGap:10,edge:2,x:0,y:0,width:1920,baseAlpha:0.86,basePad:16,maxLines:1,rollSpeed:320,rollDirection:"left"}
+  },
+  {
+    id:"contrast", name:"コントラスト／視認性", reading:"こんとらすと／しにんせい", category:"デザイン",
+    status:["デザイン","可読性研究","教材診断"],
+    description:"文字と背景の明暗・色差、背景の複雑さ、縁取りなどが文字の見つけやすさ・読みやすさへ与える影響を比較する。",
+    note:"Webアクセシビリティのコントラスト比をテレビ放送の合否基準として流用しない。このデモの比率は局所背景の平均相対輝度との参考値で、複雑背景では平均値だけで可読性を説明できない。",
+    demo:"明るい背景・暗い背景・高周波背景・人物／スタジオ背景に、白文字、白＋黒エッジ、黄色＋黒エッジ、黒＋白エッジを同時表示する。",
+    demoType:"contrastCompare",
+    provenance:"テレビ／表示研究では明度差・彩度差・文字間隔等が可読性へ影響することが報告されている。比率計算は教材診断値。",
+    defaults:{fontSize:50,tracking:0,lineGap:10,edge:4,x:0,y:0,width:0,baseAlpha:0,basePad:0,maxLines:1}
+  },
+  {
+    id:"doubleEdge", name:"二重縁取り", reading:"にじゅうふちどり", category:"デザイン",
+    status:["デザイン","演出テロップ","教材比較"],
+    description:"文字の外側へ2段階の輪郭を重ねる表現。背景色が大きく変化する映像でも文字を分離しやすくできる一方、太すぎると字面を圧迫する。",
+    note:"内側・外側のエッジ幅にテレビ業界共通の絶対値はない。文字サイズに対する比率と、縮小表示時の見え方を比較する。",
+    demo:"縁なし、単一4px、二重4/8px、二重6/12pxを同じ文章・背景で比較する。",
+    demoType:"doubleEdge",
+    provenance:"エッジ幅は教材比較値。Canvasの複数stroke passで表示。",
+    defaults:{fontSize:76,tracking:0,lineGap:12,edge:4,x:0,y:0,width:0,baseAlpha:0.38,basePad:14,maxLines:1}
+  },
+  {
+    id:"shadow", name:"シャドー／ドロップシャドウ", reading:"しゃどー／どろっぷしゃどう", category:"デザイン",
+    status:["デザイン","演出テロップ","教材比較"],
+    description:"文字を背景から分離したり奥行きを感じさせる影表現。オフセット、ぼかし、透明度の組合せで印象が変わる。",
+    note:"影を強くしすぎると小さい文字や細いエッジを潰すことがある。X/Yの実pxとblurを分けて観察する。",
+    demo:"影なし、2/2px、6/8px、12/16pxを比較し、Canvas shadowBlurも段階的に変える。",
+    demoType:"shadowCompare",
+    provenance:"オフセット・blur値は教材比較値。",
+    defaults:{fontSize:72,tracking:0,lineGap:10,edge:2,x:0,y:0,width:0,baseAlpha:0.30,basePad:12,maxLines:1}
+  },
+  {
+    id:"alpha", name:"アルファ／半透明", reading:"あるふぁ／はんとうめい", category:"デザイン",
+    status:["CG・映像","合成","教材比較"],
+    description:"前景の不透明度を表すalphaを変えると、座布団や文字が背景をどの程度透過するかが変化する。アルファチャンネルは透明度を独立した情報として持つ考え方。",
+    note:"半透明座布団の適切なalphaは背景・番組デザインによって変わる。透明度だけでなく背景の複雑さと合わせて観察する。",
+    demo:"座布団alpha 100 / 80 / 60 / 40%を同じ高周波背景上で比較し、右側にalpha channelの白黒表現も示す。",
+    demoType:"alphaCompare",
+    provenance:"alpha値は教材比較値。通常のsource-over合成を使用。",
+    defaults:{fontSize:64,tracking:0,lineGap:10,edge:3,x:0,y:0,width:0,baseAlpha:0.6,basePad:18,maxLines:1}
+  },
+  {
+    id:"fieldStudy", name:"疑似フィールド表示／細線", reading:"ぎじふぃーるどひょうじ／さいせん", category:"放送",
+    status:["放送映像","インターレース教材","疑似表示"],
+    description:"プログレッシブCanvasから奇数走査線・偶数走査線だけを取り出し、細い水平線や小文字がフィールド分離時にどう欠落し得るかを静的に観察する。",
+    note:"実際の放送エンコーダ、伝送、受像機のデインターレースを再現するものではない。高速な点滅は行わず、静的な奇数／偶数フィールド比較に限定する。",
+    demo:"Original / Odd lines / Even lines / 軽い垂直low-passの4画面で、1〜4px水平線と32〜64px文字を比較する。",
+    demoType:"fieldStudy",
+    provenance:"ARIB STD-B32には1080/Iと1080/P等の映像入力形式があり、ITU-R BT.1702もインターレース画像の細かい水平縞がフリッカー要因になり得ると注意している。",
+    defaults:{fontSize:48,tracking:0,lineGap:8,edge:1,x:0,y:0,width:0,baseAlpha:0,basePad:0,maxLines:1}
+  }
+  ,{
+    id:"genreCompare", name:"ジャンル別同時比較", reading:"じゃんるべつどうじひかく", category:"放送",
+    status:["教材比較","番組デザイン","Full HD比較"],
+    description:"同一文章を報道・情報番組・バラエティ・映画字幕の4条件で同時表示し、文字サイズ、エッジ、座布団、位置の違いを一画面で比較する。",
+    note:"実在番組のコピーではなく一般的傾向を強調した教材プリセット。どれか1つを正解とするものではない。",
+    demo:"4分割した1920×1080画面で、同じ意味の文章を4種類の設計へ変換し、各文字サイズ・エッジ幅・外接矩形を表示する。",
+    demoType:"genreCompare",
+    provenance:"各px値は教材比較値。放送局・番組ごとの制作基準ではない。",
+    defaults:{fontSize:72,tracking:0,lineGap:14,edge:4,x:0,y:0,width:0,baseAlpha:0.7,basePad:18,maxLines:2}
+  },
+  {
+    id:"emphasis", name:"部分色分け／強調", reading:"ぶぶんいろわけ／きょうちょう", category:"デザイン",
+    status:["情報番組","バラエティ","デザイン"],
+    description:"文章全体を同じ色にせず、重要語だけ色・サイズ・ウェイトなどを変えて情報階層を作るテロップ表現。",
+    note:"色を増やせば読みやすくなるとは限らない。強調箇所が多すぎる例も同時に見せ、視線誘導との差を比較する。",
+    demo:"『冷凍すると野菜の甘みがアップ』を、強調なし／重要語1箇所／強調過多の3条件で表示し、強調語の実測幅も示す。",
+    demoType:"emphasisCompare",
+    provenance:"色・サイズは教材比較値。",
+    defaults:{fontSize:76,tracking:0,lineGap:12,edge:5,x:120,y:760,width:1680,baseAlpha:0.62,basePad:20,maxLines:1}
+  },
+  {
+    id:"breakingSuper", name:"速報スーパー", reading:"そくほうすーぱー", category:"放送",
+    status:["報道","速報","演出テロップ"],
+    description:"速報性の高い情報を通常の見出しより強く識別させるテロップ。ラベル部と本文部を分ける構成などが用いられる。",
+    note:"赤色・黄色・文字サイズ等に業界共通の絶対値はない。教材では通常ニュースとの情報階層差を観察する。",
+    demo:"通常ニューステロップと『速報』ラベル付きテロップを上下比較し、高さ・面積・強調ラベル幅をpx表示する。",
+    demoType:"breakingSuper",
+    provenance:"色・寸法は教材比較値。",
+    defaults:{fontSize:78,tracking:0,lineGap:12,edge:5,x:120,y:880,width:1680,baseAlpha:0.94,basePad:18,maxLines:1}
+  },
+  {
+    id:"locationSuper", name:"場所スーパー", reading:"ばしょすーぱー", category:"放送",
+    status:["放送業界","位置情報","演出テロップ"],
+    description:"取材地・中継地点・映像の場所を短く示すスーパー。上部や側部など、主要テロップと競合しにくい位置に置かれることが多い。",
+    note:"配置は番組・画面構成に依存する。固定の左上位置を放送規格として扱わない。",
+    demo:"『神奈川県 横浜市』『東京・渋谷』を異なる幅で表示し、文字幅に追従するベースと全幅ベースを比較する。",
+    demoType:"locationSuper",
+    provenance:"位置・サイズは教材比較値。",
+    defaults:{fontSize:50,tracking:1,lineGap:8,edge:2,x:120,y:180,width:720,baseAlpha:0.82,basePad:16,maxLines:1}
+  },
+  {
+    id:"annotationSuper", name:"注釈スーパー", reading:"ちゅうしゃくすーぱー", category:"放送",
+    status:["注記","演出テロップ","可読性比較"],
+    description:"条件、例外、撮影上の注意などを補足する比較的小さな文字情報。小さくしすぎるとFull HDでも読みにくくなる。",
+    note:"36px等を共通の最小文字サイズとして扱わない。視聴距離・受像機・背景・納品条件によって可読性は変わる。",
+    demo:"同じ注記を36 / 44 / 52pxで表示し、実字面高とセーフ領域を比較する。",
+    demoType:"annotationSuper",
+    provenance:"36/44/52pxは教材比較値。",
+    defaults:{fontSize:44,tracking:0,lineGap:10,edge:2,x:120,y:970,width:1680,baseAlpha:0.66,basePad:14,maxLines:1}
+  },
+  {
+    id:"followTelop", name:"フォローテロップ", reading:"ふぉろーてろっぷ", category:"放送",
+    status:["制作現場","発話フォロー","アニメーション教材"],
+    description:"出演者の発話やナレーションの内容を追って表示する演出テロップ。発話単位に合わせて追加・強調されることがある。",
+    note:"同期方法や表示単位に共通規格はない。本デモは発話を3チャンクに分け、時間経過に応じて現在チャンクを強調する教材モデル。",
+    demo:"『まさかの／結果に／スタジオ騒然』を約3秒周期で追従させ、現在の発話チャンクだけ色とサイズを変える。",
+    demoType:"followTelop",
+    provenance:"時間・色・サイズは教材比較値。",
+    defaults:{fontSize:86,tracking:0,lineGap:10,edge:7,x:180,y:820,width:1560,baseAlpha:0.30,basePad:18,maxLines:1}
+  },
+  {
+    id:"multiOccupancy", name:"複数テロップ同時表示／union占有率", reading:"ふくすうてろっぷどうじひょうじ", category:"デザイン",
+    status:["教材解析","画面占有率","複数レイヤー"],
+    description:"速報帯、サイドスーパー、下部テロップ、注釈などが同時表示されたとき、単純な面積合計と実際に覆うunion面積は一致しない。",
+    note:"本デモは矩形ベースの占有率。文字の透過率や実際に塗られた画素数はまだ加味しない。",
+    demo:"4つのテロップ領域を同時表示し、各面積の単純合計、重複を二重計上しないunion面積、重複差分を計算する。",
+    demoType:"multiOccupancy",
+    provenance:"union面積は軸平行矩形の幾何計算。教材独自の解析指標。",
+    defaults:{fontSize:64,tracking:0,lineGap:12,edge:4,x:0,y:0,width:0,baseAlpha:0.76,basePad:16,maxLines:2}
+  }
+
+  ,{
+    id:"super", name:"スーパー", reading:"すーぱー", category:"放送",
+    status:["放送業界","演出テロップ"], aliases:["super"],
+    description:"スーパーインポーズの略として使われる放送現場語。映像の上に文字・図形などを重ねたもの、またはその表示を指す。",
+    note:"字幕・文字スーパーというARIB上のカテゴリとは文脈を分ける。見た目の演出スーパーと伝送データとしての字幕・文字スーパーを同一視しない。",
+    demo:"映像、テロップ生成、Fill/Alpha(Key)相当、合成、番組出力までを概念図で確認する。",
+    demoType:"signalFlow", provenance:"信号図は代表的な概念モデル。特定メーカー機器の端子・伝送方式を規定するものではない。",
+    defaults:{fontSize:72,tracking:0,lineGap:16,edge:4,x:160,y:850,width:1600,baseAlpha:0.72,basePad:20,maxLines:1}
+  },{
+    id:"superimpose", name:"スーパーインポーズ", reading:"すーぱーいんぽーず", category:"放送",
+    status:["映像技術","放送業界"], aliases:["superimpose"],
+    description:"ある映像・文字・図形を別の映像の上に重ね合わせること。テロップは代表的な利用例。",
+    note:"本教材では合成の概念を示す。実機ではキー信号、アルファ、内部合成、SDI/IP等の構成がシステムにより異なる。",
+    demo:"背景映像とグラフィックス層を分解してから最終合成結果を表示する。",
+    demoType:"signalFlow", provenance:"概念図。特定の放送設備構成を絶対化しない。",
+    defaults:{fontSize:72,tracking:0,lineGap:16,edge:4,x:160,y:850,width:1600,baseAlpha:0.72,basePad:20,maxLines:1}
+  },{
+    id:"subtitleSuper", name:"字幕スーパー", reading:"じまくすーぱー", category:"字幕",
+    status:["放送・字幕","オープンキャプション"], aliases:["映画字幕スーパー"],
+    description:"映像に重畳され、映像の一部として視聴者に見える字幕。受信機で消せないオープンキャプション側の字幕スーパーを中心に扱う。",
+    note:"クローズドキャプションの字幕放送とは表示経路が異なる。",
+    demo:"オープンキャプションとクローズドキャプションの表示経路を並べて比較する。",
+    demoType:"captionModes", provenance:"概念区分は放送局の字幕放送解説等に基づく。サイズ等は教材比較値。",
+    defaults:{fontSize:60,tracking:0,lineGap:18,edge:3,x:210,y:930,width:1500,baseAlpha:0,basePad:0,maxLines:2}
+  },{
+    id:"characterSuper", name:"文字スーパー", reading:"もじすーぱー", category:"字幕",
+    status:["ARIB用語","放送データ"], aliases:["文字スーパー符号化"],
+    description:"ARIBの字幕・文字スーパー系標準で扱われるデータカテゴリ。演出用の『スーパー』という現場語だけで理解せず、伝送・受信表示の文脈を持つ。",
+    note:"本教材は符号化仕様そのものを実装するのではなく、演出テロップ経路との違いを概念図で示す。",
+    demo:"グラフィックス合成経路と、字幕・文字スーパーのデータ→放送ストリーム→受信機描画という経路を上下に表示する。",
+    demoType:"signalFlow", provenance:"ARIB STD-B24等の字幕・文字スーパーというカテゴリを概念的に表示。",
+    defaults:{fontSize:66,tracking:0,lineGap:16,edge:3,x:180,y:850,width:1560,baseAlpha:0.7,basePad:18,maxLines:1}
+  },{
+    id:"telopper", name:"テロッパー", reading:"てろっぱー", category:"放送",
+    status:["制作設備","業界用語"], aliases:["テロップ送出システム"],
+    description:"テロップ文字・図形を生成・送出する装置やシステムを指す現場語。",
+    note:"製品・設備によって静止画、動画、Fill/Key、内部合成、送出制御など機能は異なる。",
+    demo:"テロップ素材→生成装置→合成器→番組出力という概念経路を表示する。",
+    demoType:"signalFlow", provenance:"代表的な制作設備の概念図。特定製品の仕様ではない。",
+    defaults:{fontSize:68,tracking:0,lineGap:16,edge:4,x:160,y:850,width:1600,baseAlpha:0.72,basePad:20,maxLines:1}
+  },{
+    id:"telopBase", name:"テロップベース", reading:"てろっぷべーす", category:"デザイン",
+    status:["制作業界","デザイン"], aliases:["ベース"],
+    description:"文字を載せるための背景面・帯・装飾要素。単純な座布団より広い装飾構造を指す場合がある。",
+    note:"用語範囲は現場によって差がある。",
+    demo:"座布団なし、半透明面、不透明面、色付きベースを比較する。",
+    demoType:"baseCompare", provenance:"比較値は教材値。",
+    defaults:{fontSize:68,tracking:0,lineGap:18,edge:3,x:120,y:790,width:1680,baseAlpha:0.7,basePad:24,maxLines:2}
+  },{
+    id:"alphaChannel", name:"アルファチャンネル", reading:"あるふぁちゃんねる", category:"デザイン",
+    status:["CG・映像","合成"], aliases:["Alpha channel"],
+    description:"RGB等の色成分とは別に、画素ごとの透明度・被覆率を表すために使われる情報。",
+    note:"放送設備のキー信号と完全に同一の実装概念ではないが、教材では透明度マスクとの関係を視覚化する。",
+    demo:"RGBイメージ、Alphaマスク、合成結果を並べて表示する。",
+    demoType:"alphaCompare", provenance:"Canvas alphaによる教材モデル。",
+    defaults:{fontSize:70,tracking:0,lineGap:16,edge:3,x:120,y:780,width:1680,baseAlpha:0.7,basePad:20,maxLines:1}
+  },{
+    id:"titleSafe", name:"タイトルセーフ", reading:"たいとるせーふ", category:"デザイン",
+    status:["編集・制作用語","セーフ領域"], aliases:["Title Safe"],
+    description:"タイトルや重要文字を内側へ収めるために使われる一般的な編集・制作上の呼称。具体値は納品仕様や制作基準で確認する必要がある。",
+    note:"ARIBの用語体系と編集ソフトのTitle Safe表記を一対一で絶対対応させない。",
+    demo:"ARIB重要情報90%、ITU graphics safe、action safe、Customを同一画面で比較する。",
+    demoType:"safeCompare", provenance:"ARIB TR-B4公開概要とITU-R BT.1848を区別して表示。",
+    defaults:{fontSize:72,tracking:0,lineGap:16,edge:4,x:90,y:850,width:1740,baseAlpha:0.72,basePad:20,maxLines:1}
+  },{
+    id:"actionSafe", name:"アクションセーフ", reading:"あくしょんせーふ", category:"デザイン",
+    status:["編集・制作用語","セーフ領域"], aliases:["Action Safe"],
+    description:"重要な動作・映像情報を画面端から離すための一般的な制作上のセーフ領域呼称。",
+    note:"局・プラットフォーム・納品仕様によって具体値は異なる。",
+    demo:"graphics/title系とaction系の安全領域をFull HDの実px余白で比較する。",
+    demoType:"safeCompare", provenance:"ITU-R BT.1848のmargin値とARIB公開値を別ラベルで表示。",
+    defaults:{fontSize:72,tracking:0,lineGap:16,edge:4,x:90,y:850,width:1740,baseAlpha:0.72,basePad:20,maxLines:1}
+  },{
+    id:"contrastRatio", name:"コントラスト比", reading:"こんとらすとひ", category:"デザイン",
+    status:["アクセシビリティ指標","参考診断"], aliases:["contrast ratio"],
+    description:"前景と背景の相対輝度から求める比率。背景が映像の場合は位置・時刻で変動するため、単一値だけで放送テロップの可読性を決められない。",
+    note:"WebのWCAG合否値を日本のテレビ放送規格として流用しない。",
+    demo:"複数背景上の文字を比較し、局所背景の参考コントラスト比を表示する。",
+    demoType:"contrastCompare", provenance:"相対輝度比は参考診断。放送合否基準ではない。",
+    defaults:{fontSize:72,tracking:0,lineGap:16,edge:4,x:120,y:780,width:1680,baseAlpha:0.55,basePad:18,maxLines:1}
+  },{
+    id:"readability", name:"可読性", reading:"かどくせい", category:"デザイン",
+    status:["デザイン","日本語組版"], aliases:["readability"],
+    description:"文章として無理なく読み続けられるかという性質。字間、行間、行長、背景との分離、表示時間など複数要因で変化する。",
+    note:"視認性（存在・文字形が見分けやすい）と完全な同義として扱わない。",
+    demo:"背景条件とエッジ条件を比較し、関連する字間・行間項目へ移動できるようにする。",
+    demoType:"contrastCompare", provenance:"定量値ひとつで絶対評価せず比較教材として扱う。",
+    defaults:{fontSize:72,tracking:0,lineGap:18,edge:4,x:120,y:780,width:1680,baseAlpha:0.55,basePad:18,maxLines:2}
+  },{
+    id:"kerning", name:"カーニング", reading:"かーにんぐ", category:"日本語組版",
+    status:["組版・タイポグラフィ","欧文"], aliases:["kerning"],
+    description:"特定の文字ペアに応じて字間を個別調整する処理。追加字間（tracking）とは区別する。",
+    note:"ブラウザ・フォントによってカーニング情報の有無や効果量が異なる。",
+    demo:"AV、To、WA等の欧文ペアをfontKerning none/normalで比較し、measureText()幅の差を表示する。",
+    demoType:"kerningCompare", provenance:"ブラウザCanvasのfontKerning/measureTextによる実測。",
+    defaults:{fontSize:104,tracking:0,lineGap:18,edge:0,x:150,y:780,width:1620,baseAlpha:0.0,basePad:0,maxLines:1}
+  },{
+    id:"solidSet", name:"ベタ組", reading:"べたぐみ", category:"日本語組版",
+    status:["日本語組版"], aliases:["ベタ"],
+    description:"一般の文字間に特別な追加アキを設けず、基本の文字送りで組む考え方。",
+    note:"フォント固有の字幅や約物処理まで『すべて0px』という意味ではない。",
+    demo:"詰め組・ベタ組・アキ組を追加字間pxで同時比較する。",
+    demoType:"spacingStyles", provenance:"追加字間の比較値は教材値。",
+    defaults:{fontSize:76,tracking:0,lineGap:16,edge:3,x:120,y:780,width:1680,baseAlpha:0.45,basePad:16,maxLines:1}
+  },{
+    id:"openSet", name:"アキ組", reading:"あきぐみ", category:"日本語組版",
+    status:["日本語組版"], aliases:["アキ"],
+    description:"意図的に通常より字間を広げて組む表現。",
+    note:"放送テロップでは短い見出しの演出として使えるが、長文では可読性とのバランスを見る。",
+    demo:"詰め組・ベタ組・アキ組を同文で比較する。",
+    demoType:"spacingStyles", provenance:"+8px等は教材比較値。",
+    defaults:{fontSize:76,tracking:8,lineGap:16,edge:3,x:120,y:780,width:1680,baseAlpha:0.45,basePad:16,maxLines:1}
+  },{
+    id:"tightSet", name:"詰め組", reading:"つめぐみ", category:"日本語組版",
+    status:["日本語組版"], aliases:["詰め"],
+    description:"意図的に通常より狭い字間で組む表現。",
+    note:"必要幅に収めるための行調整『追込み』とは目的・処理を区別する。",
+    demo:"詰め組・ベタ組・アキ組を同時比較し、実測幅を表示する。",
+    demoType:"spacingStyles", provenance:"-4px等は教材比較値。",
+    defaults:{fontSize:76,tracking:-4,lineGap:16,edge:3,x:120,y:780,width:1680,baseAlpha:0.45,basePad:16,maxLines:1}
+  },{
+    id:"subtitleWidthExplicit", name:"字幕幅", reading:"じまくはば", category:"字幕",
+    status:["字幕制作","レイアウト"], aliases:["subtitle width"],
+    description:"字幕が画面上で使用する横方向の実寸。文字数だけでなくフォントと文字列をmeasureText()で測る必要がある。",
+    note:"『13文字だから常に同じpx』とはしない。",
+    demo:"文字数ガイドと実測px幅を並べ、Full HD上の字幕幅を確認する。",
+    demoType:"subtitleWidth", provenance:"幅はCanvas measureText()実測。文字数ガイドは字幕制作の比較用参考値。",
+    defaults:{fontSize:60,tracking:0,lineGap:18,edge:3,x:210,y:930,width:1500,baseAlpha:0,basePad:0,maxLines:2}
+  },{
+    id:"displayDuration", name:"表示時間", reading:"ひょうじじかん", category:"字幕",
+    status:["字幕制作","時間設計"], aliases:["duration"],
+    description:"1枚の字幕やテロップが画面に表示される時間。字幕では文字量との関係をCPS等で観察できる。",
+    note:"番組テロップと映画字幕で同じ読み速度ルールを強制しない。",
+    demo:"IN、OUT、duration、グラフェム数、CPSを同じタイムライン上で表示する。",
+    demoType:"spottingTimeline", provenance:"時間は教材で可変。CPSは観察指標。",
+    defaults:{fontSize:60,tracking:0,lineGap:18,edge:3,x:210,y:930,width:1500,baseAlpha:0,basePad:0,maxLines:2}
+  },{
+    id:"goodBad", name:"良い例／悪い例", reading:"よいれい／わるいれい", category:"リファレンス",
+    status:["教材比較","複数条件"], aliases:["GOOD BAD"],
+    description:"好みではなく、選択中の制約や明確な組版違反に基づいて良否を比較する教材。",
+    note:"太い縁取りや派手な色を一律にBADにはしない。セーフ領域違反、禁則違反、情報過多など評価根拠が説明できるものを中心にする。",
+    demo:"セーフ領域、禁則、背景分離、強調量の4項目をBAD/GOODで比較する。",
+    demoType:"goodBad", provenance:"教材上の判定条件をCanvas内に明記。",
+    defaults:{fontSize:64,tracking:0,lineGap:16,edge:4,x:120,y:780,width:1680,baseAlpha:0.6,basePad:18,maxLines:2}
+  },{
+    id:"coverage", name:"収録用語チェック", reading:"しゅうろくようごちぇっく", category:"リファレンス",
+    status:["教材管理","初期仕様"], aliases:["coverage"],
+    description:"最初に指定されたテロップ・デザイン・日本語組版・字幕制作の用語が検索可能な項目として収録されているか確認する。",
+    note:"複合名称で収録されている語も検索可能ならカバーとして数える。",
+    demo:"初期指定語をカテゴリ別に一覧化し、収録済みをチェック表示する。",
+    demoType:"coverageGrid", provenance:"ユーザーの初期要求リストに対する実装管理表示。",
+    defaults:{fontSize:42,tracking:0,lineGap:10,edge:0,x:60,y:120,width:1800,baseAlpha:0,basePad:0,maxLines:1}
+  }
+
+
+];
+
+
+const REQUIRED_TERMS = [
+  "テロップ","スーパー","スーパーインポーズ","字幕スーパー","オープンキャプション","クローズドキャプション","文字スーパー","サイドスーパー","ロールスーパー","L字スーパー","ローワーサード","ネームスーパー","フォローテロップ","テロッパー",
+  "座布団","テロップベース","エッジ","縁取り","シャドー","ドロップシャドウ","アルファ","アルファチャンネル","半透明","タイトルセーフ","アクションセーフ","セーフティゾーン","コントラスト","コントラスト比","視認性","可読性",
+  "字間","字送り","カーニング","行間","行送り","ベタ組","アキ組","詰め組","均等割り","禁則処理","行頭禁則","行末禁則","追込み","追出し","約物","和欧文混植",
+  "ハコ","ハコ書き","スポッティング","IN","OUT","字幕幅","表示時間","1秒4文字","1行12〜13文字","最大2行","画面を食う"
+];
+
+const RELATED_MAP = {
+  telop:["super","superimpose","telopper","base","edge"],
+  super:["telop","superimpose","telopper","subtitleSuper","characterSuper"],
+  superimpose:["super","telop","alphaChannel","telopper"],
+  telopper:["super","superimpose","characterSuper"],
+  subtitleSuper:["captionModes","characterSuper","cps","subtitleWidthExplicit"],
+  characterSuper:["captionModes","subtitleSuper","telopper"],
+  base:["telopBase","contrast","alpha"], telopBase:["base","alpha","contrast"],
+  edge:["doubleEdge","contrast","shadow"], doubleEdge:["edge","shadow","contrast"],
+  shadow:["edge","doubleEdge","contrast"], alpha:["alphaChannel","base"], alphaChannel:["alpha","superimpose"],
+  safe:["titleSafe","actionSafe","goodBad"], titleSafe:["safe","actionSafe"], actionSafe:["safe","titleSafe"],
+  contrast:["contrastRatio","readability","edge"], contrastRatio:["contrast","readability"], readability:["contrast","tracking","linegap"],
+  tracking:["kerning","solidSet","openSet","tightSet"], kerning:["tracking","mixedText"], solidSet:["tracking","openSet","tightSet"], openSet:["tracking","solidSet","tightSet"], tightSet:["tracking","solidSet","openSet","lineadjust"],
+  kinsoku:["linehead","lineend","lineadjust","hanging"], linehead:["kinsoku","lineend"], lineend:["kinsoku","linehead"], lineadjust:["kinsoku","equalSpacing","tightSet"],
+  subtitleBox:["spotting","displayDuration","cps"], spotting:["subtitleBox","displayDuration","cps"], displayDuration:["spotting","cps","subtitleWidthExplicit"], cps:["displayDuration","subtitleWidthExplicit"], subtitleWidth:["subtitleWidthExplicit","cps"], subtitleWidthExplicit:["subtitleWidth","displayDuration"],
+  captionModes:["subtitleSuper","characterSuper","captionCollision"], captionCollision:["captionModes","lowerThird"],
+  lowerThird:["sideSuper","locationSuper","annotationSuper"], sideSuper:["lowerThird","multiOccupancy"], lShape:["multiOccupancy","safe"], rollSuper:["telop","followTelop"],
+  goodBad:["safe","kinsoku","contrast","emphasis"], coverage:["telop","goodBad"]
+};
+
+
+const GENRE_PRESETS = {
+  manual:{label:"手動設定", values:{}},
+  news:{label:"報道", values:{fontSize:72,tracking:0,lineGap:16,edge:3,shadowX:2,shadowY:3,baseAlpha:0.78,basePad:20,telopWidth:1580,telopX:170,telopY:900,maxLines:1,background:"studio",sample:"大型台風 あす関東に接近のおそれ"}},
+  breaking:{label:"速報", values:{fontSize:78,tracking:1,lineGap:14,edge:5,shadowX:2,shadowY:3,baseAlpha:0.92,basePad:20,telopWidth:1700,telopX:110,telopY:910,maxLines:1,background:"dark",sample:"速報　東海道新幹線 運転再開"}},
+  info:{label:"情報番組", values:{fontSize:80,tracking:1,lineGap:18,edge:5,shadowX:5,shadowY:7,baseAlpha:0.70,basePad:24,telopWidth:1540,telopX:190,telopY:835,maxLines:2,background:"bright",sample:"冷凍すると野菜の甘みがアップ"}},
+  wide:{label:"ワイドショー", values:{fontSize:76,tracking:0,lineGap:16,edge:5,shadowX:5,shadowY:7,baseAlpha:0.72,basePad:24,telopWidth:1600,telopX:160,telopY:850,maxLines:2,background:"studio",sample:"専門家に聞く 今後のポイント"}},
+  variety:{label:"バラエティ", values:{fontSize:108,tracking:-1,lineGap:10,edge:10,shadowX:10,shadowY:12,baseAlpha:0.28,basePad:18,telopWidth:1500,telopX:210,telopY:790,maxLines:2,background:"busy",sample:"結局1行じゃ足らなかった！"}},
+  documentary:{label:"ドキュメンタリー", values:{fontSize:58,tracking:1,lineGap:18,edge:2,shadowX:2,shadowY:3,baseAlpha:0.54,basePad:18,telopWidth:1450,telopX:235,telopY:900,maxLines:2,background:"dark",sample:"海辺の町で受け継がれる夏の祭り"}},
+  sports:{label:"スポーツ", values:{fontSize:86,tracking:0,lineGap:14,edge:7,shadowX:5,shadowY:7,baseAlpha:0.62,basePad:20,telopWidth:1550,telopX:185,telopY:865,maxLines:1,background:"busy",sample:"ここで一気に逆転！"}},
+  education:{label:"教育", values:{fontSize:64,tracking:1,lineGap:22,edge:2,shadowX:0,shadowY:0,baseAlpha:0.82,basePad:22,telopWidth:1500,telopX:210,telopY:850,maxLines:2,background:"bright",sample:"光が曲がる現象を屈折といいます"}},
+  cm:{label:"テレビCM", values:{fontSize:96,tracking:1,lineGap:12,edge:6,shadowX:6,shadowY:8,baseAlpha:0.42,basePad:18,telopWidth:1550,telopX:185,telopY:820,maxLines:2,background:"bright",sample:"毎日の食卓をもっと手軽に"}},
+  film:{label:"映画字幕", values:{fontSize:60,tracking:0,lineGap:18,edge:3,shadowX:0,shadowY:0,baseAlpha:0.0,basePad:0,telopWidth:1500,telopX:210,telopY:930,maxLines:2,background:"dark",sample:"明日の朝、もう一度ここに来よう"}}
+};
+
+const SAFE_PRESETS = {
+  arib90:{label:"ARIB重要情報 90%", left:96,right:96,top:54,bottom:54, source:"ARIB TR-B4"},
+  ituGraphics:{label:"ITU Graphics safe 5% margin",left:96,right:96,top:54,bottom:54, source:"ITU-R BT.1848"},
+  ituAction:{label:"ITU Action safe 3.5% margin",left:67.2,right:67.2,top:37.8,bottom:37.8, source:"ITU-R BT.1848"},
+  custom:{label:"Custom",left:96,right:96,top:54,bottom:54, source:"User"}
+};
+
+const state = {
+  selectedTermId:"telop",
+  category:"すべて",
+  search:"",
+  fontSize:80,
+  tracking:0,
+  lineGap:20,
+  edge:4,
+  shadowX:6,
+  shadowY:8,
+  baseAlpha:0.72,
+  basePad:24,
+  telopWidth:1654,
+  telopX:132,
+  telopY:812,
+  maxLines:2,
+  safePreset:"arib90",
+  safeLeft:96,
+  safeRight:96,
+  safeTop:54,
+  safeBottom:54,
+  showSafe:true,
+  showMeasure:true,
+  showBase:true,
+  background:"studio",
+  sample:"大型台風 あす関東に接近のおそれ",
+  lastBounds:null,
+  subtitleTimelineDuration:8.0,
+  subtitleIn:1.0,
+  subtitleOut:4.5,
+  subtitleCharsPerLine:13,
+  equalTargetWidth:1320,
+  receiverCaptionOn:1,
+  closedCaptionY:820,
+  sidePosition:"right",
+  lSideWidth:290,
+  lBottomHeight:210,
+  rollSpeed:320,
+  rollDirection:"left",
+  animationTimeMs:0,
+  genrePreset:"manual"
+};
+
+const ui = {
+  termList:document.getElementById("termList"),
+  categoryButtons:document.getElementById("categoryButtons"),
+  searchInput:document.getElementById("searchInput"),
+  controlGrid:document.getElementById("controlGrid"),
+  termName:document.getElementById("termName"),
+  termReading:document.getElementById("termReading"),
+  termBadges:document.getElementById("termBadges"),
+  termDescription:document.getElementById("termDescription"),
+  termNote:document.getElementById("termNote"),
+  termDemo:document.getElementById("termDemo"),
+  termProvenance:document.getElementById("termProvenance"),
+  relatedTerms:document.getElementById("relatedTerms"),
+  coverageBadge:document.getElementById("coverageBadge"),
+  demoTitle:document.getElementById("demoTitle"),
+  demoSubtitle:document.getElementById("demoSubtitle"),
+  previewMeta:document.getElementById("previewMeta"),
+  canvasStatus:document.getElementById("canvasStatus"),
+  boundsStatus:document.getElementById("boundsStatus"),
+  occupancyStatus:document.getElementById("occupancyStatus"),
+  safeStatus:document.getElementById("safeStatus"),
+  safeCard:document.getElementById("safeCard"),
+  showSafe:document.getElementById("showSafe"),
+  showMeasure:document.getElementById("showMeasure"),
+  showBase:document.getElementById("showBase"),
+  randomSampleBtn:document.getElementById("randomSampleBtn")
+};
+
+function selectedTerm(){
+  return TERMS.find(t=>t.id===state.selectedTermId) || TERMS[0];
+}
+
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function pct(v){ return (v*100).toFixed(2)+"%"; }
+function fmt(v,d=1){ return Number(v).toFixed(d).replace(/\.0$/,""); }
+
+
+function termSearchText(t){
+  return [t.name,t.reading,t.category,t.description,...t.status,...(t.aliases||[])].join(" ").toLowerCase();
+}
+function termCoversName(name){
+  const n=String(name).toLowerCase();
+  return TERMS.some(t=>termSearchText(t).includes(n));
+}
+function coverageStats(){
+  const covered=REQUIRED_TERMS.filter(termCoversName);
+  return {covered:covered.length,total:REQUIRED_TERMS.length,missing:REQUIRED_TERMS.filter(x=>!termCoversName(x))};
+}
+
+function graphemes(text){
+  if (typeof Intl !== "undefined" && Intl.Segmenter){
+    const seg = new Intl.Segmenter("ja",{granularity:"grapheme"});
+    return Array.from(seg.segment(text),x=>x.segment);
+  }
+  return Array.from(text);
+}
+
+function setFont(ctx,fontSize,weight=700){
+  ctx.font = `${weight} ${fontSize}px "Hiragino Sans","Yu Gothic","Yu Gothic UI","Noto Sans JP",sans-serif`;
+  ctx.textBaseline = "alphabetic";
+  ctx.textAlign = "left";
+  ctx.fontKerning = "normal";
+}
+
+function measureTracked(ctx,text,tracking){
+  if (!text) return {width:0,ascent:0,descent:0,left:0,right:0};
+  if (tracking === 0){
+    const m = ctx.measureText(text);
+    return {
+      width:m.width,
+      ascent:m.actualBoundingBoxAscent || 0,
+      descent:m.actualBoundingBoxDescent || 0,
+      left:m.actualBoundingBoxLeft || 0,
+      right:m.actualBoundingBoxRight || m.width
+    };
+  }
+  const gs = graphemes(text);
+  let width=0, ascent=0, descent=0;
+  gs.forEach((g,i)=>{
+    const m=ctx.measureText(g);
+    width += m.width + (i<gs.length-1 ? tracking : 0);
+    ascent = Math.max(ascent,m.actualBoundingBoxAscent || 0);
+    descent = Math.max(descent,m.actualBoundingBoxDescent || 0);
+  });
+  return {width,ascent,descent,left:0,right:width};
+}
+
+function drawTrackedText(ctx,text,x,baseline,tracking,mode="fill"){
+  if (tracking===0){
+    if (mode==="stroke") ctx.strokeText(text,x,baseline);
+    else ctx.fillText(text,x,baseline);
+    return;
+  }
+  let cursor=x;
+  const gs=graphemes(text);
+  gs.forEach((g,i)=>{
+    if (mode==="stroke") ctx.strokeText(g,cursor,baseline);
+    else ctx.fillText(g,cursor,baseline);
+    const m=ctx.measureText(g);
+    cursor += m.width + (i<gs.length-1?tracking:0);
+  });
+}
+
+function wrapMeasured(ctx,text,maxWidth,tracking,maxLines){
+  const paragraphs=String(text).split("\n");
+  const lines=[];
+  for (const paragraph of paragraphs){
+    if (paragraph===""){ lines.push(""); continue; }
+    const gs=graphemes(paragraph);
+    let line="";
+    for (const g of gs){
+      const candidate=line+g;
+      const m=measureTracked(ctx,candidate,tracking);
+      if (line && m.width>maxWidth){
+        lines.push(line);
+        line=g;
+        if(lines.length>=maxLines) return lines;
+      } else {
+        line=candidate;
+      }
+    }
+    if(line && lines.length<maxLines) lines.push(line);
+    if(lines.length>=maxLines) break;
+  }
+  return lines.slice(0,maxLines);
+}
+
+
+// ---- Japanese line breaking / JLReq-oriented teaching subset ----
+const JP_CHAR_SETS = {
+  opening:new Set(Array.from("（〔［｛〈《「『【〘〖〝‘“｟«")),
+  closing:new Set(Array.from("）〕］｝〉》」』】〙〗〟’”｠»")),
+  hyphen:new Set(Array.from("‐‑‒–〜～")),
+  dividing:new Set(Array.from("！？!?")),
+  middle:new Set(Array.from("・：；:;")),
+  fullStop:new Set(Array.from("。．")),
+  comma:new Set(Array.from("、，")),
+  iteration:new Set(Array.from("々ヽヾゝゞ〻")),
+  prolonged:new Set(["ー"]),
+  smallKana:new Set(Array.from("ぁぃぅぇぉっゃゅょゎゕゖァィゥェォッャュョヮヵヶㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿㇷ゚"))
+};
+
+function jpClass(ch){
+  for(const [name,set] of Object.entries(JP_CHAR_SETS)) if(set.has(ch)) return name;
+  if(/^[A-Za-z0-9]$/u.test(ch)) return "latin";
+  return "normal";
+}
+
+const JP_CLASS_META = {
+  opening:{code:"cl-01",label:"始め括弧"},
+  closing:{code:"cl-02",label:"終わり括弧"},
+  hyphen:{code:"cl-03",label:"ハイフン"},
+  dividing:{code:"cl-04",label:"区切り約物"},
+  middle:{code:"cl-05",label:"中点"},
+  fullStop:{code:"cl-06",label:"句点"},
+  comma:{code:"cl-07",label:"読点"},
+  iteration:{code:"cl-09",label:"繰返し"},
+  prolonged:{code:"cl-10",label:"長音"},
+  smallKana:{code:"cl-11",label:"小書き仮名"},
+  latin:{code:"Latin",label:"欧数字"},
+  normal:{code:"cl-19相当",label:"漢字・仮名等"}
+};
+
+function isLatinLike(ch){ return /^[A-Za-z0-9.%+\-]$/u.test(ch); }
+function isJapaneseLike(ch){ return /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}々〆ヵヶ]/u.test(ch); }
+function isMixedBoundary(a,b){ return (isJapaneseLike(a)&&isLatinLike(b)) || (isLatinLike(a)&&isJapaneseLike(b)); }
+
+function drawTextWithGapMap(ctx,text,x,baseline,gapMap,mode="fill"){
+  const gs=graphemes(text);
+  let cursor=x;
+  const positions=[];
+  gs.forEach((g,i)=>{
+    positions.push({index:i,char:g,x:cursor});
+    if(mode==="stroke") ctx.strokeText(g,cursor,baseline); else ctx.fillText(g,cursor,baseline);
+    const m=ctx.measureText(g);
+    cursor += m.width;
+    if(i<gs.length-1) cursor += gapMap.get(i) || 0;
+  });
+  return {width:cursor-x,positions};
+}
+
+function mixedGapMap(text,emGap,fontSize){
+  const gs=graphemes(text), map=new Map();
+  for(let i=0;i<gs.length-1;i++) if(isMixedBoundary(gs[i],gs[i+1])) map.set(i,emGap*fontSize);
+  return map;
+}
+
+function adjustableEvenGaps(text){
+  const gs=graphemes(text), out=[];
+  for(let i=0;i<gs.length-1;i++){
+    const a=gs[i],b=gs[i+1];
+    if(jpClass(a)==="latin" && jpClass(b)==="latin") continue;
+    if(jpClass(a)==="opening") continue;
+    if(["closing","fullStop","comma"].includes(jpClass(b))) continue;
+    out.push(i);
+  }
+  return out;
+}
+
+function countSubtitleChars(text){
+  return graphemes(String(text).replace(/\s+/gu,"")).length;
+}
+
+function secondsLabel(sec){
+  const v=Math.max(0,Number(sec)||0);
+  const m=Math.floor(v/60), s=v-m*60;
+  return `${String(m).padStart(2,"0")}:${s.toFixed(2).padStart(5,"0")}`;
+}
+
+function isLineStartProhibited(ch,mode="strict"){
+  const c=jpClass(ch);
+  if(mode==="off") return false;
+  if(mode==="relaxed") return ["closing","hyphen","dividing","fullStop","comma"].includes(c);
+  return ["closing","hyphen","dividing","middle","fullStop","comma","iteration","prolonged","smallKana"].includes(c);
+}
+
+function isLineEndProhibited(ch,mode="strict"){
+  if(mode==="off") return false;
+  return jpClass(ch)==="opening";
+}
+
+function legalJapaneseBreak(gs,index,mode="strict"){
+  if(index<=0 || index>=gs.length) return true;
+  if(mode==="off") return true;
+  const prev=gs[index-1], next=gs[index];
+  if(isLineEndProhibited(prev,mode)) return false;
+  if(isLineStartProhibited(next,mode)) return false;
+  // Basic protection against splitting simple ASCII words/numerals in this teaching subset.
+  if(jpClass(prev)==="latin" && jpClass(next)==="latin") return false;
+  return true;
+}
+
+function wrapKinsoku(ctx,text,maxWidth,tracking,maxLines,mode="strict"){
+  const gs=graphemes(String(text));
+  const lines=[];
+  let start=0;
+  while(start<gs.length && lines.length<maxLines){
+    let fitEnd=start;
+    for(let end=start+1; end<=gs.length; end++){
+      const candidate=gs.slice(start,end).join("");
+      if(measureTracked(ctx,candidate,tracking).width<=maxWidth) fitEnd=end;
+      else break;
+    }
+    if(fitEnd===gs.length){ lines.push(gs.slice(start).join("")); break; }
+    if(fitEnd===start) fitEnd=Math.min(start+1,gs.length);
+    let breakAt=fitEnd;
+    while(breakAt>start+1 && !legalJapaneseBreak(gs,breakAt,mode)) breakAt--;
+    if(!legalJapaneseBreak(gs,breakAt,mode) && breakAt===start+1) breakAt=fitEnd;
+    lines.push(gs.slice(start,breakAt).join(""));
+    start=breakAt;
+  }
+  if(start<gs.length && lines.length){
+    const last=lines.length-1;
+    lines[last]+= "…";
+  }
+  return lines;
+}
+
+function detectKinsokuViolations(lines,mode="strict"){
+  const out=[];
+  lines.forEach((line,i)=>{
+    const gs=graphemes(line.replace(/…$/u,""));
+    if(!gs.length) return;
+    if(i>0 && isLineStartProhibited(gs[0],mode)) out.push({line:i,side:"head",char:gs[0]});
+    if(i<lines.length-1 && isLineEndProhibited(gs[gs.length-1],mode)) out.push({line:i,side:"end",char:gs[gs.length-1]});
+  });
+  return out;
+}
+
+function drawKinsokuPanel(ctx,{x,y,w,h,title,mode,text,maxWidth,fontSize=48}){
+  ctx.save();
+  ctx.fillStyle="rgba(8,12,18,.64)"; roundRect(ctx,x,y,w,h,18); ctx.fill();
+  ctx.strokeStyle="rgba(255,255,255,.22)";ctx.lineWidth=2;roundRect(ctx,x,y,w,h,18);ctx.stroke();
+  ctx.fillStyle="#fff";ctx.font='27px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(title,x+18,y+38);
+  ctx.fillStyle="#aeb8c6";ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillText(`mode ${mode}`,x+18,y+64);
+  setFont(ctx,fontSize,700);
+  const lines= mode==="off" ? wrapMeasured(ctx,text,maxWidth,0,4) : wrapKinsoku(ctx,text,maxWidth,0,4,mode);
+  const startX=x+28, baseY=y+122, adv=fontSize+24;
+  ctx.strokeStyle="rgba(100,220,255,.8)";ctx.lineWidth=2;ctx.setLineDash([8,6]);
+  ctx.beginPath();ctx.moveTo(startX+maxWidth,y+88);ctx.lineTo(startX+maxWidth,y+h-26);ctx.stroke();ctx.setLineDash([]);
+  lines.forEach((line,i)=>{
+    const yy=baseY+i*adv;
+    const m=measureTracked(ctx,line,0);
+    ctx.fillStyle="#fff";drawTrackedText(ctx,line,startX,yy,0,"fill");
+    ctx.fillStyle="#8edfff";ctx.font='16px ui-monospace,Menlo,monospace';ctx.fillText(`${m.width.toFixed(1)} px`,startX,yy+23);
+    setFont(ctx,fontSize,700);
+  });
+  const activeMode=mode==="off"?"strict":mode;
+  const v=detectKinsokuViolations(lines,activeMode);
+  const strictV=detectKinsokuViolations(lines,"strict");
+  ctx.font='18px ui-monospace,Menlo,monospace';
+  if(mode==="off" && strictV.length){
+    ctx.fillStyle="#ff8080";
+    ctx.fillText("禁則OFFで発生: "+strictV.map(a=>`${a.side==="head"?"行頭":"行末"}「${a.char}」`).join(" / "),x+18,y+h-18);
+  } else if(v.length){
+    ctx.fillStyle="#ff8080";
+    ctx.fillText(v.map(a=>`${a.side==="head"?"行頭":"行末"} NG「${a.char}」`).join(" / "),x+18,y+h-18);
+  } else if(mode==="relaxed" && strictV.length){
+    ctx.fillStyle="#ffcf79";
+    ctx.fillText("緩和では許容: "+strictV.map(a=>`「${a.char}」`).join(" / "),x+18,y+h-18);
+  } else {
+    ctx.fillStyle="#8ee0a9";ctx.fillText("選択モードで禁則違反なし",x+18,y+h-18);
+  }
+  ctx.restore();
+  return {x,y,width:w,height:h};
+}
+
+function renderKinsokuCompare(ctx){
+  const titles=["禁則OFF","基本禁則","緩和"];
+  const modes=["off","strict","relaxed"];
+  const colX=[55,680,1305], panelW=560;
+  setFont(ctx,48,700);
+  const p1="これは重要な説明です。次の項目も確認します。";
+  const width1=measureTracked(ctx,"これは重要な説明です",0).width+2;
+  const p2="映像データをコンピューターで確認する";
+  const width2=measureTracked(ctx,"映像データをコンピュ",0).width+2;
+  let union=null;
+  for(let i=0;i<3;i++){
+    const a=drawKinsokuPanel(ctx,{x:colX[i],y:90,w:panelW,h:420,title:`${titles[i]} / 句点`,mode:modes[i],text:p1,maxWidth:Math.min(width1,475),fontSize:48});
+    const b=drawKinsokuPanel(ctx,{x:colX[i],y:550,w:panelW,h:420,title:`${titles[i]} / 長音`,mode:modes[i],text:p2,maxWidth:Math.min(width2,475),fontSize:48});
+    union=rectUnion(union,rectUnion(a,b));
+  }
+  ctx.save();ctx.fillStyle="rgba(0,0,0,.68)";ctx.fillRect(55,995,1810,55);ctx.fillStyle="#d8e4f0";ctx.font='20px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("緩和モード: 々・ー・小書き仮名・中点を主に許容する教材設定。終わり括弧・句点・読点は引き続き行頭不可。",75,1030);ctx.restore();
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function isJapaneseLike(ch){
+  return /[\u3000-\u30ff\u3400-\u9fff\uf900-\ufaff]/u.test(ch);
+}
+
+function buildTeachingGapModel(ctx,text,fontSize){
+  const gs=graphemes(text);
+  const glyphWidths=gs.map(g=>ctx.measureText(g).width);
+  const gaps=new Array(Math.max(0,gs.length-1)).fill(0);
+  const reduceCaps=new Array(gaps.length).fill(0);
+  const expandFlags=new Array(gaps.length).fill(false);
+  for(let i=0;i<gaps.length;i++){
+    const prev=jpClass(gs[i]), next=jpClass(gs[i+1]);
+    if(next==="opening") { gaps[i]+=fontSize*.35; reduceCaps[i]+=fontSize*.35; }
+    if(prev==="closing" || prev==="comma") { gaps[i]+=fontSize*.35; reduceCaps[i]+=fontSize*.35; }
+    if(prev==="middle" || next==="middle") { gaps[i]+=fontSize*.18; reduceCaps[i]+=fontSize*.18; }
+    const legal=legalJapaneseBreak(gs,i+1,"strict");
+    if(legal && (isJapaneseLike(gs[i]) || isJapaneseLike(gs[i+1]))) expandFlags[i]=true;
+    if(gs[i]===" ") expandFlags[i]=true;
+  }
+  return {gs,glyphWidths,gaps,reduceCaps,expandFlags};
+}
+
+function totalRunWidth(model,gaps=model.gaps){
+  return model.glyphWidths.reduce((a,b)=>a+b,0)+gaps.reduce((a,b)=>a+b,0);
+}
+
+function distributeReduction(baseGaps,caps,amount){
+  const gaps=[...baseGaps], deltas=new Array(gaps.length).fill(0);
+  let remain=Math.max(0,amount);
+  let active=caps.map((c,i)=>c>0?i:-1).filter(i=>i>=0);
+  while(remain>0.01 && active.length){
+    const share=remain/active.length;
+    const next=[];
+    for(const i of active){
+      const available=caps[i]+deltas[i];
+      const take=Math.min(share,Math.max(0,available));
+      gaps[i]-=take;deltas[i]-=take;remain-=take;
+      if(caps[i]+deltas[i]>0.01) next.push(i);
+    }
+    if(next.length===active.length && share<0.01) break;
+    active=next;
+  }
+  return {gaps,deltas,applied:amount-remain};
+}
+
+function distributeExpansion(baseGaps,flags,amount,fontSize){
+  const gaps=[...baseGaps], deltas=new Array(gaps.length).fill(0);
+  const ids=flags.map((f,i)=>f?i:-1).filter(i=>i>=0);
+  const cap=fontSize*.22;
+  let remain=Math.max(0,amount), active=[...ids];
+  while(remain>0.01 && active.length){
+    const share=remain/active.length;
+    const next=[];
+    for(const i of active){
+      const available=cap-deltas[i];
+      const give=Math.min(share,Math.max(0,available));
+      gaps[i]+=give;deltas[i]+=give;remain-=give;
+      if(cap-deltas[i]>0.01) next.push(i);
+    }
+    if(next.length===active.length && share<0.01) break;
+    active=next;
+  }
+  return {gaps,deltas,applied:amount-remain};
+}
+
+function drawAdjustedRun(ctx,{x,baseline,text,fontSize,targetWidth,kind}){
+  setFont(ctx,fontSize,700);
+  const model=buildTeachingGapModel(ctx,text,fontSize);
+  const natural=totalRunWidth(model);
+  let result={gaps:[...model.gaps],deltas:new Array(model.gaps.length).fill(0),applied:0};
+  if(kind==="reduce") result=distributeReduction(model.gaps,model.reduceCaps,Math.max(0,natural-targetWidth));
+  if(kind==="expand") result=distributeExpansion(model.gaps,model.expandFlags,Math.max(0,targetWidth-natural),fontSize);
+  let cursor=x;
+  ctx.save();
+  ctx.fillStyle="#fff";ctx.strokeStyle="#101820";ctx.lineWidth=3;ctx.lineJoin="round";
+  for(let i=0;i<model.gs.length;i++){
+    ctx.strokeText(model.gs[i],cursor,baseline);ctx.fillText(model.gs[i],cursor,baseline);
+    cursor+=model.glyphWidths[i];
+    if(i<result.gaps.length){
+      const delta=result.deltas[i];
+      if(Math.abs(delta)>0.15){
+        ctx.save();ctx.strokeStyle=delta<0?"#ffbc6e":"#78d9ff";ctx.lineWidth=2;
+        const gx=cursor+result.gaps[i]*.5;
+        ctx.beginPath();ctx.moveTo(gx,baseline-fontSize*.92);ctx.lineTo(gx,baseline+12);ctx.stroke();
+        ctx.fillStyle=delta<0?"#ffcf92":"#9ce8ff";ctx.font='14px ui-monospace,Menlo,monospace';
+        ctx.fillText(`${delta>0?"+":""}${delta.toFixed(1)}`,gx-15,baseline-fontSize-8);
+        ctx.restore();setFont(ctx,fontSize,700);
+      }
+      cursor+=result.gaps[i];
+    }
+  }
+  ctx.restore();
+  const used=cursor-x;
+  return {natural,used,applied:result.applied,opportunities:result.deltas.filter(v=>Math.abs(v)>0.15).length};
+}
+
+function renderLineAdjustment(ctx){
+  const text="映像技術（試験版）、2026年の結果・検証";
+  const x=245,fontSize=62;
+  setFont(ctx,fontSize,700);
+  const base=buildTeachingGapModel(ctx,text,fontSize);
+  const natural=totalRunWidth(base);
+  const rows=[
+    {name:"原組",kind:"none",target:natural,baseline:280,desc:"Canvas教材用の基準間隔モデル"},
+    {name:"追込み",kind:"reduce",target:natural-48,baseline:570,desc:"必要短縮 48px"},
+    {name:"追出し",kind:"expand",target:natural+48,baseline:860,desc:"必要拡張 48px"}
+  ];
+  let union=null;
+  rows.forEach(r=>{
+    panelLabel(ctx,70,r.baseline-135,r.name,r.desc);
+    ctx.save();ctx.fillStyle="rgba(0,0,0,.50)";roundRect(ctx,220,r.baseline-105,1620,180,16);ctx.fill();ctx.restore();
+    const m=drawAdjustedRun(ctx,{x,baseline:r.baseline,text,fontSize,targetWidth:r.target,kind:r.kind});
+    ctx.save();ctx.strokeStyle="#78d9ff";ctx.lineWidth=3;ctx.setLineDash([10,7]);
+    ctx.beginPath();ctx.moveTo(x+r.target,r.baseline-105);ctx.lineTo(x+r.target,r.baseline+55);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle="#dce8f4";ctx.font='21px ui-monospace,Menlo,monospace';
+    ctx.fillText(`Natural ${natural.toFixed(1)} px   Target ${r.target.toFixed(1)} px   Used ${m.used.toFixed(1)} px`,245,r.baseline+58);
+    ctx.fillText(`Applied ${m.applied.toFixed(1)} px   Adjusted gaps ${m.opportunities}`,245,r.baseline+88);
+    ctx.restore();
+    union=rectUnion(union,{x:70,y:r.baseline-135,width:1770,height:235});
+  });
+  ctx.save();ctx.fillStyle="#f3d58a";ctx.font='18px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("※ 調整可能位置とpx差を学ぶためのCanvas教材モデル。JIS X 4051/JLReqの全優先順位・全文字クラスを再現する完成組版エンジンではありません。",70,1040);ctx.restore();
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderHanging(ctx){
+  const text="これは大切な説明です。";
+  const prefix="これは大切な説明です";
+  const fontSize=72;
+  setFont(ctx,fontSize,700);
+  const target=measureTracked(ctx,prefix,0).width;
+  const panels=[{x:100,title:"通常の基本禁則",hang:false},{x:1010,title:"ぶら下げ",hang:true}];
+  let union=null;
+  panels.forEach(p=>{
+    const y=175,w=810,h=690,startX=p.x+55,baseY=390;
+    ctx.save();ctx.fillStyle="rgba(0,0,0,.56)";roundRect(ctx,p.x,y,w,h,20);ctx.fill();ctx.strokeStyle="rgba(255,255,255,.22)";ctx.lineWidth=2;roundRect(ctx,p.x,y,w,h,20);ctx.stroke();
+    ctx.fillStyle="#fff";ctx.font='30px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(p.title,p.x+25,y+48);
+    ctx.strokeStyle="#79dcff";ctx.lineWidth=3;ctx.setLineDash([10,7]);ctx.beginPath();ctx.moveTo(startX+target,y+95);ctx.lineTo(startX+target,y+h-90);ctx.stroke();ctx.setLineDash([]);
+    if(!p.hang){
+      const lines=wrapKinsoku(ctx,text,target,0,3,"strict");
+      setFont(ctx,fontSize,700);ctx.fillStyle="#fff";
+      lines.forEach((line,i)=>ctx.fillText(line,startX,baseY+i*110));
+      ctx.fillStyle="#d9e5ef";ctx.font='20px ui-monospace,Menlo,monospace';ctx.fillText("句点を行頭にしないため、前の文字を含めて次行へ送る",p.x+25,y+h-48);
+    }else{
+      setFont(ctx,fontSize,700);ctx.fillStyle="#fff";ctx.fillText(prefix,startX,baseY);
+      const pm=measureTracked(ctx,prefix,0);const dotM=measureTracked(ctx,"。",0);
+      ctx.fillStyle="#ffdb83";ctx.fillText("。",startX+pm.width,baseY);
+      ctx.fillStyle="#d9e5ef";ctx.font='20px ui-monospace,Menlo,monospace';
+      ctx.fillText(`Specified line length ${target.toFixed(1)} px`,p.x+25,y+h-76);
+      ctx.fillText(`Punctuation outside +${dotM.width.toFixed(1)} px`,p.x+25,y+h-48);
+    }
+    ctx.restore();
+    union=rectUnion(union,{x:p.x,y,width:w,height:h});
+  });
+  ctx.save();ctx.fillStyle="#f3d58a";ctx.font='22px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("JLReq: ぶら下げの対象は句点類(cl-06)・読点類(cl-07)。欧文混植にはなじみにくい点も説明される。",100,930);ctx.restore();
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+
+function renderPunctuationClasses(ctx){
+  const rows=[
+    [["opening","「『（【"],["closing","」』）】"]],
+    [["hyphen","‐–〜"],["dividing","！？"]],
+    [["middle","・：；"],["fullStop","。．"]],
+    [["comma","、，"],["iteration","々ヽヾ"]],
+    [["prolonged","ー"],["smallKana","ゃゅょっァィュョ"]]
+  ];
+  ctx.save();
+  ctx.fillStyle="rgba(0,0,0,.62)"; roundRect(ctx,70,80,1780,900,24);ctx.fill();
+  ctx.fillStyle="#fff";ctx.font='32px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("約物：JLReq文字クラスの教材サブセット",100,135);
+  ctx.fillStyle="#bfc9d7";ctx.font='22px ui-monospace,Menlo,monospace';ctx.fillText("行頭禁則・行末禁則・行調整は『文字そのもの』ではなくクラスで考える",100,174);
+  let union=null;
+  rows.forEach((pair,row)=>{
+    pair.forEach((item,col)=>{
+      const [key,chars]=item, meta=JP_CLASS_META[key];
+      const x=105+col*865,y=235+row*135;
+      ctx.fillStyle=col===0?"rgba(47,92,140,.46)":"rgba(95,63,126,.46)";roundRect(ctx,x,y-45,805,105,16);ctx.fill();
+      ctx.fillStyle="#8fd3ff";ctx.font='22px ui-monospace,Menlo,monospace';ctx.fillText(meta.code,x+18,y-10);
+      ctx.fillStyle="#fff";ctx.font='27px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(meta.label,x+120,y-10);
+      ctx.font='48px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(chars,x+18,y+48);
+      const b={x,y:y-45,width:805,height:105}; union=rectUnion(union,b);
+    });
+  });
+  ctx.fillStyle="#f2d486";ctx.font='20px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("※ cl-08, cl-12以降などはこの基盤版では未表示。文字クラス表の完全実装ではない。",100,948);
+  ctx.restore();
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderEqualSpacing(ctx){
+  const text="映像技術研究所";
+  const x=210,baseline=455,target=clamp(state.equalTargetWidth,700,1500);
+  setFont(ctx,state.fontSize,700);
+  const natural=measureTracked(ctx,text,0).width;
+  const indices=adjustableEvenGaps(text);
+  const extra=target-natural;
+  const expandable=Math.max(0,extra);
+  const per=indices.length?expandable/indices.length:0;
+  const gaps=new Map(indices.map(i=>[i,per]));
+
+  panelLabel(ctx,110,170,"自然組","measureText()実測");
+  const b1=renderTelopBlock(ctx,{text,x:210,baseline:335,width:1500,fontSize:state.fontSize,tracking:0,lineGap:16,edge:2,shadowX:0,shadowY:0,baseAlpha:.4,basePad:16,maxLines:1,showBase:true});
+  ctx.fillStyle="#fff";ctx.font='25px ui-monospace,Menlo,monospace';ctx.fillText(`Natural ${natural.toFixed(1)} px`,110,245);
+
+  panelLabel(ctx,110,565,"均等割り",`target ${target.toFixed(1)}px`);
+  ctx.save();
+  ctx.fillStyle="rgba(0,0,0,.52)";roundRect(ctx,x-20,baseline+240-state.fontSize-28,target+40,state.fontSize+65,14);ctx.fill();
+  ctx.strokeStyle="#111";ctx.lineWidth=4;ctx.lineJoin="round";ctx.fillStyle="#fff";
+  drawTextWithGapMap(ctx,text,x,baseline+240,gaps,"stroke");
+  const result=drawTextWithGapMap(ctx,text,x,baseline+240,gaps,"fill");
+  ctx.strokeStyle="rgba(117,213,255,.8)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,baseline+292);ctx.lineTo(x+target,baseline+292);ctx.stroke();
+  result.positions.slice(1).forEach((p,i)=>{
+    ctx.strokeStyle="rgba(255,205,100,.75)";ctx.beginPath();ctx.moveTo(p.x,baseline+250);ctx.lineTo(p.x,baseline+300);ctx.stroke();
+  });
+  ctx.fillStyle="#ffda84";ctx.font='23px ui-monospace,Menlo,monospace';ctx.fillText(`Need ${(extra>=0?"+":"")+extra.toFixed(1)} px / gaps ${indices.length} / applied +${per.toFixed(2)} px each`,110,640);
+  ctx.fillText(`Result ${result.width.toFixed(1)} px`,110,676);
+  ctx.restore();
+  const b2={x:x-20,y:baseline+240-state.fontSize-28,width:target+40,height:state.fontSize+65};
+  return {effect:rectUnion(b1.effect,b2),base:rectUnion(b1.base,b2),text:rectUnion(b1.text,b2),lines:[]};
+}
+
+function renderMixedText(ctx){
+  const text="東京2026 AI研究会 98.5%";
+  const vals=[0,0.125,0.25];
+  let union=null;
+  vals.forEach((emGap,i)=>{
+    const baseline=270+i*255,x=430;
+    panelLabel(ctx,80,baseline-95,`和欧境界 ${emGap}em`,`${(emGap*state.fontSize).toFixed(1)}px at ${state.fontSize}px`);
+    setFont(ctx,state.fontSize,700);
+    const gapMap=mixedGapMap(text,emGap,state.fontSize);
+    ctx.save();ctx.fillStyle="rgba(0,0,0,.52)";roundRect(ctx,x-18,baseline-state.fontSize-18,1370,state.fontSize+48,14);ctx.fill();
+    ctx.strokeStyle="#111";ctx.lineWidth=4;ctx.fillStyle="#fff";
+    drawTextWithGapMap(ctx,text,x,baseline,gapMap,"stroke");
+    const result=drawTextWithGapMap(ctx,text,x,baseline,gapMap,"fill");
+    const gs=graphemes(text);
+    result.positions.forEach((p,index)=>{
+      if(index>0 && isMixedBoundary(gs[index-1],gs[index])){
+        ctx.strokeStyle="rgba(255,202,93,.9)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p.x,baseline-state.fontSize);ctx.lineTo(p.x,baseline+18);ctx.stroke();
+      }
+    });
+    ctx.fillStyle="#cbd6e4";ctx.font='21px ui-monospace,Menlo,monospace';ctx.fillText(`Measured ${result.width.toFixed(1)} px / boundaries ${gapMap.size}`,x,baseline+54);
+    ctx.restore();
+    union=rectUnion(union,{x:x-18,y:baseline-state.fontSize-18,width:1370,height:state.fontSize+90});
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function timelineX(sec,x,w,total){ return x + clamp(sec/Math.max(.001,total),0,1)*w; }
+function drawTimelineBase(ctx,x,y,w,total){
+  ctx.save();
+  ctx.fillStyle="rgba(0,0,0,.62)";roundRect(ctx,x,y,w,185,16);ctx.fill();
+  ctx.strokeStyle="rgba(255,255,255,.35)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+25,y+95);ctx.lineTo(x+w-25,y+95);ctx.stroke();
+  ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillStyle="#c8d1dc";
+  for(let sec=0;sec<=Math.ceil(total);sec++){
+    const xx=timelineX(sec,x+25,w-50,total);ctx.beginPath();ctx.moveTo(xx,y+84);ctx.lineTo(xx,y+108);ctx.stroke();ctx.fillText(`${sec}s`,xx-10,y+132);
+  }
+  ctx.restore();
+}
+
+function renderSubtitleTimeline(ctx){
+  const total=8,x=100,w=1720,y=175;
+  drawTimelineBase(ctx,x,y,w,total);
+  const boxes=[
+    {a:.45,b:2.45,text:"明日の朝、もう一度"},
+    {a:2.62,b:5.05,text:"ここに来よう"},
+    {a:5.28,b:7.55,text:"話したいことがある"}
+  ];
+  let union={x,y,width:w,height:185};
+  boxes.forEach((box,i)=>{
+    const bx=timelineX(box.a,x+25,w-50,total), br=timelineX(box.b,x+25,w-50,total);
+    ctx.fillStyle=["rgba(61,129,198,.85)","rgba(102,86,181,.85)","rgba(55,145,119,.85)"][i];roundRect(ctx,bx,y+38,Math.max(24,br-bx),44,8);ctx.fill();
+    const chars=countSubtitleChars(box.text),dur=box.b-box.a,cps=chars/dur;
+    ctx.fillStyle="#fff";ctx.font='20px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(`ハコ${i+1} ${box.text}`,110,430+i*155);
+    ctx.fillStyle="#cbd6e4";ctx.font='19px ui-monospace,Menlo,monospace';ctx.fillText(`IN ${secondsLabel(box.a)}  OUT ${secondsLabel(box.b)}  duration ${dur.toFixed(2)}s  chars ${chars}  CPS ${cps.toFixed(2)}`,110,464+i*155);
+    const cap=renderTelopBlock(ctx,{text:box.text,x:820,baseline:438+i*155,width:920,fontSize:48,tracking:0,lineGap:14,edge:2,shadowX:0,shadowY:0,baseAlpha:.5,basePad:12,maxLines:1,showBase:true});
+    union=rectUnion(union,cap.effect);
+  });
+  ctx.fillStyle="#f1d486";ctx.font='21px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("ハコ書き = どこまでの台詞を1枚の字幕に入れるかを区切る制作作業",110,930);
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderSpottingTimeline(ctx){
+  const total=Math.max(2,state.subtitleTimelineDuration);
+  const start=clamp(state.subtitleIn,0,total);
+  const end=clamp(Math.max(start+.05,state.subtitleOut),0,total);
+  const x=100,w=1720,y=175;
+  drawTimelineBase(ctx,x,y,w,total);
+  const bx=timelineX(start,x+25,w-50,total),br=timelineX(end,x+25,w-50,total);
+  ctx.fillStyle="rgba(60,132,205,.92)";roundRect(ctx,bx,y+38,Math.max(12,br-bx),44,8);ctx.fill();
+  ctx.strokeStyle="#8ed7ff";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx,y+25);ctx.lineTo(bx,y+118);ctx.stroke();
+  ctx.strokeStyle="#ffd381";ctx.beginPath();ctx.moveTo(br,y+25);ctx.lineTo(br,y+118);ctx.stroke();
+  const text="明日の朝、もう一度ここに来よう";
+  const chars=countSubtitleChars(text),duration=Math.max(.05,end-start),cps=chars/duration;
+  const cap=renderTelopBlock(ctx,{text,x:235,baseline:745,width:1450,fontSize:64,tracking:0,lineGap:16,edge:3,shadowX:0,shadowY:0,baseAlpha:.62,basePad:20,maxLines:2,showBase:true});
+  ctx.fillStyle="#fff";ctx.font='30px ui-monospace,Menlo,monospace';ctx.fillText(`IN  ${secondsLabel(start)}`,175,430);ctx.fillText(`OUT ${secondsLabel(end)}`,175,478);
+  ctx.fillText(`Duration ${duration.toFixed(2)} s`,175,548);ctx.fillText(`Chars ${chars} / CPS ${cps.toFixed(2)}`,175,596);
+  ctx.fillStyle=cps>6?"#ff8c8c":(cps>4?"#ffd37a":"#92e2ae");ctx.font='25px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(cps>6?"教材表示: 高い読み速度":(cps>4?"教材表示: 4 CPSを超える":"教材表示: 4 CPS以下"),175,646);
+  return {effect:rectUnion({x,y,width:w,height:185},cap.effect),base:cap.base,text:cap.text,lines:cap.lines};
+}
+
+function renderCpsCompare(ctx){
+  const text="明日の朝、もう一度ここに来よう";
+  const chars=countSubtitleChars(text), vals=[3,4,5,6];
+  let union=null;
+  vals.forEach((cps,i)=>{
+    const baseline=230+i*190;
+    const duration=chars/cps;
+    panelLabel(ctx,80,baseline-92,`${cps} CPS`,`required ${duration.toFixed(2)} s / chars ${chars}`);
+    const b=renderTelopBlock(ctx,{text,x:520,baseline,width:1280,fontSize:58,tracking:0,lineGap:14,edge:3,shadowX:0,shadowY:0,baseAlpha:.56,basePad:15,maxLines:1,showBase:true});
+    const barW=920*(duration/(chars/3));
+    ctx.fillStyle="rgba(120,188,255,.7)";roundRect(ctx,520,baseline+48,barW,18,7);ctx.fill();
+    ctx.fillStyle="#d4dde8";ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillText(`${duration.toFixed(2)} sec`,520+barW+15,baseline+64);
+    union=rectUnion(union,b.effect);
+  });
+  const currentDur=Math.max(.05,state.subtitleOut-state.subtitleIn),currentCps=chars/currentDur;
+  ctx.fillStyle="#f1d486";ctx.font='22px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(`Current IN/OUT: ${currentDur.toFixed(2)}s → ${currentCps.toFixed(2)} CPS　※4 CPSは放送規格値ではなく字幕翻訳の参照目安`,90,990);
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderSubtitleWidth(ctx){
+  const guides=[10,12,clamp(Math.round(state.subtitleCharsPerLine),8,20),15];
+  const em=state.fontSize;
+  ctx.save();ctx.fillStyle="rgba(0,0,0,.60)";roundRect(ctx,75,90,1770,880,22);ctx.fill();
+  ctx.fillStyle="#fff";ctx.font='30px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("字幕幅：文字数ガイドとpixel実測は別物",105,145);
+  let union={x:75,y:90,width:1770,height:880};
+  guides.forEach((n,i)=>{
+    const y=235+i*150,x=180,guideW=n*em;
+    ctx.strokeStyle="rgba(117,213,255,.9)";ctx.lineWidth=2;ctx.strokeRect(x,y-55,guideW,78);
+    ctx.fillStyle="#8ed7ff";ctx.font='19px ui-monospace,Menlo,monospace';ctx.fillText(`${n} em guide = ${guideW.toFixed(0)} px`,x,y-67);
+    setFont(ctx,state.fontSize,700);ctx.fillStyle="#fff";ctx.strokeStyle="#111";ctx.lineWidth=4;
+    const sample=i===0?"明日の朝もう一度":i===1?"冷蔵庫に入れる前に":i===2?"関東では夕方から激しい雨": "大型台風 あす関東に接近のおそれ";
+    ctx.strokeText(sample,x,y);ctx.fillText(sample,x,y);
+    const m=ctx.measureText(sample);ctx.fillStyle="#d6dee8";ctx.font='19px ui-monospace,Menlo,monospace';ctx.fillText(`chars ${countSubtitleChars(sample)} / measured ${m.width.toFixed(1)} px`,x+guideW+35,y);
+  });
+  ctx.fillStyle="#f0cf83";ctx.font='21px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("13文字でも文字種・フォントで実pixel幅は変わる。12〜13字・2行は媒体依存の実務目安として表示する。",105,900);
+  ctx.restore();
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function drawBackground(ctx,type){
+  ctx.save();
+  ctx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
+  if(type==="bright"){
+    const g=ctx.createLinearGradient(0,0,LOGICAL_W,LOGICAL_H);
+    g.addColorStop(0,"#d5efff"); g.addColorStop(1,"#f9e8b0");
+    ctx.fillStyle=g; ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
+    ctx.fillStyle="rgba(255,255,255,.65)";
+    for(let i=0;i<10;i++){ctx.beginPath();ctx.arc(160+i*190,180+(i%3)*60,90+(i%2)*30,0,Math.PI*2);ctx.fill()}
+  } else if(type==="dark"){
+    const g=ctx.createLinearGradient(0,0,0,LOGICAL_H);
+    g.addColorStop(0,"#06101f"); g.addColorStop(1,"#1c1530");
+    ctx.fillStyle=g;ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
+    for(let i=0;i<80;i++){
+      ctx.fillStyle=`rgba(255,220,140,${0.15+(i%5)*0.05})`;
+      const x=(i*173)%LOGICAL_W,y=(i*97)%760;
+      ctx.fillRect(x,y,3+(i%4)*2,3+(i%4)*2);
+    }
+  } else if(type==="busy"){
+    ctx.fillStyle="#486b3d";ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
+    for(let y=0;y<LOGICAL_H;y+=28){
+      for(let x=0;x<LOGICAL_W;x+=28){
+        const v=(x*13+y*7)%255;
+        ctx.fillStyle=`rgb(${40+v%80},${70+(v*3)%100},${30+(v*5)%70})`;
+        ctx.fillRect(x,y,22,22);
+      }
+    }
+    ctx.fillStyle="rgba(210,215,220,.85)";
+    ctx.fillRect(0,510,LOGICAL_W,125);
+    ctx.fillStyle="rgba(60,70,80,.9)";
+    for(let i=0;i<16;i++) ctx.fillRect(i*130,520+(i%2)*50,85,18);
+  } else {
+    // studio
+    const g=ctx.createLinearGradient(0,0,LOGICAL_W,LOGICAL_H);
+    g.addColorStop(0,"#173a63");g.addColorStop(.5,"#2a5179");g.addColorStop(1,"#142536");
+    ctx.fillStyle=g;ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
+    ctx.fillStyle="rgba(255,255,255,.10)";
+    ctx.beginPath();ctx.arc(1480,300,310,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="rgba(64,110,145,.55)";
+    ctx.fillRect(0,640,LOGICAL_W,440);
+    // person silhouette
+    ctx.fillStyle="rgba(35,24,28,.88)";
+    ctx.beginPath();ctx.arc(980,330,145,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(980,720,260,330,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="rgba(220,176,145,.92)";
+    ctx.beginPath();ctx.arc(980,340,120,0,Math.PI*2);ctx.fill();
+  }
+  ctx.restore();
+}
+
+function textBlockMetrics(ctx,lines,x,baseline,fontSize,lineGap,tracking){
+  let maxWidth=0, maxAscent=0, maxDescent=0;
+  const rowMetrics=[];
+  const lineAdvance=fontSize+lineGap;
+  lines.forEach((line,i)=>{
+    const m=measureTracked(ctx,line,tracking);
+    rowMetrics.push(m);
+    maxWidth=Math.max(maxWidth,m.width);
+    maxAscent=Math.max(maxAscent,m.ascent || fontSize*.8);
+    maxDescent=Math.max(maxDescent,m.descent || fontSize*.2);
+  });
+  const top=baseline-(rowMetrics[0]?.ascent || fontSize*.8);
+  const bottom=baseline+(Math.max(0,lines.length-1)*lineAdvance)+(rowMetrics.at(-1)?.descent || fontSize*.2);
+  return {x, y:top, width:maxWidth, height:bottom-top, bottom, rowMetrics, lineAdvance};
+}
+
+function renderTelopBlock(ctx, opts){
+  const {
+    text,x,baseline,width,fontSize,tracking,lineGap,edge,shadowX,shadowY,
+    baseAlpha,basePad,maxLines,showBase,fill="#fff",edgeColor="#111",
+    baseColor="0,0,0"
+  }=opts;
+
+  setFont(ctx,fontSize,700);
+  const contentWidth=Math.max(20,width - (showBase?basePad*2:0));
+  const lines=wrapMeasured(ctx,text,contentWidth,tracking,maxLines);
+  const tm=textBlockMetrics(ctx,lines,x+(showBase?basePad:0),baseline,fontSize,lineGap,tracking);
+
+  const baseX=x;
+  const baseY=tm.y-basePad;
+  const baseW=Math.min(width,tm.width+basePad*2);
+  const baseH=tm.height+basePad*2;
+
+  ctx.save();
+  if(showBase){
+    ctx.fillStyle=`rgba(${baseColor},${baseAlpha})`;
+    const r=Math.min(20,basePad*.65);
+    roundRect(ctx,baseX,baseY,baseW,baseH,r);
+    ctx.fill();
+  }
+
+  ctx.fillStyle=fill;
+  ctx.strokeStyle=edgeColor;
+  ctx.lineJoin="round";
+  ctx.miterLimit=2;
+  ctx.lineWidth=edge*2;
+
+  lines.forEach((line,i)=>{
+    const yy=baseline+i*(fontSize+lineGap);
+    if(shadowX || shadowY){
+      ctx.save();
+      ctx.fillStyle="rgba(0,0,0,.58)";
+      drawTrackedText(ctx,line,tm.x+shadowX,yy+shadowY,tracking,"fill");
+      ctx.restore();
+    }
+    if(edge>0) drawTrackedText(ctx,line,tm.x,yy,tracking,"stroke");
+    drawTrackedText(ctx,line,tm.x,yy,tracking,"fill");
+  });
+  ctx.restore();
+
+  const fxLeft=Math.min(baseX,tm.x-edge,tm.x+shadowX);
+  const fxTop=Math.min(baseY,tm.y-edge,tm.y+shadowY);
+  const fxRight=Math.max(baseX+baseW,tm.x+tm.width+edge,tm.x+tm.width+shadowX);
+  const fxBottom=Math.max(baseY+baseH,tm.bottom+edge,tm.bottom+shadowY);
+
+  return {
+    lines,
+    text:{x:tm.x,y:tm.y,width:tm.width,height:tm.height},
+    base:{x:baseX,y:baseY,width:baseW,height:baseH},
+    effect:{x:fxLeft,y:fxTop,width:fxRight-fxLeft,height:fxBottom-fxTop}
+  };
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  const rr=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+rr,y);
+  ctx.arcTo(x+w,y,x+w,y+h,rr);
+  ctx.arcTo(x+w,y+h,x,y+h,rr);
+  ctx.arcTo(x,y+h,x,y,rr);
+  ctx.arcTo(x,y,x+w,y,rr);
+  ctx.closePath();
+}
+
+function safeRect(){
+  return {
+    x:state.safeLeft,
+    y:state.safeTop,
+    width:LOGICAL_W-state.safeLeft-state.safeRight,
+    height:LOGICAL_H-state.safeTop-state.safeBottom
+  };
+}
+
+function applySafePreset(id){
+  state.safePreset=id;
+  const p=SAFE_PRESETS[id];
+  if(id!=="custom"){
+    state.safeLeft=p.left;state.safeRight=p.right;state.safeTop=p.top;state.safeBottom=p.bottom;
+  }
+  syncControlValues();
+  renderAll();
+}
+
+function drawSafeOverlay(ctx){
+  if(!state.showSafe) return;
+  const s=safeRect();
+  ctx.save();
+  ctx.strokeStyle="rgba(80,220,255,.95)";
+  ctx.lineWidth=3;
+  ctx.setLineDash([14,10]);
+  ctx.strokeRect(s.x,s.y,s.width,s.height);
+  ctx.setLineDash([]);
+  ctx.fillStyle="rgba(80,220,255,.95)";
+  ctx.font='24px ui-monospace,Menlo,monospace';
+  ctx.fillText(`SAFE ${fmt(s.width)}×${fmt(s.height)}  L${fmt(state.safeLeft)} R${fmt(state.safeRight)} T${fmt(state.safeTop)} B${fmt(state.safeBottom)}`,s.x+12,s.y+34);
+  ctx.restore();
+}
+
+function drawMeasureBox(ctx,bounds,label,color="rgba(255,214,100,.95)"){
+  if(!state.showMeasure || !bounds) return;
+  ctx.save();
+  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([8,6]);
+  ctx.strokeRect(bounds.x,bounds.y,bounds.width,bounds.height);
+  ctx.setLineDash([]);
+  ctx.fillStyle=color;ctx.font='22px ui-monospace,Menlo,monospace';
+  ctx.fillText(`${label} X:${fmt(bounds.x)} Y:${fmt(bounds.y)} W:${fmt(bounds.width)} H:${fmt(bounds.height)}`,bounds.x,Math.max(24,bounds.y-9));
+  ctx.restore();
+}
+
+function safeViolation(bounds){
+  const s=safeRect();
+  return {
+    left:Math.max(0,s.x-bounds.x),
+    top:Math.max(0,s.y-bounds.y),
+    right:Math.max(0,(bounds.x+bounds.width)-(s.x+s.width)),
+    bottom:Math.max(0,(bounds.y+bounds.height)-(s.y+s.height))
+  };
+}
+
+function renderSingle(ctx){
+  const b=renderTelopBlock(ctx,{
+    text:state.sample,x:state.telopX,baseline:state.telopY,width:state.telopWidth,
+    fontSize:state.fontSize,tracking:state.tracking,lineGap:state.lineGap,edge:state.edge,
+    shadowX:state.shadowX,shadowY:state.shadowY,baseAlpha:state.baseAlpha,basePad:state.basePad,
+    maxLines:state.maxLines,showBase:state.showBase
+  });
+  drawMeasureBox(ctx,b.effect,"effect");
+  return b;
+}
+
+function panelLabel(ctx,x,y,title,sub){
+  ctx.save();
+  ctx.fillStyle="rgba(0,0,0,.62)";ctx.fillRect(x,y,360,62);
+  ctx.fillStyle="#fff";ctx.font='25px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(title,x+12,y+26);
+  ctx.fillStyle="#cdd6e1";ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillText(sub,x+12,y+50);
+  ctx.restore();
+}
+
+function renderEdgeCompare(ctx){
+  const vals=[0,2,4,8,12];
+  const top=150,rowH=165;
+  let union=null;
+  vals.forEach((edge,i)=>{
+    const y=top+i*rowH;
+    panelLabel(ctx,85,y-70,`Edge ${edge}px`,`font 72px / ratio ${(edge/72*100).toFixed(1)}%`);
+    const b=renderTelopBlock(ctx,{
+      text:"大型台風 あす関東に接近のおそれ",x:520,baseline:y,width:1290,
+      fontSize:72,tracking:0,lineGap:14,edge,shadowX:0,shadowY:0,
+      baseAlpha:.42,basePad:14,maxLines:1,showBase:true
+    });
+    if(i===2) drawMeasureBox(ctx,b.effect,"4px effect");
+    union=rectUnion(union,b.effect);
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderBaseCompare(ctx){
+  const configs=[
+    {label:"座布団なし",show:false,color:"0,0,0",alpha:0},
+    {label:"半透明黒 70%",show:true,color:"0,0,0",alpha:.70},
+    {label:"白 92%",show:true,color:"255,255,255",alpha:.92,fill:"#111",edgeColor:"#fff"},
+    {label:"青 82%",show:true,color:"20,80,155",alpha:.82}
+  ];
+  let union=null;
+  configs.forEach((c,i)=>{
+    const baseline=220+i*215;
+    panelLabel(ctx,85,baseline-100,c.label,`padding ${state.basePad}px`);
+    const b=renderTelopBlock(ctx,{
+      text:"冷蔵庫に入れる前にひと手間！",x:510,baseline,width:1290,
+      fontSize:68,tracking:0,lineGap:16,edge:3,shadowX:4,shadowY:5,
+      baseAlpha:c.alpha,basePad:state.basePad,maxLines:1,showBase:c.show,
+      baseColor:c.color,fill:c.fill||"#fff",edgeColor:c.edgeColor||"#111"
+    });
+    union=rectUnion(union,b.effect);
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderTrackingCompare(ctx){
+  const vals=[-4,0,4,8];
+  let union=null;
+  vals.forEach((tracking,i)=>{
+    const baseline=245+i*205;
+    setFont(ctx,72,700);
+    const txt="東京2026 映像技術研究会";
+    const m=measureTracked(ctx,txt,tracking);
+    panelLabel(ctx,85,baseline-100,`${tracking>=0?"+":""}${tracking}px`,`measured ${m.width.toFixed(1)}px`);
+    const b=renderTelopBlock(ctx,{
+      text:txt,x:520,baseline,width:1290,fontSize:72,tracking,lineGap:16,edge:3,
+      shadowX:0,shadowY:0,baseAlpha:.46,basePad:14,maxLines:1,showBase:true
+    });
+    drawMeasureBox(ctx,b.text,tracking===0?"0px text":"",tracking===0?"rgba(255,214,100,.95)":"transparent");
+    union=rectUnion(union,b.effect);
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderLineGapCompare(ctx){
+  const vals=[0,16,32];
+  let union=null;
+  vals.forEach((gap,i)=>{
+    const baseY=210+i*285;
+    panelLabel(ctx,85,baseY-105,`行間 ${gap}px`,`line advance ${64+gap}px`);
+    const b=renderTelopBlock(ctx,{
+      text:"冷凍すると野菜の甘みがアップ\n保存方法も見直してみましょう",x:520,baseline:baseY,width:1290,
+      fontSize:64,tracking:0,lineGap:gap,edge:3,shadowX:0,shadowY:0,baseAlpha:.46,basePad:16,maxLines:2,showBase:true
+    });
+    ctx.save();
+    ctx.strokeStyle="rgba(255,120,160,.85)";ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(500,baseY);ctx.lineTo(1820,baseY);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(500,baseY+64+gap);ctx.lineTo(1820,baseY+64+gap);ctx.stroke();
+    ctx.restore();
+    union=rectUnion(union,b.effect);
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderSafeDemo(ctx){
+  const b=renderTelopBlock(ctx,{
+    text:"関東では夕方から激しい雨のおそれ",x:state.telopX,baseline:state.telopY,width:state.telopWidth,
+    fontSize:state.fontSize,tracking:state.tracking,lineGap:state.lineGap,edge:state.edge,
+    shadowX:state.shadowX,shadowY:state.shadowY,baseAlpha:state.baseAlpha,basePad:state.basePad,
+    maxLines:state.maxLines,showBase:true
+  });
+  drawMeasureBox(ctx,b.text,"text","rgba(130,240,160,.95)");
+  drawMeasureBox(ctx,b.effect,"effect","rgba(255,214,100,.95)");
+  return b;
+}
+
+function renderOccupancy(ctx){
+  const leftX=100, width=780;
+  panelLabel(ctx,100,170,"1行テロップ","外接矩形占有率");
+  const b1=renderTelopBlock(ctx,{
+    text:"結局1行じゃ足らなかった！",x:leftX,baseline:860,width,
+    fontSize:78,tracking:0,lineGap:20,edge:4,shadowX:4,shadowY:6,
+    baseAlpha:.78,basePad:24,maxLines:1,showBase:true
+  });
+  const occ1=b1.base.width*b1.base.height/SCREEN_AREA;
+  ctx.fillStyle="#fff";ctx.font='27px ui-monospace,Menlo,monospace';
+  ctx.fillText(`Area ${Math.round(b1.base.width*b1.base.height).toLocaleString()} px² / ${pct(occ1)}`,100,245);
+
+  panelLabel(ctx,1010,170,"2行テロップ","同じ幅に1行追加");
+  const b2=renderTelopBlock(ctx,{
+    text:"結局1行じゃ足らず\nもう1行増やすことになった！",x:1010,baseline:770,width:810,
+    fontSize:78,tracking:0,lineGap:24,edge:4,shadowX:4,shadowY:6,
+    baseAlpha:.78,basePad:24,maxLines:2,showBase:true
+  });
+  const occ2=b2.base.width*b2.base.height/SCREEN_AREA;
+  ctx.fillText(`Area ${Math.round(b2.base.width*b2.base.height).toLocaleString()} px² / ${pct(occ2)}`,1010,245);
+  ctx.fillStyle="#ffdf8b";ctx.font='31px ui-monospace,Menlo,monospace';
+  ctx.fillText(`Increase +${((occ2-occ1)*100).toFixed(2)} percentage points`,1010,320);
+  return {effect:rectUnion(b1.effect,b2.effect),base:rectUnion(b1.base,b2.base),text:rectUnion(b1.text,b2.text),lines:[]};
+}
+
+function rectUnion(a,b){
+  if(!a) return {...b};
+  if(!b) return {...a};
+  const x=Math.min(a.x,b.x), y=Math.min(a.y,b.y);
+  const r=Math.max(a.x+a.width,b.x+b.width);
+  const bt=Math.max(a.y+a.height,b.y+b.height);
+  return {x,y,width:r-x,height:bt-y};
+}
+
+
+function rectIntersection(a,b){
+  const x=Math.max(a.x,b.x), y=Math.max(a.y,b.y);
+  const r=Math.min(a.x+a.width,b.x+b.width), bt=Math.min(a.y+a.height,b.y+b.height);
+  if(r<=x || bt<=y) return null;
+  return {x,y,width:r-x,height:bt-y};
+}
+
+function drawSectionHeader(ctx,x,y,w,title,sub){
+  ctx.save();
+  ctx.fillStyle="rgba(8,12,18,.82)";ctx.fillRect(x,y,w,70);
+  ctx.fillStyle="#fff";ctx.font='700 27px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(title,x+16,y+29);
+  ctx.fillStyle="#b9c4d2";ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillText(sub,x+16,y+55);
+  ctx.restore();
+}
+
+function renderCaptionModes(ctx){
+  // Split-screen conceptual comparison. The right side simulates receiver-side caption switching.
+  const gap=24, panelW=(LOGICAL_W-gap)/2;
+  ctx.save();
+  ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(panelW,0,gap,LOGICAL_H);
+  drawSectionHeader(ctx,0,55,panelW,"OPEN CAPTION","映像に含まれるため常時表示");
+  drawSectionHeader(ctx,panelW+gap,55,panelW,"CLOSED CAPTION",`受信機字幕 ${state.receiverCaptionOn ? "ON" : "OFF"}`);
+
+  // Program frame borders
+  ctx.strokeStyle="rgba(255,255,255,.35)";ctx.lineWidth=2;
+  ctx.strokeRect(48,150,panelW-96,790);
+  ctx.strokeRect(panelW+gap+48,150,panelW-96,790);
+
+  // Open caption is always baked into the left picture.
+  const left=renderTelopBlock(ctx,{text:"明日の朝、もう一度ここに来よう",x:100,baseline:850,width:panelW-200,fontSize:52,tracking:0,lineGap:12,edge:3,shadowX:0,shadowY:0,baseAlpha:.62,basePad:16,maxLines:2,showBase:true});
+
+  let rightBox={x:panelW+gap+100,y:765,width:panelW-200,height:105};
+  if(state.receiverCaptionOn){
+    const rb=renderTelopBlock(ctx,{text:"明日の朝、もう一度ここに来よう",x:panelW+gap+100,baseline:850,width:panelW-200,fontSize:52,tracking:0,lineGap:12,edge:2,shadowX:0,shadowY:0,baseAlpha:.70,basePad:16,maxLines:2,showBase:true});
+    rightBox=rb.effect;
+  }else{
+    ctx.fillStyle="rgba(10,14,20,.72)";roundRect(ctx,rightBox.x,rightBox.y,rightBox.width,rightBox.height,14);ctx.fill();
+    ctx.fillStyle="#9eabbc";ctx.font='24px ui-monospace,Menlo,monospace';ctx.fillText("Receiver caption: OFF",rightBox.x+28,rightBox.y+62);
+  }
+
+  ctx.fillStyle="#d6e4f5";ctx.font='22px ui-monospace,Menlo,monospace';
+  ctx.fillText("PROGRAM IMAGE + TEXT",100,995);
+  ctx.fillText("PROGRAM IMAGE + CAPTION DATA → RECEIVER",panelW+gap+100,995);
+  ctx.restore();
+  return {effect:rectUnion(left.effect,rightBox),base:rectUnion(left.base,rightBox),text:rectUnion(left.text,rightBox),lines:[]};
+}
+
+function renderCaptionCollision(ctx){
+  // Open-caption name super
+  const nameX=130, nameY=760, nameW=980, nameH=170;
+  ctx.save();
+  ctx.fillStyle="rgba(7,28,55,.88)";roundRect(ctx,nameX,nameY,nameW,nameH,18);ctx.fill();
+  ctx.fillStyle="#b9d9ff";ctx.font='32px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("映像技術研究所",nameX+30,nameY+48);
+  ctx.fillStyle="#fff";ctx.font='700 61px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("山田 太郎",nameX+30,nameY+115);
+  ctx.fillStyle="#d9e3ef";ctx.font='30px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("主任研究員",nameX+660,nameY+111);
+  const nameBox={x:nameX,y:nameY,width:nameW,height:nameH};
+
+  // Simulated receiver-rendered closed caption region.
+  const capX=390, capW=1320, capH=128, capY=clamp(state.closedCaptionY,160,980-capH);
+  ctx.fillStyle="rgba(0,0,0,.82)";roundRect(ctx,capX,capY,capW,capH,12);ctx.fill();
+  ctx.fillStyle="#fff";ctx.strokeStyle="#111";ctx.lineWidth=4;ctx.font='700 48px "Hiragino Sans","Yu Gothic",sans-serif';
+  ctx.strokeText("この技術を現場でどう使うか検証しています",capX+28,capY+79);
+  ctx.fillText("この技術を現場でどう使うか検証しています",capX+28,capY+79);
+  const capBox={x:capX,y:capY,width:capW,height:capH};
+
+  const hit=rectIntersection(nameBox,capBox);
+  if(hit){
+    ctx.fillStyle="rgba(255,55,70,.36)";ctx.fillRect(hit.x,hit.y,hit.width,hit.height);
+    ctx.strokeStyle="rgba(255,95,105,.98)";ctx.lineWidth=4;ctx.strokeRect(hit.x,hit.y,hit.width,hit.height);
+  }
+  ctx.fillStyle="rgba(8,12,18,.82)";ctx.fillRect(110,110,760,150);
+  ctx.fillStyle="#fff";ctx.font='700 30px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("字幕放送 × ネームスーパー",135,151);
+  ctx.font='24px ui-monospace,Menlo,monospace';
+  ctx.fillStyle=hit?"#ff9aa4":"#86e0aa";
+  ctx.fillText(hit?`Collision YES / ${Math.round(hit.width*hit.height).toLocaleString()} px²`:`Collision NO / 0 px²`,135,195);
+  ctx.fillStyle="#c5d0dc";ctx.fillText(`Closed-caption Y ${fmt(capY)} px`,135,230);
+  ctx.restore();
+  return {effect:rectUnion(nameBox,capBox),base:rectUnion(nameBox,capBox),text:rectUnion(nameBox,capBox),lines:[]};
+}
+
+function renderLowerThird(ctx){
+  const x=state.telopX, y=740, w=Math.min(state.telopWidth,1150), h=190;
+  ctx.save();
+  ctx.fillStyle=`rgba(8,28,52,${state.baseAlpha})`;roundRect(ctx,x,y,w,h,18);ctx.fill();
+  ctx.fillStyle="#8dc8ff";ctx.fillRect(x,y,14,h);
+  ctx.fillStyle="#cce5ff";ctx.font='31px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("映像技術研究所",x+38,y+50);
+  ctx.fillStyle="#fff";ctx.font=`700 ${Math.max(44,state.fontSize)}px "Hiragino Sans","Yu Gothic",sans-serif`;ctx.fillText("山田 太郎",x+38,y+123);
+  ctx.fillStyle="#d8e2ee";ctx.font='32px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("主任研究員",x+660,y+118);
+  const box={x,y,width:w,height:h};
+  drawMeasureBox(ctx,box,"lower-third","rgba(255,214,100,.95)");
+  ctx.restore();
+  return {effect:box,base:box,text:{x:x+38,y:y+20,width:w-76,height:120},lines:[]};
+}
+
+function renderSideSuper(ctx){
+  const w=clamp(state.telopWidth,360,760), h=360;
+  const x=state.sidePosition==="left"?80:LOGICAL_W-w-80;
+  const y=150;
+  ctx.save();
+  ctx.fillStyle=`rgba(9,23,42,${state.baseAlpha})`;roundRect(ctx,x,y,w,h,18);ctx.fill();
+  ctx.fillStyle="#ffdc69";ctx.fillRect(x,y,w,12);
+  ctx.fillStyle="#fff";ctx.font='700 35px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("きょうのポイント",x+26,y+62);
+  ctx.fillStyle="#dce9f7";ctx.font=`700 ${Math.max(38,state.fontSize)}px "Hiragino Sans","Yu Gothic",sans-serif`;
+  const lines=["関東", "夜から雨", "交通情報に注意"];
+  lines.forEach((line,i)=>ctx.fillText(line,x+26,y+132+i*68));
+  ctx.font='22px ui-monospace,Menlo,monospace';ctx.fillStyle="#a9b8c8";ctx.fillText(`${state.sidePosition.toUpperCase()} / W ${fmt(w)} px`,x+26,y+h-22);
+  const box={x,y,width:w,height:h};
+  drawMeasureBox(ctx,box,"side super");
+  ctx.restore();
+  return {effect:box,base:box,text:box,lines};
+}
+
+function renderLShape(ctx){
+  const sideW=clamp(state.lSideWidth,150,520);
+  const bottomH=clamp(state.lBottomHeight,120,380);
+  drawBackground(programCtx,state.background);
+  ctx.save();
+  ctx.clearRect(0,0,LOGICAL_W,LOGICAL_H);
+  ctx.fillStyle="#e9eef3";ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
+  const prog={x:sideW,y:0,width:LOGICAL_W-sideW,height:LOGICAL_H-bottomH};
+  ctx.drawImage(programCanvas,0,0,LOGICAL_W,LOGICAL_H,prog.x,prog.y,prog.width,prog.height);
+
+  // left information band
+  ctx.fillStyle="#123a63";ctx.fillRect(0,0,sideW,LOGICAL_H);
+  ctx.fillStyle="#f3f6fa";ctx.font='700 32px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("防災情報",24,58);
+  ctx.fillStyle="#ffdf78";ctx.font='700 27px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("大雨警報",24,118);
+  ctx.fillStyle="#fff";ctx.font='25px "Hiragino Sans","Yu Gothic",sans-serif';
+  ["横浜市", "川崎市", "相模原市", "低い土地の浸水に", "注意してください"].forEach((t,i)=>ctx.fillText(t,24,180+i*50));
+
+  // bottom information band only to the right of left band: true L union.
+  ctx.fillStyle="#f3f6fa";ctx.fillRect(sideW,LOGICAL_H-bottomH,LOGICAL_W-sideW,bottomH);
+  ctx.fillStyle="#17324d";ctx.font='700 34px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("鉄道情報",sideW+34,LOGICAL_H-bottomH+55);
+  ctx.font='29px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("東海道線　一部区間で運転見合わせ　再開見込みを確認中",sideW+34,LOGICAL_H-bottomH+110);
+  ctx.font='23px ui-monospace,Menlo,monospace';ctx.fillStyle="#43586d";
+  const infoArea=sideW*LOGICAL_H + bottomH*(LOGICAL_W-sideW);
+  const progArea=prog.width*prog.height;
+  ctx.fillText(`L-band ${infoArea.toLocaleString()} px² / ${pct(infoArea/SCREEN_AREA)}`,sideW+34,LOGICAL_H-58);
+  ctx.fillText(`Program ${progArea.toLocaleString()} px² / ${pct(progArea/SCREEN_AREA)}`,sideW+650,LOGICAL_H-58);
+  ctx.strokeStyle="rgba(255,214,100,.95)";ctx.lineWidth=3;ctx.strokeRect(prog.x,prog.y,prog.width,prog.height);
+  ctx.restore();
+  return {effect:{x:0,y:0,width:LOGICAL_W,height:LOGICAL_H},base:{x:0,y:0,width:LOGICAL_W,height:LOGICAL_H},text:{x:0,y:0,width:LOGICAL_W,height:LOGICAL_H},lines:[]};
+}
+
+function renderRollSuper(ctx){
+  const barH=112, barY=LOGICAL_H-barH-54;
+  const text="交通情報　首都高速では一部区間で渋滞が発生しています　最新情報をご確認ください";
+  setFont(ctx,state.fontSize,700);
+  const m=measureTracked(ctx,text,state.tracking);
+  const travel=LOGICAL_W+m.width+200;
+  const sec=(state.animationTimeMs||0)/1000;
+  const phase=(sec*state.rollSpeed)%travel;
+  const x=state.rollDirection==="right" ? -m.width-100+phase : LOGICAL_W+100-phase;
+  ctx.save();
+  ctx.fillStyle=`rgba(7,17,28,${state.baseAlpha})`;ctx.fillRect(0,barY,LOGICAL_W,barH);
+  ctx.fillStyle="#ffdf6e";ctx.fillRect(0,barY,230,barH);
+  ctx.fillStyle="#142233";ctx.font='700 31px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("交通情報",42,barY+69);
+  ctx.beginPath();ctx.rect(230,barY,LOGICAL_W-230,barH);ctx.clip();
+  setFont(ctx,state.fontSize,700);ctx.fillStyle="#fff";ctx.strokeStyle="#111";ctx.lineWidth=Math.max(0,state.edge*2);
+  if(state.edge>0) drawTrackedText(ctx,text,x,barY+73,state.tracking,"stroke");
+  drawTrackedText(ctx,text,x,barY+73,state.tracking,"fill");
+  ctx.restore();
+  ctx.save();ctx.fillStyle="rgba(8,12,18,.82)";ctx.fillRect(90,90,590,110);
+  ctx.fillStyle="#fff";ctx.font='700 28px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("ロールスーパー速度",115,132);
+  ctx.font='24px ui-monospace,Menlo,monospace';ctx.fillStyle="#c9d5e2";ctx.fillText(`${fmt(state.rollSpeed)} logical px/s / ${state.rollDirection}`,115,170);ctx.restore();
+  const box={x:0,y:barY,width:LOGICAL_W,height:barH};
+  return {effect:box,base:box,text:{x:230,y:barY,width:LOGICAL_W-230,height:barH},lines:[text]};
+}
+
+
+function getCachedBackgroundCanvas(type){
+  if(!getCachedBackgroundCanvas.cache) getCachedBackgroundCanvas.cache=new Map();
+  const cache=getCachedBackgroundCanvas.cache;
+  if(cache.has(type)) return cache.get(type);
+  const c=document.createElement("canvas"); c.width=LOGICAL_W; c.height=LOGICAL_H;
+  drawBackground(c.getContext("2d",{alpha:false}),type);
+  cache.set(type,c); return c;
+}
+
+function drawBackgroundTile(ctx,type,x,y,w,h){
+  const bg=getCachedBackgroundCanvas(type);
+  ctx.drawImage(bg,0,0,LOGICAL_W,LOGICAL_H,x,y,w,h);
+}
+
+function srgbRelativeLuminance(r,g,b){
+  const conv=v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4)};
+  return 0.2126*conv(r)+0.7152*conv(g)+0.0722*conv(b);
+}
+
+function sampleAverageLuminance(ctx,x,y,w,h,step=16){
+  const sx=clamp(Math.floor(x),0,LOGICAL_W-1), sy=clamp(Math.floor(y),0,LOGICAL_H-1);
+  const sw=clamp(Math.floor(w),1,LOGICAL_W-sx), sh=clamp(Math.floor(h),1,LOGICAL_H-sy);
+  const img=ctx.getImageData(sx,sy,sw,sh).data;
+  let total=0,count=0,minL=1,maxL=0;
+  for(let yy=0;yy<sh;yy+=step){
+    for(let xx=0;xx<sw;xx+=step){
+      const i=(yy*sw+xx)*4;
+      const l=srgbRelativeLuminance(img[i],img[i+1],img[i+2]);
+      total+=l;count++;minL=Math.min(minL,l);maxL=Math.max(maxL,l);
+    }
+  }
+  return {avg:count?total/count:0,min:minL,max:maxL};
+}
+
+function referenceContrastRatio(fgL,bgL){
+  const hi=Math.max(fgL,bgL), lo=Math.min(fgL,bgL);
+  return (hi+0.05)/(lo+0.05);
+}
+
+function renderContrastCompare(ctx){
+  const panels=[
+    {type:"bright",label:"明るい背景"},{type:"dark",label:"暗い背景"},
+    {type:"busy",label:"高周波・複雑"},{type:"studio",label:"人物／スタジオ"}
+  ];
+  const styles=[
+    {label:"白文字",fill:"#fff",edge:0,edgeColor:"#000"},
+    {label:"白＋黒4px",fill:"#fff",edge:4,edgeColor:"#000"},
+    {label:"黄＋黒4px",fill:"#ffe45c",edge:4,edgeColor:"#000"},
+    {label:"黒＋白4px",fill:"#111",edge:4,edgeColor:"#fff"}
+  ];
+  let union=null;
+  panels.forEach((p,pi)=>{
+    const col=pi%2,row=Math.floor(pi/2);
+    const x=60+col*930,y=70+row*500,w=870,h=450;
+    drawBackgroundTile(ctx,p.type,x,y,w,h);
+    ctx.save();ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.restore();
+    ctx.fillStyle="rgba(0,0,0,.72)";ctx.fillRect(x,y,w,48);
+    ctx.fillStyle="#fff";ctx.font='25px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(p.label,x+14,y+32);
+    styles.forEach((st,si)=>{
+      const baseline=y+120+si*78;
+      const sample=sampleAverageLuminance(ctx,x+180,baseline-55,w-220,64,18);
+      const fgRgb=st.fill==="#fff"?[255,255,255]:st.fill==="#ffe45c"?[255,228,92]:st.fill==="#111"?[17,17,17]:[255,255,255];
+      const ratio=referenceContrastRatio(srgbRelativeLuminance(...fgRgb),sample.avg);
+      ctx.fillStyle="rgba(0,0,0,.58)";ctx.fillRect(x+10,baseline-54,155,60);
+      ctx.fillStyle="#dce4ee";ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillText(st.label,x+18,baseline-29);
+      ctx.fillStyle="#aeb8c5";ctx.font='15px ui-monospace,Menlo,monospace';ctx.fillText(`参考比 ${ratio.toFixed(1)}:1`,x+18,baseline-8);
+      setFont(ctx,50,700);ctx.fillStyle=st.fill;ctx.strokeStyle=st.edgeColor;ctx.lineJoin="round";ctx.lineWidth=st.edge*2;
+      const txt="夕方から激しい雨のおそれ";
+      if(st.edge>0) ctx.strokeText(txt,x+185,baseline);
+      ctx.fillText(txt,x+185,baseline);
+    });
+    union=rectUnion(union,{x,y,width:w,height:h});
+  });
+  ctx.fillStyle="rgba(0,0,0,.68)";ctx.fillRect(60,1025,1800,38);
+  ctx.fillStyle="#ffd889";ctx.font='20px ui-monospace,Menlo,monospace';
+  ctx.fillText("参考比 = 局所背景の平均相対輝度との診断値。テレビ放送の合否基準ではない。",78,1051);
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function drawDoubleEdgeText(ctx,text,x,baseline,fontSize,innerWidth,outerWidth,fill,innerColor,outerColor){
+  setFont(ctx,fontSize,800);ctx.lineJoin="round";ctx.miterLimit=2;
+  if(outerWidth>0){ctx.strokeStyle=outerColor;ctx.lineWidth=outerWidth*2;ctx.strokeText(text,x,baseline);}
+  if(innerWidth>0){ctx.strokeStyle=innerColor;ctx.lineWidth=innerWidth*2;ctx.strokeText(text,x,baseline);}
+  ctx.fillStyle=fill;ctx.fillText(text,x,baseline);
+}
+
+function renderDoubleEdge(ctx){
+  drawBackgroundTile(ctx,"busy",0,0,LOGICAL_W,LOGICAL_H);
+  const rows=[
+    {label:"縁なし",inner:0,outer:0,innerColor:"#fff",outerColor:"#000"},
+    {label:"単一 4px",inner:4,outer:0,innerColor:"#000",outerColor:"#000"},
+    {label:"二重 4 / 8px",inner:4,outer:8,innerColor:"#fff",outerColor:"#000"},
+    {label:"二重 6 / 12px",inner:6,outer:12,innerColor:"#fff",outerColor:"#000"}
+  ];
+  let union=null;
+  rows.forEach((r,i)=>{
+    const y=210+i*220;
+    ctx.fillStyle="rgba(0,0,0,.62)";ctx.fillRect(80,y-95,390,78);
+    ctx.fillStyle="#fff";ctx.font='25px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(r.label,96,y-60);
+    ctx.fillStyle="#bac5d2";ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillText(`font 76px`,96,y-32);
+    drawDoubleEdgeText(ctx,"まさかの結果にスタジオ騒然",520,y,76,r.inner,r.outer,"#ffd34f",r.innerColor,r.outerColor);
+    const m=ctx.measureText("まさかの結果にスタジオ騒然");
+    union=rectUnion(union,{x:520-r.outer,y:y-76-r.outer,width:m.width+r.outer*2,height:96+r.outer*2});
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderShadowCompare(ctx){
+  drawBackgroundTile(ctx,"studio",0,0,LOGICAL_W,LOGICAL_H);
+  const rows=[
+    {label:"影なし",x:0,y:0,blur:0,alpha:0},
+    {label:"2 / 2px",x:2,y:2,blur:1,alpha:.5},
+    {label:"6 / 8px",x:6,y:8,blur:5,alpha:.65},
+    {label:"12 / 16px",x:12,y:16,blur:10,alpha:.72}
+  ];
+  let union=null;
+  rows.forEach((r,i)=>{
+    const baseline=220+i*215;
+    panelLabel(ctx,80,baseline-95,r.label,`blur ${r.blur}px / alpha ${Math.round(r.alpha*100)}%`);
+    ctx.save();setFont(ctx,72,800);ctx.lineJoin="round";ctx.lineWidth=4;ctx.strokeStyle="#111";ctx.fillStyle="#fff";
+    ctx.shadowOffsetX=r.x;ctx.shadowOffsetY=r.y;ctx.shadowBlur=r.blur;ctx.shadowColor=`rgba(0,0,0,${r.alpha})`;
+    ctx.strokeText("専門家に聞く 今後のポイント",520,baseline);ctx.fillText("専門家に聞く 今後のポイント",520,baseline);
+    ctx.restore();
+    setFont(ctx,72,800);const m=ctx.measureText("専門家に聞く 今後のポイント");
+    union=rectUnion(union,{x:515,y:baseline-82,width:m.width+35,height:115});
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderAlphaCompare(ctx){
+  drawBackgroundTile(ctx,"busy",0,0,LOGICAL_W,LOGICAL_H);
+  const vals=[1,.8,.6,.4]; let union=null;
+  vals.forEach((a,i)=>{
+    const baseline=220+i*205;
+    panelLabel(ctx,80,baseline-96,`Alpha ${Math.round(a*100)}%`,`source-over`);
+    const b=renderTelopBlock(ctx,{text:"冷蔵庫に入れる前にひと手間！",x:520,baseline,width:1120,fontSize:64,tracking:0,lineGap:10,edge:3,shadowX:0,shadowY:0,baseAlpha:a,basePad:18,maxLines:1,showBase:true});
+    const ax=1690,ay=baseline-74,aw=120,ah=74;
+    ctx.fillStyle="#fff";ctx.fillRect(ax,ay,aw,ah);
+    ctx.fillStyle=`rgba(0,0,0,${a})`;ctx.fillRect(ax,ay,aw,ah);
+    ctx.strokeStyle="rgba(255,255,255,.8)";ctx.strokeRect(ax,ay,aw,ah);
+    ctx.fillStyle="#fff";ctx.font='16px ui-monospace,Menlo,monospace';ctx.fillText("alpha",ax+32,ay+95);
+    union=rectUnion(union,b.effect);
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function makeFieldTestCanvas(){
+  const c=document.createElement("canvas");c.width=820;c.height=360;const x=c.getContext("2d",{alpha:false});
+  x.fillStyle="#e5e7ea";x.fillRect(0,0,c.width,c.height);
+  x.fillStyle="#13161b";x.font='19px ui-monospace,Menlo,monospace';x.fillText("Horizontal lines",24,30);
+  let yy=58;
+  [1,2,3,4].forEach(th=>{
+    x.fillStyle="#151515";x.fillRect(34,yy,710,th);x.fillStyle="#30343a";x.font='17px ui-monospace,Menlo,monospace';x.fillText(`${th}px`,755,yy+8);yy+=42;
+  });
+  x.fillStyle="#13161b";x.font='19px ui-monospace,Menlo,monospace';x.fillText("Text size",24,235);
+  const sizes=[32,40,48,64];let xx=30;
+  sizes.forEach(sz=>{x.font=`700 ${sz}px "Hiragino Sans","Yu Gothic",sans-serif`;x.fillText("雨",xx,325);x.font='14px ui-monospace,Menlo,monospace';x.fillText(`${sz}px`,xx,345);xx+=185;});
+  return c;
+}
+
+function drawFieldRows(ctx,src,x,y,mode){
+  const w=src.width,h=src.height;
+  ctx.fillStyle="#85898f";ctx.fillRect(x,y,w,h);
+  if(mode==="original"){ctx.drawImage(src,x,y);return;}
+  if(mode==="lowpass"){
+    ctx.save();ctx.filter="blur(0.7px)";ctx.drawImage(src,x,y);ctx.restore();return;
+  }
+  const parity=mode==="odd"?0:1;
+  for(let sy=parity;sy<h;sy+=2) ctx.drawImage(src,0,sy,w,1,x,y+sy,w,1);
+}
+
+function renderFieldStudy(ctx){
+  ctx.fillStyle="#111820";ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);
+  const src=makeFieldTestCanvas();
+  const panels=[{m:"original",l:"Original progressive"},{m:"odd",l:"Odd lines only"},{m:"even",l:"Even lines only"},{m:"lowpass",l:"Vertical low-pass approximation"}];
+  let union=null;
+  panels.forEach((p,i)=>{
+    const col=i%2,row=Math.floor(i/2);const x=80+col*920,y=80+row*500;
+    ctx.fillStyle="#05080b";ctx.fillRect(x-12,y-44,844,420);
+    ctx.fillStyle="#fff";ctx.font='23px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(p.l,x,y-13);
+    drawFieldRows(ctx,src,x,y,p.m);
+    union=rectUnion(union,{x:x-12,y:y-44,width:844,height:420});
+  });
+  ctx.fillStyle="#ffd889";ctx.font='19px ui-monospace,Menlo,monospace';ctx.fillText("静的教材表示：実際の1080i伝送・デインターレースを再現しません。",80,1050);
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+
+function drawSegmentedLine(ctx,segments,x,baseline,fontSize,edge,tracking=0){
+  let cursor=x;
+  ctx.save();ctx.lineJoin="round";ctx.miterLimit=2;
+  for(const seg of segments){
+    const size=seg.fontSize||fontSize;
+    setFont(ctx,size,seg.weight||800);
+    ctx.fillStyle=seg.fill||"#fff";ctx.strokeStyle=seg.edgeColor||"#111";ctx.lineWidth=(seg.edge??edge)*2;
+    if((seg.edge??edge)>0) drawTrackedText(ctx,seg.text,cursor,baseline,tracking,"stroke");
+    drawTrackedText(ctx,seg.text,cursor,baseline,tracking,"fill");
+    cursor+=measureTracked(ctx,seg.text,tracking).width+(seg.after||0);
+  }
+  ctx.restore();
+  return cursor-x;
+}
+
+function renderGenreCompare(ctx){
+  const cells=[
+    {name:"報道",bg:"studio",font:58,edge:3,base:.82,pad:16,fill:"#fff",text:"関東では夕方から激しい雨のおそれ"},
+    {name:"情報番組",bg:"bright",font:64,edge:5,base:.66,pad:18,fill:"#fff",text:"関東では夕方から激しい雨のおそれ"},
+    {name:"バラエティ",bg:"busy",font:78,edge:9,base:.25,pad:14,fill:"#ffe14d",text:"関東では夕方から激しい雨のおそれ"},
+    {name:"映画字幕",bg:"dark",font:52,edge:3,base:0,pad:0,fill:"#fff",text:"関東では夕方から激しい雨のおそれ"}
+  ];
+  let union=null;
+  cells.forEach((c,i)=>{
+    const col=i%2,row=Math.floor(i/2),x=40+col*950,y=45+row*515,w=900,h=470;
+    drawBackgroundTile(ctx,c.bg,x,y,w,h);
+    ctx.save();ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.restore();
+    drawSectionHeader(ctx,x,y,w,c.name,`font ${c.font}px / edge ${c.edge}px`);
+    const baseline=y+355;
+    const b=renderTelopBlock(ctx,{text:c.text,x:x+45,baseline,width:w-90,fontSize:c.font,tracking:0,lineGap:10,edge:c.edge,shadowX:c.name==="バラエティ"?8:2,shadowY:c.name==="バラエティ"?10:3,baseAlpha:c.base,basePad:c.pad,maxLines:2,showBase:c.base>0,fill:c.fill});
+    ctx.fillStyle="rgba(0,0,0,.66)";ctx.fillRect(x+18,y+83,360,64);
+    ctx.fillStyle="#d8e1ec";ctx.font='18px ui-monospace,Menlo,monospace';
+    ctx.fillText(`bbox ${fmt(b.effect.width)}×${fmt(b.effect.height)} px`,x+32,y+110);
+    ctx.fillText(`occupancy ${pct((b.effect.width*b.effect.height)/SCREEN_AREA)}`,x+32,y+136);
+    union=rectUnion(union,{x,y,width:w,height:h});
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderEmphasisCompare(ctx){
+  drawBackgroundTile(ctx,"bright",0,0,LOGICAL_W,LOGICAL_H);
+  const rows=[
+    {label:"強調なし",segments:[{text:"冷凍すると野菜の甘みがアップ",fill:"#fff"}]},
+    {label:"重要語だけ",segments:[{text:"冷凍すると野菜の",fill:"#fff"},{text:"甘み",fill:"#ffe248"},{text:"がアップ",fill:"#fff"}]},
+    {label:"強調過多",segments:[{text:"冷凍",fill:"#ff6b6b"},{text:"すると",fill:"#fff"},{text:"野菜",fill:"#63ddff"},{text:"の",fill:"#fff"},{text:"甘み",fill:"#ffe248",fontSize:88},{text:"が",fill:"#fff"},{text:"アップ",fill:"#7dff98"}]}
+  ];
+  let union=null;
+  rows.forEach((r,i)=>{
+    const baseline=245+i*265;
+    panelLabel(ctx,80,baseline-105,r.label,`font 76px / edge 5px`);
+    ctx.fillStyle="rgba(0,0,0,.68)";roundRect(ctx,480,baseline-100,1340,135,18);ctx.fill();
+    const width=drawSegmentedLine(ctx,r.segments,520,baseline,76,5,0);
+    ctx.fillStyle="#e7edf5";ctx.font='20px ui-monospace,Menlo,monospace';ctx.fillText(`measured ${width.toFixed(1)} px`,520,baseline+52);
+    union=rectUnion(union,{x:480,y:baseline-100,width:1340,height:135});
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderBreakingSuper(ctx){
+  drawBackgroundTile(ctx,"studio",0,0,LOGICAL_W,LOGICAL_H);
+  panelLabel(ctx,90,150,"通常ニュース","情報階層：通常");
+  const normal=renderTelopBlock(ctx,{text:"東海道新幹線 一部区間で運転見合わせ",x:460,baseline:250,width:1320,fontSize:68,tracking:0,lineGap:10,edge:3,shadowX:2,shadowY:3,baseAlpha:.80,basePad:18,maxLines:1,showBase:true});
+  panelLabel(ctx,90,580,"速報スーパー","ラベル＋本文");
+  const base={x:250,y:650,width:1500,height:150};
+  ctx.fillStyle="rgba(12,17,24,.95)";roundRect(ctx,base.x,base.y,base.width,base.height,12);ctx.fill();
+  ctx.fillStyle="#d71920";roundRect(ctx,base.x,base.y,245,base.height,12);ctx.fill();
+  setFont(ctx,72,900);ctx.fillStyle="#fff";ctx.fillText("速報",base.x+48,base.y+100);
+  setFont(ctx,70,800);ctx.strokeStyle="#111";ctx.lineWidth=8;ctx.lineJoin="round";ctx.fillStyle="#fff";
+  const body="東海道新幹線 運転再開";ctx.strokeText(body,base.x+285,base.y+100);ctx.fillText(body,base.x+285,base.y+100);
+  const normalArea=normal.base.width*normal.base.height, breakingArea=base.width*base.height;
+  ctx.fillStyle="rgba(0,0,0,.72)";ctx.fillRect(250,835,1500,90);ctx.fillStyle="#fff";ctx.font='23px ui-monospace,Menlo,monospace';
+  ctx.fillText(`通常 ${Math.round(normalArea).toLocaleString()} px² / ${pct(normalArea/SCREEN_AREA)}`,275,870);
+  ctx.fillText(`速報 ${Math.round(breakingArea).toLocaleString()} px² / ${pct(breakingArea/SCREEN_AREA)} / label 245 px`,275,905);
+  return {effect:rectUnion(normal.effect,base),base:rectUnion(normal.base,base),text:rectUnion(normal.text,base),lines:[]};
+}
+
+function renderLocationSuper(ctx){
+  drawBackgroundTile(ctx,"studio",0,0,LOGICAL_W,LOGICAL_H);
+  const items=[
+    {label:"文字幅に追従",text:"神奈川県 横浜市",x:120,y:200,full:false},
+    {label:"固定幅",text:"東京・渋谷",x:120,y:520,full:true}
+  ];
+  let union=null;
+  items.forEach(it=>{
+    setFont(ctx,54,800);const m=ctx.measureText(it.text);const w=it.full?680:m.width+42;
+    ctx.fillStyle="rgba(0,0,0,.80)";roundRect(ctx,it.x,it.y,w,92,10);ctx.fill();
+    ctx.fillStyle="#58b8ff";ctx.fillRect(it.x,it.y,12,92);
+    ctx.strokeStyle="#111";ctx.lineWidth=4;ctx.fillStyle="#fff";ctx.strokeText(it.text,it.x+28,it.y+65);ctx.fillText(it.text,it.x+28,it.y+65);
+    ctx.fillStyle="rgba(0,0,0,.64)";ctx.fillRect(it.x,it.y+112,620,54);ctx.fillStyle="#dce4ee";ctx.font='20px ui-monospace,Menlo,monospace';ctx.fillText(`${it.label}: measured text ${m.width.toFixed(1)} px / base ${w.toFixed(1)} px`,it.x+12,it.y+147);
+    union=rectUnion(union,{x:it.x,y:it.y,width:w,height:92});
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderAnnotationSuper(ctx){
+  drawBackgroundTile(ctx,"busy",0,0,LOGICAL_W,LOGICAL_H);
+  const sizes=[36,44,52];let union=null;
+  sizes.forEach((size,i)=>{
+    const baseline=320+i*250;
+    panelLabel(ctx,80,baseline-100,`${size}px`,`Full HD font size`);
+    const b=renderTelopBlock(ctx,{text:"※専門家の指導のもと撮影しています",x:480,baseline,width:1320,fontSize:size,tracking:0,lineGap:8,edge:2,shadowX:2,shadowY:3,baseAlpha:.68,basePad:14,maxLines:1,showBase:true});
+    setFont(ctx,size,700);const m=ctx.measureText("※専門家の指導のもと撮影しています");
+    ctx.fillStyle="#e7edf5";ctx.font='19px ui-monospace,Menlo,monospace';ctx.fillText(`advance ${m.width.toFixed(1)} px / ink height ${((m.actualBoundingBoxAscent||0)+(m.actualBoundingBoxDescent||0)).toFixed(1)} px`,480,baseline+55);
+    union=rectUnion(union,b.effect);
+  });
+  return {effect:union,base:union,text:union,lines:[]};
+}
+
+function renderFollowTelop(ctx){
+  drawBackgroundTile(ctx,"studio",0,0,LOGICAL_W,LOGICAL_H);
+  const chunks=["まさかの","結果に","スタジオ騒然"];
+  const phase=Math.floor(((state.animationTimeMs||0)/1000)%3);
+  const barX=230,barY=805,barW=1460,barH=150;
+  ctx.fillStyle="rgba(0,0,0,.38)";roundRect(ctx,barX,barY,barW,barH,18);ctx.fill();
+  let cursor=barX+80;
+  chunks.forEach((text,i)=>{
+    const active=i===phase;const size=active?102:76;
+    setFont(ctx,size,900);const m=ctx.measureText(text);
+    ctx.strokeStyle="#111";ctx.lineWidth=(active?10:6)*2;ctx.lineJoin="round";ctx.fillStyle=active?"#ffe03d":"#fff";
+    ctx.strokeText(text,cursor,barY+105);ctx.fillText(text,cursor,barY+105);
+    cursor+=m.width+55;
+  });
+  const sec=((state.animationTimeMs||0)/1000)%3;
+  ctx.fillStyle="rgba(0,0,0,.74)";ctx.fillRect(230,690,780,78);ctx.fillStyle="#fff";ctx.font='22px ui-monospace,Menlo,monospace';
+  ctx.fillText(`speech phase ${phase+1}/3   t=${sec.toFixed(2)} s`,255,724);ctx.fillText(`active: ${chunks[phase]}`,255,754);
+  return {effect:{x:barX,y:barY,width:barW,height:barH},base:{x:barX,y:barY,width:barW,height:barH},text:{x:barX+80,y:barY,width:barW-160,height:barH},lines:chunks};
+}
+
+function rectanglesUnionArea(rects){
+  const rs=rects.filter(r=>r&&r.width>0&&r.height>0).map(r=>({x1:r.x,x2:r.x+r.width,y1:r.y,y2:r.y+r.height}));
+  if(!rs.length) return 0;
+  const xs=[...new Set(rs.flatMap(r=>[r.x1,r.x2]))].sort((a,b)=>a-b);
+  let area=0;
+  for(let i=0;i<xs.length-1;i++){
+    const x1=xs[i],x2=xs[i+1];if(x2<=x1) continue;
+    const intervals=rs.filter(r=>r.x1<x2&&r.x2>x1).map(r=>[r.y1,r.y2]).sort((a,b)=>a[0]-b[0]);
+    let yLen=0,curA=null,curB=null;
+    for(const [a,b] of intervals){
+      if(curA===null){curA=a;curB=b;continue;}
+      if(a>curB){yLen+=curB-curA;curA=a;curB=b;} else curB=Math.max(curB,b);
+    }
+    if(curA!==null)yLen+=curB-curA;
+    area+=(x2-x1)*yLen;
+  }
+  return area;
+}
+
+function renderMultiOccupancy(ctx){
+  drawBackgroundTile(ctx,"studio",0,0,LOGICAL_W,LOGICAL_H);
+  const rects=[];
+  // top breaking banner
+  ctx.fillStyle="rgba(170,18,24,.94)";ctx.fillRect(0,0,1920,112);rects.push({x:0,y:0,width:1920,height:112});
+  setFont(ctx,50,900);ctx.fillStyle="#fff";ctx.fillText("速報　東海道新幹線 運転再開",90,76);
+  // right side super
+  const side={x:1390,y:135,width:430,height:360};ctx.fillStyle="rgba(8,17,28,.82)";roundRect(ctx,side.x,side.y,side.width,side.height,16);ctx.fill();rects.push(side);
+  setFont(ctx,38,800);ctx.fillStyle="#fff";ctx.fillText("現在の運行状況",side.x+34,side.y+70);ctx.fillText("一部列車に遅れ",side.x+34,side.y+132);
+  // lower telop overlapping side horizontally
+  const lower=renderTelopBlock(ctx,{text:"関東では夕方から激しい雨のおそれ",x:160,baseline:885,width:1600,fontSize:76,tracking:0,lineGap:12,edge:5,shadowX:4,shadowY:6,baseAlpha:.80,basePad:24,maxLines:1,showBase:true});rects.push(lower.base);
+  // annotation overlapping lower base area slightly
+  const note=renderTelopBlock(ctx,{text:"※映像は資料です",x:1220,baseline:835,width:560,fontSize:38,tracking:0,lineGap:8,edge:2,shadowX:0,shadowY:0,baseAlpha:.72,basePad:12,maxLines:1,showBase:true});rects.push(note.base);
+  rects.forEach((r,i)=>{ctx.save();ctx.strokeStyle=["#ff7474","#6fd1ff","#ffe36b","#b6ff80"][i];ctx.lineWidth=3;ctx.setLineDash([10,7]);ctx.strokeRect(r.x,r.y,r.width,r.height);ctx.restore();});
+  const naive=rects.reduce((a,r)=>a+r.width*r.height,0), union=rectanglesUnionArea(rects), duplicate=naive-union;
+  ctx.fillStyle="rgba(0,0,0,.80)";ctx.fillRect(70,535,930,205);ctx.fillStyle="#fff";ctx.font='25px ui-monospace,Menlo,monospace';
+  ctx.fillText(`Naive total : ${Math.round(naive).toLocaleString()} px²  ${pct(naive/SCREEN_AREA)}`,100,585);
+  ctx.fillText(`Union area  : ${Math.round(union).toLocaleString()} px²  ${pct(union/SCREEN_AREA)}`,100,630);
+  ctx.fillText(`Overlap diff: ${Math.round(duplicate).toLocaleString()} px²  ${pct(duplicate/SCREEN_AREA)}`,100,675);
+  ctx.fillStyle="#ffd889";ctx.fillText("重複領域を二重計上しない値がUnion",100,720);
+  let extent=null;rects.forEach(r=>extent=rectUnion(extent,r));
+  return {effect:extent,base:extent,text:extent,lines:[],analysisArea:union,analysisLabel:"Union occupancy"};
+}
+
+
+function drawFlowBox(ctx,x,y,w,h,title,sub,accent="#6fb8ff"){
+  ctx.save();ctx.fillStyle="rgba(10,16,26,.90)";ctx.strokeStyle=accent;ctx.lineWidth=3;roundRect(ctx,x,y,w,h,16);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#fff";ctx.font='700 31px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(title,x+22,y+45);
+  ctx.fillStyle="#cbd5e1";ctx.font='20px "Hiragino Sans","Yu Gothic",sans-serif';
+  String(sub).split("\n").forEach((line,i)=>ctx.fillText(line,x+22,y+78+i*27));ctx.restore();
+}
+function drawArrow(ctx,x1,y1,x2,y2,label=""){
+  ctx.save();ctx.strokeStyle="#dbe8f7";ctx.fillStyle="#dbe8f7";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  const a=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-15*Math.cos(a-.45),y2-15*Math.sin(a-.45));ctx.lineTo(x2-15*Math.cos(a+.45),y2-15*Math.sin(a+.45));ctx.closePath();ctx.fill();
+  if(label){ctx.font='18px ui-monospace,Menlo,monospace';ctx.fillText(label,(x1+x2)/2-35,(y1+y2)/2-10)}ctx.restore();
+}
+function renderSignalFlow(ctx){
+  drawBackgroundTile(ctx,"dark",0,0,LOGICAL_W,LOGICAL_H);
+  ctx.fillStyle="rgba(4,8,14,.80)";ctx.fillRect(45,55,1830,970);
+  ctx.fillStyle="#fff";ctx.font='800 38px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("演出テロップの合成経路（概念）",80,112);
+  drawFlowBox(ctx,80,165,330,170,"映像","カメラ / VTR /\n番組映像","#6fb8ff");
+  drawFlowBox(ctx,80,430,330,185,"テロッパー","文字・図形生成\nFill + Alpha/Key相当","#ffca68");
+  drawFlowBox(ctx,610,285,360,190,"合成器 / Mixer","映像 + graphics\n→ superimpose","#8be0a8");
+  drawFlowBox(ctx,1160,285,330,190,"PROGRAM","映像へ焼込み済み\nOpen caption側","#ef9cff");
+  drawArrow(ctx,410,250,610,345,"VIDEO");drawArrow(ctx,410,520,610,420,"GRAPHICS");drawArrow(ctx,970,380,1160,380,"COMPOSITE");
+  ctx.fillStyle="#fff";ctx.font='800 35px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("字幕・文字スーパーのデータ経路（概念）",80,705);
+  drawFlowBox(ctx,80,750,330,155,"字幕/文字データ","符号化された\n表示・時刻情報","#6fd8d0");
+  drawFlowBox(ctx,570,750,330,155,"放送ストリーム","映像・音声等と\n伝送","#6fd8d0");
+  drawFlowBox(ctx,1060,750,330,155,"受信機","字幕データを解釈\n描画","#6fd8d0");
+  drawFlowBox(ctx,1545,750,280,155,"DISPLAY","Closed caption\nON / OFF","#6fd8d0");
+  drawArrow(ctx,410,827,570,827);drawArrow(ctx,900,827,1060,827);drawArrow(ctx,1390,827,1545,827);
+  ctx.fillStyle="#ffd98b";ctx.font='22px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("※ 概念図。実機の端子、SDI/IP構成、キー方式、ARIB符号化詳細を規定するものではありません。",80,980);
+  return {effect:{x:45,y:55,width:1830,height:970},base:{x:45,y:55,width:1830,height:970},text:{x:80,y:80,width:1740,height:900},lines:[]};
+}
+function renderSafeCompare(ctx){
+  drawBackgroundTile(ctx,"studio",0,0,LOGICAL_W,LOGICAL_H);
+  const configs=[
+    {label:"ARIB 重要情報 90%",m:{l:96,r:96,t:54,b:54},c:"#67e8f9"},
+    {label:"ITU graphics safe 5% margin",m:{l:96,r:96,t:54,b:54},c:"#fde047"},
+    {label:"ITU action safe 3.5% margin",m:{l:67.2,r:67.2,t:37.8,b:37.8},c:"#86efac"},
+    {label:"Custom",m:{l:state.safeLeft,r:state.safeRight,t:state.safeTop,b:state.safeBottom},c:"#f0abfc"}
+  ];
+  ctx.save();configs.forEach((q,i)=>{const {l,r,t,b}=q.m;ctx.strokeStyle=q.c;ctx.lineWidth=i===3?4:3;ctx.setLineDash(i===3?[18,8]:[10,7]);ctx.strokeRect(l,t,LOGICAL_W-l-r,LOGICAL_H-t-b);ctx.setLineDash([]);});ctx.restore();
+  ctx.fillStyle="rgba(0,0,0,.82)";ctx.fillRect(90,120,940,330);ctx.font='24px ui-monospace,Menlo,monospace';
+  configs.forEach((q,i)=>{ctx.fillStyle=q.c;ctx.fillRect(120,160+i*66,28,28);ctx.fillStyle="#fff";ctx.fillText(`${q.label}`,170,182+i*66);ctx.fillStyle="#cbd5e1";ctx.fillText(`L/R ${fmt(q.m.l)} px   T/B ${fmt(q.m.t)} px`,600,182+i*66);});
+  ctx.fillStyle="#ffd98b";ctx.font='23px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText("90%領域と5% marginは1920×1080では数値上同じ余白。ただし用語・資料の文脈は別。",120,425);
+  const b=renderTelopBlock(ctx,{text:"重要な文字情報は指定セーフ領域内へ",x:state.telopX,baseline:state.telopY,width:state.telopWidth,fontSize:state.fontSize,tracking:state.tracking,lineGap:state.lineGap,edge:state.edge,shadowX:state.shadowX,shadowY:state.shadowY,baseAlpha:state.baseAlpha,basePad:state.basePad,maxLines:1,showBase:true});
+  drawMeasureBox(ctx,b.effect,"effect");return b;
+}
+function renderKerningCompare(ctx){
+  drawBackgroundTile(ctx,"dark",0,0,LOGICAL_W,LOGICAL_H);
+  const pairs=["AVATAR","To Wa","WA VA","Tokyo AV 2026"];
+  let extent=null;
+  pairs.forEach((text,i)=>{
+    const y=190+i*205;ctx.fillStyle="rgba(0,0,0,.58)";ctx.fillRect(80,y-105,1760,165);
+    ctx.font=`700 104px Arial, Helvetica, sans-serif`;ctx.textBaseline="alphabetic";
+    ctx.fontKerning="none";const a=ctx.measureText(text).width;ctx.fillStyle="#fff";ctx.fillText(text,180,y);
+    ctx.fontKerning="normal";const b=ctx.measureText(text).width;ctx.fillStyle="#ffe16b";ctx.fillText(text,1050,y);
+    ctx.font='21px ui-monospace,Menlo,monospace';ctx.fillStyle="#bcd0e6";ctx.fillText(`none ${a.toFixed(1)} px`,180,y+40);ctx.fillText(`normal ${b.toFixed(1)} px   Δ ${(b-a).toFixed(1)} px`,1050,y+40);
+    extent=rectUnion(extent,{x:80,y:y-105,width:1760,height:165});
+  });
+  ctx.fontKerning="normal";return {effect:extent,base:extent,text:extent,lines:pairs};
+}
+function renderSpacingStyles(ctx){
+  drawBackgroundTile(ctx,"studio",0,0,LOGICAL_W,LOGICAL_H);const vals=[-4,0,8],labels=["詰め組 -4px","ベタ組 +0px","アキ組 +8px"];let extent=null;
+  vals.forEach((tr,i)=>{const baseline=280+i*270;setFont(ctx,76,800);const text="関東では夕方から激しい雨のおそれ";const m=measureTracked(ctx,text,tr);panelLabel(ctx,90,baseline-115,labels[i],`measured ${m.width.toFixed(1)} px`);const b=renderTelopBlock(ctx,{text,x:520,baseline,width:1280,fontSize:76,tracking:tr,lineGap:16,edge:3,shadowX:2,shadowY:3,baseAlpha:.48,basePad:16,maxLines:1,showBase:true});drawMeasureBox(ctx,b.text,labels[i]);extent=rectUnion(extent,b.effect);});
+  return {effect:extent,base:extent,text:extent,lines:[]};
+}
+function renderGoodBad(ctx){
+  drawBackgroundTile(ctx,"busy",0,0,LOGICAL_W,LOGICAL_H);const cells=[
+    {x:60,y:70,title:"1. セーフ領域",bad:"画面端へはみ出す",good:"指定領域へ収める"},
+    {x:990,y:70,title:"2. 禁則",bad:"行頭が「。」",good:"句点を前行へ"},
+    {x:60,y:565,title:"3. 背景分離",bad:"複雑背景に白文字だけ",good:"エッジ/ベースを追加"},
+    {x:990,y:565,title:"4. 強調",bad:"全部を別色で強調",good:"重要語だけ強調"}
+  ];
+  cells.forEach(c=>{ctx.fillStyle="rgba(6,10,17,.82)";roundRect(ctx,c.x,c.y,870,430,18);ctx.fill();ctx.fillStyle="#fff";ctx.font='800 30px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(c.title,c.x+25,c.y+45);ctx.fillStyle="#ff8585";ctx.fillText("BAD",c.x+25,c.y+92);ctx.fillStyle="#88e0a3";ctx.fillText("GOOD",c.x+455,c.y+92);});
+  // safe
+  setFont(ctx,47,800);ctx.fillStyle="#fff";ctx.fillText("重要情報",25,270);ctx.fillText("重要情報",535,270);ctx.strokeStyle="#67e8f9";ctx.lineWidth=2;ctx.strokeRect(108,140,760,300);ctx.strokeRect(1038,140,760,300);
+  // kinsoku
+  setFont(ctx,43,700);ctx.fillStyle="#fff";ctx.fillText("これは重要な説明です",1020,245);ctx.fillStyle="#ff8585";ctx.fillText("。",1020,305);ctx.fillStyle="#fff";ctx.fillText("これは重要な",1480,245);ctx.fillText("説明です。",1480,305);
+  // background separation
+  setFont(ctx,48,800);ctx.fillStyle="#fff";ctx.fillText("関東では激しい雨",100,770);ctx.strokeStyle="#111";ctx.lineWidth=10;ctx.strokeText("関東では激しい雨",520,770);ctx.fillText("関東では激しい雨",520,770);
+  // emphasis
+  const badPieces=[["冷凍","#ff6b6b"],["すると","#6fd8ff"],["野菜","#8cff83"],["の甘み","#ff8be8"],["がアップ","#ffe36b"]];let x=1025;setFont(ctx,45,900);for(const [p,col] of badPieces){ctx.fillStyle=col;ctx.fillText(p,x,770);x+=ctx.measureText(p).width;}
+  x=1480;for(const p of ["冷凍すると","野菜の甘みが","アップ"]){ctx.fillStyle=p==="アップ"?"#ffe36b":"#fff";ctx.fillText(p,x,770);x+=ctx.measureText(p).width;}
+  ctx.font='20px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillStyle="#ffb0b0";ctx.fillText("制約違反・情報分離不足",85,455);ctx.fillText("行頭禁則違反",1015,455);ctx.fillText("背景条件によって読みにくい",85,950);ctx.fillText("強調の優先順位が不明瞭",1015,950);
+  ctx.fillStyle="#a7f3c0";ctx.fillText("選択セーフ領域内",535,455);ctx.fillText("禁則を満たす改行",1480,455);ctx.fillText("背景から文字を分離",535,950);ctx.fillText("重要語を限定",1480,950);
+  return {effect:{x:25,y:70,width:1773,height:925},base:{x:25,y:70,width:1773,height:925},text:{x:25,y:70,width:1773,height:925},lines:[]};
+}
+function renderCoverageGrid(ctx){
+  ctx.fillStyle="#0b1018";ctx.fillRect(0,0,LOGICAL_W,LOGICAL_H);const stats=coverageStats();ctx.fillStyle="#fff";ctx.font='800 38px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(`初期指定用語 Coverage ${stats.covered}/${stats.total}`,70,75);
+  ctx.fillStyle=stats.missing.length?"#ff9b9b":"#8be0a8";ctx.font='24px ui-monospace,Menlo,monospace';ctx.fillText(stats.missing.length?`Missing: ${stats.missing.join(", ")}`:"All requested terms are searchable.",70,115);
+  const groups=[
+    ["放送",REQUIRED_TERMS.slice(0,14)], ["デザイン",REQUIRED_TERMS.slice(14,30)], ["日本語組版",REQUIRED_TERMS.slice(30,46)], ["字幕",REQUIRED_TERMS.slice(46)]
+  ];
+  groups.forEach((g,gi)=>{const col=gi%2,row=Math.floor(gi/2),x=70+col*925,y=160+row*440;ctx.fillStyle="rgba(255,255,255,.06)";roundRect(ctx,x,y,860,400,16);ctx.fill();ctx.fillStyle="#8ec5ff";ctx.font='800 28px "Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(g[0],x+24,y+42);ctx.font='22px "Hiragino Sans","Yu Gothic",sans-serif';g[1].forEach((name,i)=>{const c=i%2,r=Math.floor(i/2);ctx.fillStyle=termCoversName(name)?"#8be0a8":"#ff8d8d";ctx.fillText(`${termCoversName(name)?"✓":"✕"} ${name}`,x+28+c*410,y+82+r*36);});});
+  return {effect:{x:70,y:55,width:1780,height:965},base:{x:70,y:55,width:1780,height:965},text:{x:70,y:55,width:1780,height:965},lines:[]};
+}
+
+function applyGenrePreset(id){
+  state.genrePreset=id;
+  const preset=GENRE_PRESETS[id];
+  if(!preset || id==="manual"){syncControlValues();renderAll();return;}
+  Object.assign(state,preset.values);
+  syncControlValues();
+  renderAll();
+}
+
+function renderReference(){
+  drawBackground(refCtx,state.background);
+  let bounds;
+  const t=selectedTerm();
+
+  // subtle reference raster frame
+  refCtx.save();
+  refCtx.strokeStyle="rgba(255,255,255,.3)";
+  refCtx.lineWidth=2;
+  refCtx.strokeRect(1,1,LOGICAL_W-2,LOGICAL_H-2);
+  refCtx.restore();
+
+  if(t.demoType==="edgeCompare") bounds=renderEdgeCompare(refCtx);
+  else if(t.demoType==="baseCompare") bounds=renderBaseCompare(refCtx);
+  else if(t.demoType==="trackingCompare") bounds=renderTrackingCompare(refCtx);
+  else if(t.demoType==="lineGapCompare") bounds=renderLineGapCompare(refCtx);
+  else if(t.demoType==="kinsokuCompare") bounds=renderKinsokuCompare(refCtx);
+  else if(t.demoType==="lineAdjustment") bounds=renderLineAdjustment(refCtx);
+  else if(t.demoType==="hanging") bounds=renderHanging(refCtx);
+  else if(t.demoType==="punctuationClasses") bounds=renderPunctuationClasses(refCtx);
+  else if(t.demoType==="equalSpacing") bounds=renderEqualSpacing(refCtx);
+  else if(t.demoType==="mixedText") bounds=renderMixedText(refCtx);
+  else if(t.demoType==="subtitleTimeline") bounds=renderSubtitleTimeline(refCtx);
+  else if(t.demoType==="spottingTimeline") bounds=renderSpottingTimeline(refCtx);
+  else if(t.demoType==="cpsCompare") bounds=renderCpsCompare(refCtx);
+  else if(t.demoType==="subtitleWidth") bounds=renderSubtitleWidth(refCtx);
+  else if(t.demoType==="captionModes") bounds=renderCaptionModes(refCtx);
+  else if(t.demoType==="captionCollision") bounds=renderCaptionCollision(refCtx);
+  else if(t.demoType==="lowerThird") bounds=renderLowerThird(refCtx);
+  else if(t.demoType==="sideSuper") bounds=renderSideSuper(refCtx);
+  else if(t.demoType==="lShape") bounds=renderLShape(refCtx);
+  else if(t.demoType==="rollSuper") bounds=renderRollSuper(refCtx);
+  else if(t.demoType==="contrastCompare") bounds=renderContrastCompare(refCtx);
+  else if(t.demoType==="doubleEdge") bounds=renderDoubleEdge(refCtx);
+  else if(t.demoType==="shadowCompare") bounds=renderShadowCompare(refCtx);
+  else if(t.demoType==="alphaCompare") bounds=renderAlphaCompare(refCtx);
+  else if(t.demoType==="fieldStudy") bounds=renderFieldStudy(refCtx);
+  else if(t.demoType==="genreCompare") bounds=renderGenreCompare(refCtx);
+  else if(t.demoType==="emphasisCompare") bounds=renderEmphasisCompare(refCtx);
+  else if(t.demoType==="breakingSuper") bounds=renderBreakingSuper(refCtx);
+  else if(t.demoType==="locationSuper") bounds=renderLocationSuper(refCtx);
+  else if(t.demoType==="annotationSuper") bounds=renderAnnotationSuper(refCtx);
+  else if(t.demoType==="followTelop") bounds=renderFollowTelop(refCtx);
+  else if(t.demoType==="multiOccupancy") bounds=renderMultiOccupancy(refCtx);
+  else if(t.demoType==="signalFlow") bounds=renderSignalFlow(refCtx);
+  else if(t.demoType==="safeCompare") bounds=renderSafeCompare(refCtx);
+  else if(t.demoType==="kerningCompare") bounds=renderKerningCompare(refCtx);
+  else if(t.demoType==="spacingStyles") bounds=renderSpacingStyles(refCtx);
+  else if(t.demoType==="goodBad") bounds=renderGoodBad(refCtx);
+  else if(t.demoType==="coverageGrid") bounds=renderCoverageGrid(refCtx);
+  else if(t.demoType==="safe") bounds=renderSafeDemo(refCtx);
+  else if(t.demoType==="occupancy") bounds=renderOccupancy(refCtx);
+  else bounds=renderSingle(refCtx);
+
+  drawSafeOverlay(refCtx);
+  state.lastBounds=bounds;
+}
+
+function resizePreview(){
+  const rect=canvasWrap.getBoundingClientRect();
+  const cssW=Math.max(1,rect.width);
+  const cssH=cssW*9/16;
+  const dpr=window.devicePixelRatio || 1;
+  previewCanvas.width=Math.max(1,Math.round(cssW*dpr));
+  previewCanvas.height=Math.max(1,Math.round(cssH*dpr));
+  drawPreview();
+}
+
+function drawPreview(){
+  const w=previewCanvas.width,h=previewCanvas.height;
+  previewCtx.setTransform(1,0,0,1,0,0);
+  previewCtx.clearRect(0,0,w,h);
+  previewCtx.imageSmoothingEnabled=true;
+  previewCtx.imageSmoothingQuality="high";
+  previewCtx.drawImage(referenceCanvas,0,0,w,h);
+  updateStatus();
+}
+
+function renderAll(){
+  renderReference();
+  drawPreview();
+  updateTermInfo();
+}
+
+function updateStatus(){
+  const rect=canvasWrap.getBoundingClientRect();
+  const dpr=window.devicePixelRatio || 1;
+  const scale=rect.width/LOGICAL_W;
+  ui.previewMeta.textContent=`表示 ${Math.round(rect.width)}×${Math.round(rect.width*9/16)} CSS px / ${(scale*100).toFixed(1)}% / dPR ${dpr.toFixed(2)}`;
+  ui.canvasStatus.textContent=`1920 × 1080 = ${SCREEN_AREA.toLocaleString()} px²`;
+
+  const b=state.lastBounds?.effect;
+  if(b){
+    ui.boundsStatus.textContent=`X ${fmt(b.x)} / Y ${fmt(b.y)} / W ${fmt(b.width)} / H ${fmt(b.height)} px`;
+    const bboxArea=Math.max(0,b.width)*Math.max(0,b.height);
+    const area=Number.isFinite(state.lastBounds?.analysisArea)?state.lastBounds.analysisArea:bboxArea;
+    const areaLabel=state.lastBounds?.analysisLabel?`${state.lastBounds.analysisLabel}: `:"";
+    ui.occupancyStatus.textContent=`${areaLabel}${Math.round(area).toLocaleString()} px² / ${pct(area/SCREEN_AREA)}`;
+
+    const v=safeViolation(b);
+    const maxV=Math.max(v.left,v.right,v.top,v.bottom);
+    if(maxV>0){
+      const parts=[];
+      if(v.left)parts.push(`L +${fmt(v.left)}`);
+      if(v.right)parts.push(`R +${fmt(v.right)}`);
+      if(v.top)parts.push(`T +${fmt(v.top)}`);
+      if(v.bottom)parts.push(`B +${fmt(v.bottom)}`);
+      ui.safeStatus.innerHTML=`<span class="pill-bad">NG</span> ${parts.join(" / ")} px`;
+      ui.safeCard.classList.add("bad");
+    }else{
+      ui.safeStatus.innerHTML=`<span class="pill-ok">OK</span> / ${SAFE_PRESETS[state.safePreset].label}`;
+      ui.safeCard.classList.remove("bad");
+    }
+  }
+}
+
+function updateTermInfo(){
+  const t=selectedTerm();
+  ui.termName.textContent=t.name;
+  ui.termReading.textContent=t.reading;
+  ui.termBadges.innerHTML=t.status.map(s=>`<span>${s}</span>`).join("");
+  ui.termDescription.textContent=t.description;
+  ui.termNote.textContent=t.note;
+  ui.termDemo.textContent=t.demo;
+  ui.termProvenance.textContent=t.provenance;
+  const relatedIds=RELATED_MAP[t.id] || TERMS.filter(x=>x.id!==t.id && (x.demoType===t.demoType || x.category===t.category)).slice(0,5).map(x=>x.id);
+  ui.relatedTerms.innerHTML=relatedIds.map(id=>{const rt=TERMS.find(x=>x.id===id);return rt?`<button class="related-term" data-related-id="${rt.id}">${rt.name}</button>`:"";}).join("");
+  ui.relatedTerms.querySelectorAll(".related-term").forEach(btn=>btn.addEventListener("click",()=>selectTerm(btn.dataset.relatedId)));
+  const cs=coverageStats(); if(ui.coverageBadge) ui.coverageBadge.textContent=`Coverage ${cs.covered}/${cs.total}`;
+  ui.demoTitle.textContent=t.name;
+  ui.demoSubtitle.textContent=`${t.category} / ${t.demoType}`;
+}
+
+function makeRange(key,label,min,max,step,unit="px"){
+  const id=`ctl_${key}`;
+  return `<div class="control">
+    <label for="${id}">${label}</label>
+    <div class="inline">
+      <input id="${id}" data-key="${key}" type="range" min="${min}" max="${max}" step="${step}" value="${state[key]}">
+      <input id="${id}_num" data-key="${key}" type="number" min="${min}" max="${max}" step="${step}" value="${state[key]}">
+    </div>
+    <div style="font-size:.7rem;color:var(--muted)">${unit==="%" ? "割合" : (unit==="px" ? "Full HD px" : unit)}</div>
+  </div>`;
+}
+
+function buildControls(){
+  ui.controlGrid.innerHTML=[
+    makeRange("fontSize","文字サイズ",36,160,1),
+    makeRange("tracking","字間（追加）",-12,24,1),
+    makeRange("lineGap","行間",0,64,1),
+    makeRange("edge","エッジ幅",0,16,1),
+    makeRange("shadowX","シャドー X",-20,30,1),
+    makeRange("shadowY","シャドー Y",-20,30,1),
+    makeRange("basePad","座布団余白",0,80,1),
+    makeRange("baseAlpha","座布団 alpha",0,1,0.01,"%"),
+    makeRange("telopWidth","テロップ幅",500,1900,1),
+    makeRange("telopX","X座標",0,1900,1),
+    makeRange("telopY","基準Y座標",100,1050,1),
+    makeRange("maxLines","最大行数",1,4,1),
+    makeRange("equalTargetWidth","均等割り target幅",700,1500,10),
+    makeRange("subtitleTimelineDuration","字幕タイムライン長",2,20,0.1,"sec"),
+    makeRange("subtitleIn","字幕 IN",0,19,0.05,"sec"),
+    makeRange("subtitleOut","字幕 OUT",0.05,20,0.05,"sec"),
+    makeRange("subtitleCharsPerLine","字幕1行文字数ガイド",8,20,1,"chars"),
+    makeRange("closedCaptionY","字幕放送想定 Y",160,940,1),
+    makeRange("lSideWidth","L字 左帯幅",150,520,1),
+    makeRange("lBottomHeight","L字 下帯高さ",120,380,1),
+    makeRange("rollSpeed","ロール速度",40,1000,10,"px/s"),
+    `<div class="control">
+      <label>受信機字幕</label>
+      <select id="receiverCaptionSelect"><option value="1">ON</option><option value="0">OFF</option></select>
+      <div style="font-size:.7rem;color:var(--muted)">クローズドキャプション教材</div>
+    </div>`,
+    `<div class="control">
+      <label>サイドスーパー位置</label>
+      <select id="sidePositionSelect"><option value="right">右</option><option value="left">左</option></select>
+      <div style="font-size:.7rem;color:var(--muted)">配置比較</div>
+    </div>`,
+    `<div class="control">
+      <label>ロール方向</label>
+      <select id="rollDirectionSelect"><option value="left">右→左</option><option value="right">左→右</option></select>
+      <div style="font-size:.7rem;color:var(--muted)">教材アニメーション</div>
+    </div>`,
+    `<div class="control">
+      <label>番組ジャンルプリセット</label>
+      <select id="genrePresetSelect">
+        ${Object.entries(GENRE_PRESETS).map(([id,p])=>`<option value="${id}">${p.label}</option>`).join("")}
+      </select>
+      <div style="font-size:.7rem;color:var(--muted)">一般的傾向を抽象化した教材値</div>
+    </div>`,
+    `<div class="control">
+      <label>背景</label>
+      <select id="backgroundSelect">
+        <option value="studio">スタジオ想定</option>
+        <option value="bright">明るい屋外</option>
+        <option value="dark">夜景</option>
+        <option value="busy">高周波・複雑</option>
+      </select>
+      <div style="font-size:.7rem;color:var(--muted)">Canvas生成背景</div>
+    </div>`,
+    `<div class="control">
+      <label>セーフ領域プリセット</label>
+      <select id="safePresetSelect">
+        ${Object.entries(SAFE_PRESETS).map(([id,p])=>`<option value="${id}">${p.label}</option>`).join("")}
+      </select>
+      <div style="font-size:.7rem;color:var(--muted)">規格由来／Customを区別</div>
+    </div>`,
+    makeRange("safeLeft","Safe left",0,240,1),
+    makeRange("safeRight","Safe right",0,240,1),
+    makeRange("safeTop","Safe top",0,140,1),
+    makeRange("safeBottom","Safe bottom",0,140,1)
+  ].join("");
+
+  ui.controlGrid.querySelectorAll('input[data-key]').forEach(el=>{
+    el.addEventListener("input",e=>{
+      const key=e.currentTarget.dataset.key;
+      const v=Number(e.currentTarget.value);
+      state[key]=v;
+      state.genrePreset="manual";
+      if(key==="subtitleTimelineDuration"){
+        state.subtitleIn=Math.min(state.subtitleIn,v);
+        state.subtitleOut=Math.min(Math.max(state.subtitleIn+0.05,state.subtitleOut),v);
+      }
+      if(key==="subtitleIn") state.subtitleOut=Math.max(state.subtitleOut,v+0.05);
+      if(key==="subtitleOut") state.subtitleOut=Math.max(state.subtitleIn+0.05,v);
+      if(key.startsWith("safe")) state.safePreset="custom";
+      syncControlValues(e.currentTarget);
+      renderAll();
+    });
+  });
+  document.getElementById("genrePresetSelect").addEventListener("change",e=>applyGenrePreset(e.target.value));
+  document.getElementById("backgroundSelect").addEventListener("change",e=>{state.background=e.target.value;state.genrePreset="manual";renderAll()});
+  document.getElementById("safePresetSelect").addEventListener("change",e=>applySafePreset(e.target.value));
+  document.getElementById("receiverCaptionSelect").addEventListener("change",e=>{state.receiverCaptionOn=Number(e.target.value);state.genrePreset="manual";renderAll()});
+  document.getElementById("sidePositionSelect").addEventListener("change",e=>{state.sidePosition=e.target.value;state.genrePreset="manual";renderAll()});
+  document.getElementById("rollDirectionSelect").addEventListener("change",e=>{state.rollDirection=e.target.value;state.genrePreset="manual";renderAll()});
+}
+
+function syncControlValues(source=null){
+  ui.controlGrid.querySelectorAll('input[data-key]').forEach(el=>{
+    if(el===source) return;
+    const key=el.dataset.key;
+    el.value=state[key];
+  });
+  const gp=document.getElementById("genrePresetSelect"); if(gp) gp.value=state.genrePreset;
+  const bg=document.getElementById("backgroundSelect"); if(bg) bg.value=state.background;
+  const sp=document.getElementById("safePresetSelect");
+  if(sp) sp.value=state.safePreset;
+  const rc=document.getElementById("receiverCaptionSelect"); if(rc) rc.value=String(state.receiverCaptionOn);
+  const side=document.getElementById("sidePositionSelect"); if(side) side.value=state.sidePosition;
+  const rd=document.getElementById("rollDirectionSelect"); if(rd) rd.value=state.rollDirection;
+}
+
+function renderCategories(){
+  const cats=["すべて",...new Set(TERMS.map(t=>t.category))];
+  ui.categoryButtons.innerHTML=cats.map(c=>`<button data-cat="${c}" ${c===state.category?'style="border-color:var(--accent)"':''}>${c}</button>`).join("");
+  ui.categoryButtons.querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click",()=>{
+      state.category=b.dataset.cat;
+      renderCategories();renderTermList();
+    });
+  });
+}
+
+function renderTermList(){
+  const q=state.search.trim().toLowerCase();
+  const filtered=TERMS.filter(t=>{
+    const inCat=state.category==="すべて"||t.category===state.category;
+    const hay=termSearchText(t);
+    return inCat && (!q||hay.includes(q));
+  });
+  ui.termList.innerHTML=filtered.map(t=>`<button class="term ${t.id===state.selectedTermId?"active":""}" data-id="${t.id}">
+    ${t.name}<small>${t.category} / ${t.status[0]}</small>
+  </button>`).join("");
+  ui.termList.querySelectorAll(".term").forEach(b=>{
+    b.addEventListener("click",()=>selectTerm(b.dataset.id));
+  });
+}
+
+function selectTerm(id){
+  state.selectedTermId=id;
+  state.genrePreset="manual";
+  const t=selectedTerm();
+  Object.assign(state,{
+    fontSize:t.defaults.fontSize,
+    tracking:t.defaults.tracking,
+    lineGap:t.defaults.lineGap,
+    edge:t.defaults.edge,
+    telopX:t.defaults.x,
+    telopY:t.defaults.y,
+    telopWidth:t.defaults.width,
+    baseAlpha:t.defaults.baseAlpha,
+    basePad:t.defaults.basePad,
+    maxLines:t.defaults.maxLines
+  });
+  for(const key of ["receiverCaptionOn","closedCaptionY","sidePosition","lSideWidth","lBottomHeight","rollSpeed","rollDirection"]){
+    if(Object.prototype.hasOwnProperty.call(t.defaults,key)) state[key]=t.defaults[key];
+  }
+  const pool=t.category==="字幕"?["明日の朝、もう一度ここに来よう","ずっと君に話したいことがあった","急がないと最終電車に間に合わない"]:(t.category==="デザイン"?SAMPLE_TEXTS.info:SAMPLE_TEXTS.news);
+  state.sample=pool[0];
+  syncControlValues();
+  renderTermList();
+  renderAll();
+}
+
+ui.searchInput.addEventListener("input",e=>{state.search=e.target.value;renderTermList()});
+ui.showSafe.addEventListener("change",e=>{state.showSafe=e.target.checked;renderAll()});
+ui.showMeasure.addEventListener("change",e=>{state.showMeasure=e.target.checked;renderAll()});
+ui.showBase.addEventListener("change",e=>{state.showBase=e.target.checked;renderAll()});
+ui.randomSampleBtn.addEventListener("click",()=>{
+  const all=Object.values(SAMPLE_TEXTS).flat();
+  const current=state.sample;
+  let next=current;
+  while(next===current && all.length>1) next=all[Math.floor(Math.random()*all.length)];
+  state.sample=next;
+  renderAll();
+});
+
+function animationLoop(nowMs){
+  state.animationTimeMs=nowMs;
+  if(["rollSuper","followTelop"].includes(selectedTerm().demoType)){
+    renderReference();
+    drawPreview();
+  }
+  requestAnimationFrame(animationLoop);
+}
+requestAnimationFrame(animationLoop);
+
+const ro=new ResizeObserver(()=>resizePreview());
+ro.observe(canvasWrap);
+window.addEventListener("resize",resizePreview);
+
+buildControls();
+renderCategories();
+renderTermList();
+selectTerm("telop");
+resizePreview();
+</script>
+</body>
+</html>
