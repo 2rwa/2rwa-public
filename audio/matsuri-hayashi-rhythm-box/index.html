@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MATSURI HAYASHI RHYTHM BOX</title>
+<style>
+:root{
+  --bg:#100d0b; --panel:#1b1511; --panel2:#251c16; --line:#5b4534;
+  --ink:#f0dfc1; --dim:#a28d70; --red:#b43b2e; --gold:#d2a449;
+  --wood:#8a5b37; --paper:#e8d9b8; --black:#111;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#0d0a08;color:var(--ink)}
+body{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  padding:16px;
+  background:
+    radial-gradient(circle at 15% 0%,#38241a 0,#17110d 30%,#0d0a08 65%),
+    linear-gradient(#120e0b,#090706);
+}
+.machine{
+  max-width:1280px;margin:0 auto;border:2px solid #6b4a32;border-radius:14px;
+  overflow:hidden;background:linear-gradient(180deg,#211711,#130f0c);
+  box-shadow:0 30px 110px #000c,inset 0 0 0 2px #0a0705;
+}
+header{
+  padding:18px;border-bottom:1px solid #5b402d;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap
+}
+h1{margin:0;font-size:clamp(22px,3.4vw,42px);letter-spacing:.09em}
+.sub{margin-top:5px;font-size:11px;color:var(--dim);line-height:1.5}
+.badge{
+  font-size:10px;border:1px solid #806043;border-radius:999px;padding:7px 10px;
+  color:#e7c57f;letter-spacing:.08em
+}
+.top{
+  padding:12px 16px;display:grid;grid-template-columns:repeat(8,minmax(95px,1fr));
+  gap:8px;border-bottom:1px solid #493424;background:#16100c
+}
+.ctl,.panel{
+  background:#120e0b;border:1px solid #4b382b;border-radius:8px;padding:8px
+}
+.ctl label,.panel label{display:block;font-size:9px;color:var(--dim);margin-bottom:6px;letter-spacing:.05em}
+input[type=range]{width:100%;accent-color:#b77a46}
+input[type=number],button,select{
+  width:100%;border:1px solid #5a4434;border-radius:5px;background:#0e0b09;color:var(--ink);
+  font:inherit;font-size:11px;padding:7px
+}
+button{cursor:pointer}
+button:hover{border-color:#a87950}
+.start{color:#c8dc9d}.stop{color:#e39a82}.export{color:#f2ca76}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.main{padding:14px 16px 16px}
+.phraseHead{
+  display:grid;grid-template-columns:110px repeat(16,minmax(32px,1fr));gap:4px;
+  min-width:850px;margin-bottom:4px
+}
+.phraseHead div{font-size:8px;color:#775f4b;text-align:center}
+.seqWrap{
+  overflow-x:auto;border:1px solid #493728;border-radius:10px;background:#100c09;padding:10px
+}
+.row{
+  display:grid;grid-template-columns:110px repeat(16,minmax(32px,1fr));gap:4px;
+  min-width:850px;align-items:stretch;margin:6px 0
+}
+.name{
+  background:#211811;border-left:4px solid #8b5f3a;padding:6px 7px;
+  display:flex;flex-direction:column;justify-content:center;min-height:39px
+}
+.name strong{font-size:10px}
+.name span{font-size:8px;color:var(--dim);margin-top:2px}
+.step{
+  min-height:39px;border:1px solid #4c392b;background:#17110d;border-radius:4px;
+  cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
+  transition:background .08s,border .08s
+}
+.step:nth-child(5),.step:nth-child(9),.step:nth-child(13),.step:nth-child(17){border-left-color:#9c7655}
+.step.on{
+  background:#71472d;border-color:#c08b59;box-shadow:inset 0 0 13px #f4c67b22
+}
+.step.bankB.on{background:#634535;border-color:#b18b67}
+.step.play::after{
+  content:"";position:absolute;inset:2px;border:2px solid #fff0b6;border-radius:2px;
+  box-shadow:0 0 9px #ffe394
+}
+.step .kuchi{font-size:7px;color:#ead5ae;opacity:.9}
+.step .num{position:absolute;right:2px;bottom:1px;font-size:6px;color:#6b5745}
+.infoRow{
+  margin-top:10px;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:9px
+}
+.panel h3{margin:0 0 8px;font-size:10px;color:#dfb56b;letter-spacing:.08em}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.readout{
+  border:1px solid #443226;background:#0d0a08;border-radius:6px;padding:8px;
+  font-size:9px;line-height:1.55;color:#b8a185;min-height:66px
+}
+.bankTabs{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.bankTab.active{background:#5a3421;border-color:#b57c4d}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:9px;color:#806b56;margin-top:8px}
+.fileMode{
+  margin-top:10px;border:1px solid #6b4b30;border-radius:10px;padding:10px;
+  background:linear-gradient(180deg,#1a120d,#110c09)
+}
+.fileGrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:8px;align-items:end}
+.fileStatus{
+  font-size:9px;line-height:1.5;color:#b59e7d;border:1px solid #443126;
+  background:#0c0907;border-radius:6px;padding:8px;min-height:49px
+}
+.progress{height:7px;background:#080604;border:1px solid #3b2b21;border-radius:999px;overflow:hidden;margin-top:5px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8e542e,#e2b763)}
+@media(max-width:930px){
+  .top{grid-template-columns:repeat(2,1fr)}
+  .infoRow{grid-template-columns:1fr}
+  .fileGrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){.fileGrid{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="machine">
+  <header>
+    <div>
+      <h1>MATSURI HAYASHI RHYTHM BOX</h1>
+      <div class="sub">taiko / shime / kane / hyoshigi — call & response, ma, neri, ensemble spread — sample free</div>
+    </div>
+    <div class="badge">祭 / HAYASHI MACHINE</div>
+  </header>
+
+  <div class="top">
+    <div class="ctl">
+      <label>SCENE</label>
+      <select id="scene">
+        <option value="dashi">DASHI PROCESSION</option>
+        <option value="mikoshi">MIKOSHI PUSH</option>
+        <option value="bon">BON NIGHT</option>
+        <option value="finale">FESTIVAL FINALE</option>
+        <option value="empty">EMPTY</option>
+      </select>
+    </div>
+    <div class="ctl"><label>TEMPO <span id="tempoVal">112</span></label><input id="tempo" type="range" min="52" max="190" value="112"></div>
+    <div class="ctl"><label>MA GAP <span id="maVal">35</span>% BEAT</label><input id="maGap" type="range" min="0" max="160" value="35"></div>
+    <div class="ctl"><label>NERI SURGE <span id="neriVal">8</span>%</label><input id="neri" type="range" min="0" max="35" value="8"></div>
+    <div class="ctl"><label>ENSEMBLE SPREAD <span id="spreadVal">7</span> ms</label><input id="spread" type="range" min="0" max="28" value="7"></div>
+    <div class="ctl"><label>TIMBRE</label><input id="timbre" type="range" min="0" max="100" value="55"></div>
+    <div class="ctl"><label>ROOM</label><input id="room" type="range" min="0" max="100" value="18"></div>
+    <div class="ctl">
+      <label>TRANSPORT</label>
+      <div class="two"><button id="start" class="start">START</button><button id="stop" class="stop">STOP</button></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="seqWrap">
+      <div class="phraseHead">
+        <div></div>
+        <div>1</div><div>&</div><div>2</div><div>&</div>
+        <div>3</div><div>&</div><div>4</div><div>&</div>
+        <div>5</div><div>&</div><div>6</div><div>&</div>
+        <div>7</div><div>&</div><div>8</div><div>&</div>
+      </div>
+      <div id="sequencer"></div>
+      <div class="legend">
+        <span>16 cells = 8-beat phrase with half-beat gestures</span>
+        <span>A/B banks alternate as call → response</span>
+        <span>MA GAP inserts real silence between phrases</span>
+        <span>Space = start / stop</span>
+      </div>
+    </div>
+
+    <div class="infoRow">
+      <div class="panel">
+        <h3>CALL / RESPONSE BANK</h3>
+        <div class="bankTabs">
+          <button id="bankA" class="bankTab active">A — CALL</button>
+          <button id="bankB" class="bankTab">B — RESPONSE</button>
+        </div>
+        <div class="readout" id="phraseReadout" style="margin-top:7px"></div>
+      </div>
+
+      <div class="panel">
+        <h3>FESTIVAL LOGIC</h3>
+        <div class="grid3">
+          <div><label>RESPONSE EVERY <span id="respVal">1</span> PHRASE</label><input id="responseEvery" type="range" min="1" max="4" value="1"></div>
+          <div><label>FILL CHANCE <span id="fillVal">12</span>%</label><input id="fillChance" type="range" min="0" max="60" value="12"></div>
+          <div><label>KANE DRIFT <span id="kaneVal">4</span> ms</label><input id="kaneDrift" type="range" min="0" max="24" value="4"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>MASTER / MUTATION</h3>
+        <div class="grid3">
+          <div><label>MASTER</label><input id="master" type="range" min="0" max="100" value="72"></div>
+          <div><label>CHANGE</label><button id="mutate">MUTATE</button></div>
+          <div><label>RESET</label><button id="reset">SCENE RESET</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fileMode">
+      <div class="fileGrid">
+        <div>
+          <label style="display:block;font-size:9px;color:#d8b979;margin-bottom:5px">OFFLINE AUDIO FILE MODE</label>
+          <div class="fileStatus" id="fileStatus">Current scene and edited A/B patterns are rendered directly to WAV.</div>
+        </div>
+        <div>
+          <label style="display:block;font-size:9px;color:#a99070;margin-bottom:5px">DURATION / SECONDS</label>
+          <input id="duration" type="number" min="1" max="900" step="1" value="60">
+        </div>
+        <div>
+          <label style="display:block;font-size:9px;color:#a99070;margin-bottom:5px">FORMAT</label>
+          <select id="format"><option value="wav">WAV 44.1k / 16-bit</option></select>
+        </div>
+        <div>
+          <label style="display:block;font-size:9px;color:#a99070;margin-bottom:5px">CREATE FILE</label>
+          <button id="createWav" class="export">CREATE WAV</button>
+        </div>
+      </div>
+      <div class="progress"><i id="progressBar"></i></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const voiceDefs = [
+    {id:'odaiko', name:'大太鼓 / ODAIKO', desc:'deep body + skin', kuchi:['DON','DO']},
+    {id:'nagado', name:'長胴 / NAGADO', desc:'main pulse', kuchi:['DON','KO']},
+    {id:'shime',  name:'締太鼓 / SHIME', desc:'tight articulation', kuchi:['TE','KE']},
+    {id:'kane',   name:'鉦 / KANE', desc:'metal accent', kuchi:['CHAN','CHI']},
+    {id:'wood',   name:'拍子木 / HYOSHIGI', desc:'dry wood cue', kuchi:['KI','TA']}
+  ];
+
+  const scenes = {
+    dashi:{
+      A:{
+        odaiko:[1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
+        nagado:[1,0,1,0, 1,0,0,1, 1,0,1,0, 1,0,0,1],
+        shime: [1,1,0,1, 1,1,0,1, 1,1,0,1, 1,1,1,1],
+        kane:  [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,1,0,0],
+        wood:  [0,0,0,0, 0,0,0,0, 0,0,0,0, 1,0,0,1]
+      },
+      B:{
+        odaiko:[1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,1,0],
+        nagado:[1,0,1,1, 0,1,0,1, 1,0,1,1, 0,1,1,0],
+        shime: [1,1,1,1, 1,0,1,1, 1,1,1,0, 1,1,1,1],
+        kane:  [1,0,0,1, 0,0,1,0, 1,0,1,0, 0,1,0,1],
+        wood:  [0,0,0,0, 1,0,0,1, 0,0,0,0, 1,0,1,1]
+      }
+    },
+    mikoshi:{
+      A:{
+        odaiko:[1,0,0,0, 1,0,1,0, 1,0,0,0, 1,0,1,0],
+        nagado:[1,0,1,0, 1,1,1,0, 1,0,1,0, 1,1,1,0],
+        shime: [1,1,1,0, 1,1,1,1, 1,1,1,0, 1,1,1,1],
+        kane:  [1,0,1,0, 0,1,0,1, 1,0,1,0, 0,1,0,1],
+        wood:  [0,0,0,0, 0,0,0,1, 0,0,0,0, 0,0,1,1]
+      },
+      B:{
+        odaiko:[1,0,1,0, 1,0,1,0, 1,0,1,0, 1,1,1,0],
+        nagado:[1,1,1,0, 1,1,1,1, 1,1,1,0, 1,1,1,1],
+        shime: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+        kane:  [1,0,1,1, 0,1,0,1, 1,0,1,1, 0,1,1,1],
+        wood:  [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,1,1,1]
+      }
+    },
+    bon:{
+      A:{
+        odaiko:[1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,1,0],
+        nagado:[1,0,0,1, 0,1,0,0, 1,0,0,1, 0,1,0,0],
+        shime: [0,1,1,0, 1,0,1,0, 0,1,1,0, 1,0,1,0],
+        kane:  [1,0,0,0, 0,1,0,0, 1,0,0,0, 0,1,0,0],
+        wood:  [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0]
+      },
+      B:{
+        odaiko:[1,0,0,0, 0,1,0,0, 1,0,0,0, 0,1,0,0],
+        nagado:[1,0,1,0, 0,1,0,1, 1,0,1,0, 0,1,0,1],
+        shime: [0,1,1,0, 1,1,0,1, 0,1,1,0, 1,1,0,1],
+        kane:  [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
+        wood:  [0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0]
+      }
+    },
+    finale:{
+      A:{
+        odaiko:[1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
+        nagado:[1,1,1,0, 1,1,1,0, 1,1,1,0, 1,1,1,1],
+        shime: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+        kane:  [1,0,1,0, 1,1,0,1, 1,0,1,0, 1,1,0,1],
+        wood:  [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,1,1,1]
+      },
+      B:{
+        odaiko:[1,0,1,1, 1,0,1,1, 1,0,1,1, 1,1,1,1],
+        nagado:[1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+        shime: [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1],
+        kane:  [1,1,1,0, 1,1,1,1, 1,1,1,0, 1,1,1,1],
+        wood:  [0,1,0,1, 0,1,0,1, 0,1,0,1, 1,1,1,1]
+      }
+    },
+    empty:{
+      A:Object.fromEntries(['odaiko','nagado','shime','kane','wood'].map(x=>[x,Array(16).fill(0)])),
+      B:Object.fromEntries(['odaiko','nagado','shime','kane','wood'].map(x=>[x,Array(16).fill(0)]))
+    }
+  };
+
+  let currentScene='dashi';
+  let pattern=structuredClone(scenes[currentScene]);
+  let editBank='A';
+  let audioCtx=null;
+  let liveMaster=null, liveTone=null, liveDelay=null, liveFeedback=null;
+  let liveNoise=null;
+  let running=false, schedulerTimer=null;
+  let nextPhraseTime=0, phraseCounter=0;
+
+  const $=q=>document.querySelector(q);
+
+  function cloneScene(name){ return structuredClone(scenes[name]); }
+
+  function buildSequencer(){
+    const host=$('#sequencer');
+    host.innerHTML='';
+    voiceDefs.forEach(v=>{
+      const row=document.createElement('div');
+      row.className='row';
+      const name=document.createElement('div');
+      name.className='name';
+      name.innerHTML=`<strong>${v.name}</strong><span>${v.desc}</span>`;
+      row.appendChild(name);
+
+      for(let i=0;i<16;i++){
+        const cell=document.createElement('div');
+        cell.className='step';
+        cell.dataset.voice=v.id;
+        cell.dataset.step=i;
+        const kuchi=document.createElement('span');
+        kuchi.className='kuchi';
+        kuchi.textContent=v.kuchi[i%2];
+        const num=document.createElement('span');
+        num.className='num';
+        num.textContent=String(i+1);
+        cell.append(kuchi,num);
+        cell.onclick=()=>{
+          pattern[editBank][v.id][i]=pattern[editBank][v.id][i]?0:1;
+          render();
+        };
+        row.appendChild(cell);
+      }
+      host.appendChild(row);
+    });
+    render();
+  }
+
+  function render(){
+    document.querySelectorAll('.step').forEach(cell=>{
+      const id=cell.dataset.voice, i=+cell.dataset.step;
+      cell.classList.toggle('on',!!pattern[editBank][id][i]);
+      cell.classList.toggle('bankB',editBank==='B');
+    });
+    $('#bankA').classList.toggle('active',editBank==='A');
+    $('#bankB').classList.toggle('active',editBank==='B');
+    updateReadout();
+  }
+
+  function updateReadout(){
+    const resp=+$('#responseEvery').value;
+    const ma=+$('#maGap').value;
+    const surge=+$('#neri').value;
+    $('#phraseReadout').innerHTML=
+      `editing: BANK ${editBank}<br>`+
+      `playback: ${resp} phrase CALL → ${resp} phrase RESPONSE<br>`+
+      `MA gap: ${ma}% of one beat / neri surge: ${surge}% over 8 phrases`;
+  }
+
+  function ensureLiveAudio(){
+    if(audioCtx) return;
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    liveMaster=audioCtx.createGain();
+    liveMaster.gain.value=.72;
+    liveTone=audioCtx.createBiquadFilter();
+    liveTone.type='lowpass';liveTone.frequency.value=13500;liveTone.Q.value=.3;
+    liveDelay=audioCtx.createDelay(.8);liveDelay.delayTime.value=.17;
+    liveFeedback=audioCtx.createGain();liveFeedback.gain.value=.12;
+    const wet=audioCtx.createGain();wet.gain.value=.12;
+    liveTone.connect(liveMaster);
+    liveTone.connect(liveDelay);
+    liveDelay.connect(liveFeedback).connect(liveDelay);
+    liveDelay.connect(wet).connect(liveMaster);
+    liveMaster.connect(audioCtx.destination);
+  }
+
+  function makeNoise(ctx,seconds=.7){
+    const len=Math.floor(ctx.sampleRate*seconds);
+    const b=ctx.createBuffer(1,len,ctx.sampleRate);
+    const d=b.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+    return b;
+  }
+
+  function env(ctx,time,peak,decay,attack=.001){
+    const g=ctx.createGain();
+    g.gain.setValueAtTime(.0001,time);
+    g.gain.exponentialRampToValueAtTime(Math.max(.0002,peak),time+attack);
+    g.gain.exponentialRampToValueAtTime(.0001,time+attack+decay);
+    return g;
+  }
+
+  function makeVoiceKit(ctx,destination,noiseBuf,timbreValue){
+    const tim=timbreValue/100;
+
+    function odaiko(time,vel){
+      const o=ctx.createOscillator(), g=env(ctx,time,1.05*vel,.48,.002);
+      o.type='sine';
+      o.frequency.setValueAtTime(98+tim*24,time);
+      o.frequency.exponentialRampToValueAtTime(43,time+.15);
+      o.connect(g).connect(destination);o.start(time);o.stop(time+.58);
+
+      const n=ctx.createBufferSource();n.buffer=noiseBuf;
+      const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=260+tim*180;
+      const ng=env(ctx,time,.22*vel,.055,.001);
+      n.connect(lp).connect(ng).connect(destination);n.start(time);n.stop(time+.08);
+    }
+
+    function nagado(time,vel){
+      const n=ctx.createBufferSource();n.buffer=noiseBuf;
+      const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=720+tim*380;bp.Q.value=.8;
+      const ng=env(ctx,time,.23*vel,.11,.001);
+      n.connect(bp).connect(ng).connect(destination);n.start(time);n.stop(time+.16);
+
+      [132,196].forEach((f,j)=>{
+        const o=ctx.createOscillator(), g=env(ctx,time,(.42-j*.09)*vel,.22,.001);
+        o.type=j?'triangle':'sine';
+        o.frequency.setValueAtTime(f+tim*35,time);
+        o.frequency.exponentialRampToValueAtTime((f+tim*35)*.82,time+.14);
+        o.connect(g).connect(destination);o.start(time);o.stop(time+.28);
+      });
+    }
+
+    function shime(time,vel){
+      const n=ctx.createBufferSource();n.buffer=noiseBuf;
+      const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=1450;
+      const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2500+tim*1800;bp.Q.value=1.4;
+      const ng=env(ctx,time,.26*vel,.065,.0006);
+      n.connect(hp).connect(bp).connect(ng).connect(destination);n.start(time);n.stop(time+.09);
+
+      const o=ctx.createOscillator(), g=env(ctx,time,.17*vel,.045,.0005);
+      o.type='triangle';o.frequency.value=610+tim*280;
+      o.connect(g).connect(destination);o.start(time);o.stop(time+.07);
+    }
+
+    function kane(time,vel){
+      const base=970+tim*820;
+      const ratios=[1,1.49,2.17,2.83];
+      ratios.forEach((r,i)=>{
+        const o=ctx.createOscillator(), g=env(ctx,time,(.12/(1+i*.22))*vel,.28+i*.08,.0004);
+        o.type=i%2?'triangle':'sine';
+        o.frequency.value=base*r;
+        o.connect(g).connect(destination);o.start(time);o.stop(time+.72);
+      });
+    }
+
+    function wood(time,vel){
+      [0,1].forEach(i=>{
+        const o=ctx.createOscillator(), g=env(ctx,time,(.18-i*.05)*vel,.028,.0003);
+        const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1850+tim*1700+i*360;bp.Q.value=6;
+        o.type='square';o.frequency.value=1500+tim*1300+i*430;
+        o.connect(bp).connect(g).connect(destination);o.start(time+i*.0012);o.stop(time+.055);
+      });
+    }
+
+    return {odaiko,nagado,shime,kane,wood};
+  }
+
+  function liveBeatDurationForPhrase(index){
+    const base=60/+$('#tempo').value;
+    const surge=+$('#neri').value/100;
+    const phase=(index%8)/7;
+    return base/(1+surge*phase);
+  }
+
+  function selectBankForPhrase(index){
+    const n=+$('#responseEvery').value;
+    return (Math.floor(index/n)%2===0)?'A':'B';
+  }
+
+  function schedulePhrase(ctx,kit,startTime,index,isOffline=false){
+    const beatDur=isOffline
+      ? (()=>{const base=60/+$('#tempo').value;const surge=+$('#neri').value/100;const ph=(index%8)/7;return base/(1+surge*ph)})()
+      : liveBeatDurationForPhrase(index);
+    const half=beatDur/2;
+    const bank=selectBankForPhrase(index);
+    const spread=+$('#spread').value/1000;
+    const kaneDrift=+$('#kaneDrift').value/1000;
+    const fillChance=+$('#fillChance').value/100;
+
+    for(let i=0;i<16;i++){
+      const t=startTime+i*half;
+      voiceDefs.forEach(v=>{
+        let hit=!!pattern[bank][v.id][i];
+        if(!hit && i>=12 && v.id!=='odaiko' && Math.random()<fillChance*.18) hit=true;
+        if(!hit) return;
+        let jitter=(Math.random()-.5)*2*spread;
+        if(v.id==='kane') jitter+=(Math.random()-.5)*2*kaneDrift;
+        const vel=(i%2===0?1:.76)*(v.id==='odaiko'?1.04:1);
+        kit[v.id](Math.max(startTime,t+jitter),vel);
+      });
+
+      if(!isOffline){
+        const delay=Math.max(0,(t-audioCtx.currentTime)*1000);
+        setTimeout(()=>markPlayhead(i,bank,index),delay);
+      }
+    }
+
+    const phraseDur=8*beatDur;
+    const ma=beatDur*(+$('#maGap').value/100);
+    return phraseDur+ma;
+  }
+
+  function markPlayhead(step,bank,index){
+    document.querySelectorAll('.step').forEach(el=>{
+      el.classList.toggle('play',+el.dataset.step===step);
+    });
+    $('#phraseReadout').innerHTML=
+      `playing: BANK ${bank} / phrase ${index+1}<br>`+
+      `step ${step+1} / 16<br>`+
+      `MA gap follows each 8-beat phrase`;
+  }
+
+  function liveScheduler(){
+    if(!running) return;
+    while(nextPhraseTime<audioCtx.currentTime+.3){
+      const noise=liveNoise||(liveNoise=makeNoise(audioCtx));
+      const kit=makeVoiceKit(audioCtx,liveTone,noise,+$('#timbre').value);
+      const dur=schedulePhrase(audioCtx,kit,nextPhraseTime,phraseCounter,false);
+      nextPhraseTime+=dur;
+      phraseCounter++;
+    }
+    schedulerTimer=setTimeout(liveScheduler,28);
+  }
+
+  async function start(){
+    ensureLiveAudio();
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+    if(running) return;
+    running=true;
+    nextPhraseTime=audioCtx.currentTime+.06;
+    liveScheduler();
+  }
+
+  function stop(){
+    running=false;
+    clearTimeout(schedulerTimer);
+    document.querySelectorAll('.step').forEach(el=>el.classList.remove('play'));
+    updateReadout();
+  }
+
+  function setupLiveRoom(){
+    if(!audioCtx) return;
+    const x=+$('#room').value/100;
+    liveFeedback.gain.setTargetAtTime(Math.min(.62,x*.46),audioCtx.currentTime,.03);
+    liveDelay.delayTime.setTargetAtTime(.07+x*.31,audioCtx.currentTime,.03);
+  }
+
+  function mutate(){
+    const density=.055;
+    ['A','B'].forEach(bank=>{
+      voiceDefs.forEach(v=>{
+        for(let i=0;i<16;i++){
+          if(Math.random()<density) pattern[bank][v.id][i]=pattern[bank][v.id][i]?0:1;
+        }
+      });
+    });
+    render();
+  }
+
+  function writeString(view,offset,str){
+    for(let i=0;i<str.length;i++) view.setUint8(offset+i,str.charCodeAt(i));
+  }
+
+  function audioBufferToWav(buffer){
+    const channels=Math.min(2,buffer.numberOfChannels);
+    const sampleRate=buffer.sampleRate;
+    const frames=buffer.length;
+    const bytesPerSample=2;
+    const blockAlign=channels*bytesPerSample;
+    const dataSize=frames*blockAlign;
+    const ab=new ArrayBuffer(44+dataSize);
+    const view=new DataView(ab);
+
+    writeString(view,0,'RIFF');
+    view.setUint32(4,36+dataSize,true);
+    writeString(view,8,'WAVE');
+    writeString(view,12,'fmt ');
+    view.setUint32(16,16,true);
+    view.setUint16(20,1,true);
+    view.setUint16(22,channels,true);
+    view.setUint32(24,sampleRate,true);
+    view.setUint32(28,sampleRate*blockAlign,true);
+    view.setUint16(32,blockAlign,true);
+    view.setUint16(34,16,true);
+    writeString(view,36,'data');
+    view.setUint32(40,dataSize,true);
+
+    const arrays=[];
+    for(let c=0;c<channels;c++) arrays.push(buffer.getChannelData(c));
+    let offset=44;
+    for(let i=0;i<frames;i++){
+      for(let c=0;c<channels;c++){
+        const sample=Math.max(-1,Math.min(1,arrays[c][i]));
+        view.setInt16(offset,sample<0?sample*0x8000:sample*0x7fff,true);
+        offset+=2;
+      }
+    }
+    return new Blob([ab],{type:'audio/wav'});
+  }
+
+  async function createWav(){
+    const duration=Math.max(1,Math.min(900,Number($('#duration').value)||60));
+    $('#duration').value=duration;
+    $('#createWav').disabled=true;
+    $('#fileStatus').textContent=`Rendering ${duration} seconds…`;
+    $('#progressBar').style.width='12%';
+
+    try{
+      const sr=44100;
+      const frames=Math.ceil(duration*sr);
+      const offline=new OfflineAudioContext(2,frames,sr);
+
+      const master=offline.createGain();
+      master.gain.value=+$('#master').value/100;
+
+      const tone=offline.createBiquadFilter();
+      tone.type='lowpass';
+      const tim=+$('#timbre').value/100;
+      tone.frequency.value=3600+tim*tim*14500;
+      tone.Q.value=.3;
+
+      const delay=offline.createDelay(.8);
+      const feedback=offline.createGain();
+      const wet=offline.createGain();
+      const room=+$('#room').value/100;
+      delay.delayTime.value=.07+room*.31;
+      feedback.gain.value=Math.min(.62,room*.46);
+      wet.gain.value=.06+room*.16;
+
+      tone.connect(master);
+      tone.connect(delay);
+      delay.connect(feedback).connect(delay);
+      delay.connect(wet).connect(master);
+      master.connect(offline.destination);
+
+      const noise=makeNoise(offline);
+      const kit=makeVoiceKit(offline,tone,noise,+$('#timbre').value);
+
+      let t=.03;
+      let p=0;
+      const estimateBase=8*(60/+$('#tempo').value)+(60/+$('#tempo').value)*(+$('#maGap').value/100);
+      const estimated=Math.max(1,Math.ceil(duration/estimateBase));
+
+      while(t<duration+.5 && p<100000){
+        const d=schedulePhrase(offline,kit,t,p,true);
+        t+=d;
+        p++;
+        if(p%8===0){
+          const pct=Math.min(72,12+Math.round((p/estimated)*58));
+          $('#progressBar').style.width=pct+'%';
+          await new Promise(r=>setTimeout(r,0));
+        }
+      }
+
+      $('#fileStatus').textContent='Synthesizing audio…';
+      $('#progressBar').style.width='78%';
+      const rendered=await offline.startRendering();
+
+      $('#fileStatus').textContent='Encoding 16-bit PCM WAV…';
+      $('#progressBar').style.width='90%';
+      const blob=audioBufferToWav(rendered);
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      const sceneName=$('#scene').value;
+      a.href=url;
+      a.download=`matsuri_hayashi_${sceneName}_${duration}s.wav`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),5000);
+
+      $('#progressBar').style.width='100%';
+      $('#fileStatus').textContent=`Done: ${duration}s / 44.1 kHz / 16-bit stereo WAV`;
+    }catch(err){
+      console.error(err);
+      $('#progressBar').style.width='0%';
+      $('#fileStatus').textContent='Render error: '+(err?.message||String(err));
+    }finally{
+      $('#createWav').disabled=false;
+    }
+  }
+
+  $('#start').onclick=start;
+  $('#stop').onclick=stop;
+  $('#bankA').onclick=()=>{editBank='A';render()};
+  $('#bankB').onclick=()=>{editBank='B';render()};
+  $('#scene').onchange=e=>{
+    currentScene=e.target.value;
+    pattern=cloneScene(currentScene);
+    render();
+  };
+  $('#reset').onclick=()=>{pattern=cloneScene(currentScene);render()};
+  $('#mutate').onclick=mutate;
+  $('#createWav').onclick=createWav;
+
+  $('#tempo').oninput=e=>$('#tempoVal').textContent=e.target.value;
+  $('#maGap').oninput=e=>{$('#maVal').textContent=e.target.value;updateReadout()};
+  $('#neri').oninput=e=>{$('#neriVal').textContent=e.target.value;updateReadout()};
+  $('#spread').oninput=e=>$('#spreadVal').textContent=e.target.value;
+  $('#responseEvery').oninput=e=>{$('#respVal').textContent=e.target.value;updateReadout()};
+  $('#fillChance').oninput=e=>$('#fillVal').textContent=e.target.value;
+  $('#kaneDrift').oninput=e=>$('#kaneVal').textContent=e.target.value;
+
+  $('#master').oninput=e=>{
+    ensureLiveAudio();
+    liveMaster.gain.setTargetAtTime(+e.target.value/100,audioCtx.currentTime,.025);
+  };
+  $('#timbre').oninput=e=>{
+    if(!audioCtx) return;
+    const x=+e.target.value/100;
+    liveTone.frequency.setTargetAtTime(3600+x*x*14500,audioCtx.currentTime,.03);
+  };
+  $('#room').oninput=setupLiveRoom;
+
+  window.addEventListener('keydown',e=>{
+    if(e.code==='Space'&&!e.repeat){
+      e.preventDefault();
+      running?stop():start();
+    }
+  });
+
+  buildSequencer();
+})();
+</script>
+</body>
+</html>
