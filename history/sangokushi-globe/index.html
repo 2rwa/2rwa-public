@@ -36,6 +36,7 @@ h1{font-size:clamp(25px,5vw,52px);line-height:1.02;margin:6px 0 0;font-weight:70
 .badge strong{font-size:17px;color:#fff1d7}.legend{display:flex;gap:11px;align-items:center;color:#ead7c5}
 .dot{width:9px;height:9px;border-radius:999px;display:inline-block;margin-right:5px;box-shadow:0 0 14px currentColor}
 .dWei{background:var(--wei)} .dShu{background:var(--shu)} .dWu{background:var(--wu)}
+.sunClock{margin-left:2px;padding-left:10px;border-left:1px solid rgba(239,192,115,.20);color:#ffd9a0;white-space:nowrap}
 .stageHint{position:absolute;left:16px;bottom:15px;color:#bfa997;font:600 11px/1.35 ui-sans-serif,system-ui;background:rgba(25,12,9,.6);padding:8px 10px;border-radius:11px;pointer-events:none}
 .side{display:flex;flex-direction:column;min-width:0}
 .story{padding:22px 22px 18px;min-height:0;display:flex;flex-direction:column}
@@ -93,6 +94,9 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
  .stageHint{max-width:calc(100% - 32px)}
  .footerGrid{grid-template-columns:1fr}
 }
+@media(max-width:620px){
+ .sunClock{display:none}
+}
 @media(max-width:520px){
  .app{padding-left:9px;padding-right:9px}
  h1{font-size:29px}.subtitle{font-size:12px}
@@ -130,9 +134,10 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
         <span><i class="dot dWei"></i>魏</span>
         <span><i class="dot dShu"></i>蜀漢</span>
         <span><i class="dot dWu"></i>呉</span>
+        <span class="sunClock" id="sunClock">☀ 現在の昼夜</span>
       </div>
     </div>
-    <div class="stageHint">ドラッグ：回転　／　ピンチ・ホイール：拡大縮小　／　◎：出来事</div>
+    <div class="stageHint">ドラッグ：回転　／　ピンチ・ホイール：拡大縮小　／　現在時刻の昼夜を表示</div>
     <div class="loading" id="loading"><div class="loader"><b>三國</b>地図データを読み込み中…</div></div>
   </section>
 
@@ -525,14 +530,22 @@ const slider=document.getElementById("yearSlider"), playBtn=document.getElementB
  romBtn=document.getElementById("romBtn"), rail=document.getElementById("eventRail"),
  personSelect=document.getElementById("personSelect"), personSummary=document.getElementById("personSummary"),
  rangeStart=document.getElementById("rangeStart"), rangeMid=document.getElementById("rangeMid"), rangeEnd=document.getElementById("rangeEnd"),
- focusName=document.getElementById("focusName"), loading=document.getElementById("loading");
+ focusName=document.getElementById("focusName"), sunClock=document.getElementById("sunClock"), loading=document.getElementById("loading");
 
 let width=0,height=0,dpr=1,world=null,countries=[],china=null,land=null;
 let projection=d3.geoOrthographic().clipAngle(90).precision(.3);
 let path=d3.geoPath(projection,ctx);
 let baseScale=250, zoomK=1, rotation=[-105,-28,0], targetRotation=[-105,-28,0];
 let currentYear=184, currentEvent=events[0], auto=false, romanceOn=false, lastT=performance.now(), pulse=0;
-let manualUntil=0;
+let manualUntil=0, lastSolarUpdate=0;
+let solarPosition={lon:0,lat:0}, antiSolarPosition={lon:180,lat:0};
+let spinVelocity=[0,0];
+const starField=Array.from({length:96},(_,starIndex)=>{
+ const xValue=Math.sin((starIndex+1)*12.9898)*43758.5453;
+ const yValue=Math.sin((starIndex+1)*78.233)*12345.6789;
+ const sizeValue=Math.sin((starIndex+1)*39.425)*9631.417;
+ return {x:xValue-Math.floor(xValue),y:yValue-Math.floor(yValue),r:.45+1.05*(sizeValue-Math.floor(sizeValue)),phase:starIndex*.73};
+});
 
 function resize(){
  const r=canvas.getBoundingClientRect(); dpr=Math.min(devicePixelRatio||1,2);
@@ -557,12 +570,92 @@ function visible(coord){
 function drawFeature(f, fill, stroke, lw=1){
  ctx.beginPath(); path(f); if(fill){ctx.fillStyle=fill;ctx.fill()} if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}
 }
+function wrapLongitude(longitudeValue){
+ return ((longitudeValue+540)%360)-180;
+}
+function computeSolarPosition(dateValue){
+ const yearStart=Date.UTC(dateValue.getUTCFullYear(),0,0);
+ const dayNumber=(dateValue.getTime()-yearStart)/86400000;
+ const utcHours=dateValue.getUTCHours()+dateValue.getUTCMinutes()/60+dateValue.getUTCSeconds()/3600;
+ const gammaValue=2*Math.PI/365*(dayNumber-1+(utcHours-12)/24);
+ const equationMinutes=229.18*(.000075+.001868*Math.cos(gammaValue)-.032077*Math.sin(gammaValue)-.014615*Math.cos(2*gammaValue)-.040849*Math.sin(2*gammaValue));
+ const declinationRad=.006918-.399912*Math.cos(gammaValue)+.070257*Math.sin(gammaValue)-.006758*Math.cos(2*gammaValue)+.000907*Math.sin(2*gammaValue)-.002697*Math.cos(3*gammaValue)+.00148*Math.sin(3*gammaValue);
+ const utcMinutes=utcHours*60;
+ return {
+   lon:wrapLongitude(180-(utcMinutes+equationMinutes)/4),
+   lat:declinationRad*180/Math.PI
+ };
+}
+function updateSolarPosition(forceUpdate=false){
+ const nowValue=new Date();
+ const nowMs=nowValue.getTime();
+ if(!forceUpdate && nowMs-lastSolarUpdate<15000)return;
+ lastSolarUpdate=nowMs;
+ solarPosition=computeSolarPosition(nowValue);
+ antiSolarPosition={lon:wrapLongitude(solarPosition.lon+180),lat:-solarPosition.lat};
+ if(sunClock){
+   const localTime=nowValue.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+   sunClock.textContent="☀ "+localTime+" 昼夜";
+ }
+}
+function drawStarBackground(){
+ ctx.save();
+ for(let starIndex=0;starIndex<starField.length;starIndex++){
+   const starPoint=starField[starIndex];
+   const twinkle=.42+.28*Math.sin(pulse*.33+starPoint.phase);
+   ctx.fillStyle=`rgba(255,226,190,${Math.max(.10,twinkle)})`;
+   ctx.beginPath();
+   ctx.arc(starPoint.x*width,starPoint.y*height,starPoint.r,0,Math.PI*2);
+   ctx.fill();
+ }
+ ctx.restore();
+}
+function drawSolarLighting(){
+ updateSolarPosition();
+ const nightHemisphere=d3.geoCircle().center([antiSolarPosition.lon,antiSolarPosition.lat]).radius(90).precision(1)();
+ const deepNight=d3.geoCircle().center([antiSolarPosition.lon,antiSolarPosition.lat]).radius(84).precision(1)();
+ const darkestNight=d3.geoCircle().center([antiSolarPosition.lon,antiSolarPosition.lat]).radius(78).precision(1)();
+
+ ctx.save();
+ drawFeature(nightHemisphere,"rgba(4,10,24,.50)","rgba(255,178,104,.16)",.7);
+ drawFeature(deepNight,"rgba(3,8,20,.13)",null,0);
+ drawFeature(darkestNight,"rgba(1,5,15,.12)",null,0);
+ ctx.restore();
+
+ if(visible([solarPosition.lon,solarPosition.lat])){
+   const sunScreen=projection([solarPosition.lon,solarPosition.lat]);
+   if(sunScreen){
+     ctx.save();
+     ctx.beginPath();path({type:"Sphere"});ctx.clip();
+     ctx.globalCompositeOperation="screen";
+     const glowRadius=baseScale*zoomK*.78;
+     const daylightGlow=ctx.createRadialGradient(sunScreen[0],sunScreen[1],0,sunScreen[0],sunScreen[1],glowRadius);
+     daylightGlow.addColorStop(0,"rgba(255,218,156,.18)");
+     daylightGlow.addColorStop(.45,"rgba(244,160,86,.075)");
+     daylightGlow.addColorStop(1,"rgba(244,130,66,0)");
+     ctx.fillStyle=daylightGlow;ctx.fillRect(0,0,width,height);
+     ctx.restore();
+   }
+ }
+}
+function drawAtmosphere(){
+ ctx.save();
+ ctx.globalCompositeOperation="screen";
+ ctx.shadowColor="rgba(255,167,91,.55)";
+ ctx.shadowBlur=18;
+ drawFeature({type:"Sphere"},null,"rgba(255,193,119,.42)",1.25);
+ ctx.shadowColor="rgba(102,173,255,.38)";
+ ctx.shadowBlur=28;
+ drawFeature({type:"Sphere"},null,"rgba(131,190,255,.22)",3.2);
+ ctx.restore();
+}
 function draw(){
  if(!width)return;
  ctx.clearRect(0,0,width,height);
  const grd=ctx.createRadialGradient(width*.48,height*.40,10,width*.5,height*.5,Math.min(width,height)*.62);
  grd.addColorStop(0,"#4a2418"); grd.addColorStop(.6,"#25120e"); grd.addColorStop(1,"#120806");
  ctx.fillStyle=grd; ctx.fillRect(0,0,width,height);
+ drawStarBackground();
 
  projection.rotate(rotation).scale(baseScale*zoomK);
  // globe shadow / rim
@@ -588,6 +681,9 @@ function draw(){
       if(currentYear>=263) drawFeature(shuPoly,"rgba(214,184,144,.30)","rgba(248,220,178,.55)",.8);
    }
  }
+
+ // Current-day solar lighting stays fixed to geographic longitude/latitude while the globe rotates.
+ drawSolarLighting();
 
  // China focus halo
  const cp=projection([110,33]);
@@ -618,8 +714,8 @@ function draw(){
    });
    if(currentYear>=265 && visible([114,36])){const q=projection([114,36]);roundedLabel("西晋",q[0],q[1],"#d6b890","#28140e")}
  }
- // rim
- drawFeature({type:"Sphere"},null,"rgba(255,211,149,.42)",1.4);
+ // atmosphere / rim
+ drawAtmosphere();
 }
 
 function eventIndex(e){return events.indexOf(e)}
@@ -709,17 +805,37 @@ romBtn.onclick=()=>{romanceOn=!romanceOn;romBtn.textContent=`演義メモ ${roma
 playBtn.onclick=()=>{auto=!auto; if(auto && activeIndex(currentEvent)>=activeEvents.length-1)setActiveIndex(0,true);syncPlay()};
 function syncPlay(){playBtn.textContent=auto?"❚❚ PAUSE":"▶ AUTO";playBtn.classList.toggle("on",auto)}
 
-let dragStartRot,dragStartPt;
+let dragStartRot,dragStartPt,dragLastPt,dragLastTime;
 d3.select(canvas).call(d3.drag()
- .on("start",(ev)=>{auto=false;syncPlay();manualUntil=performance.now()+3500;dragStartRot=rotation.slice();dragStartPt=[ev.x,ev.y]})
- .on("drag",(ev)=>{const dx=ev.x-dragStartPt[0],dy=ev.y-dragStartPt[1];rotation=[dragStartRot[0]+dx*.25,Math.max(-80,Math.min(80,dragStartRot[1]-dy*.25)),0];targetRotation=rotation.slice();draw()}));
+ .on("start",(ev)=>{
+   auto=false;syncPlay();manualUntil=performance.now()+3500;
+   dragStartRot=rotation.slice();dragStartPt=[ev.x,ev.y];dragLastPt=[ev.x,ev.y];dragLastTime=performance.now();spinVelocity=[0,0];
+ })
+ .on("drag",(ev)=>{
+   const nowValue=performance.now();
+   const dx=ev.x-dragStartPt[0],dy=ev.y-dragStartPt[1];
+   rotation=[dragStartRot[0]+dx*.25,Math.max(-80,Math.min(80,dragStartRot[1]-dy*.25)),0];
+   const elapsedMs=Math.max(8,nowValue-dragLastTime);
+   spinVelocity=[(ev.x-dragLastPt[0])*.25/elapsedMs,(dragLastPt[1]-ev.y)*.25/elapsedMs];
+   dragLastPt=[ev.x,ev.y];dragLastTime=nowValue;targetRotation=rotation.slice();manualUntil=nowValue+1600;draw();
+ })
+ .on("end",()=>{manualUntil=performance.now()+1700;}));
 d3.select(canvas).call(d3.zoom().scaleExtent([.75,2.2]).on("zoom",(ev)=>{if(ev.sourceEvent){manualUntil=performance.now()+2500;zoomK=ev.transform.k;draw()}}));
 
 function lerpAngle(a,b,t){let d=((b-a+540)%360)-180;return a+d*t}
 let autoClock=0;
 function tick(t){
  const dt=Math.min(40,t-lastT);lastT=t;pulse=t*.004;
- if(performance.now()>manualUntil){
+ updateSolarPosition();
+ const nowValue=performance.now();
+ if(nowValue<manualUntil && (Math.abs(spinVelocity[0])>.00002 || Math.abs(spinVelocity[1])>.00002)){
+   rotation[0]+=spinVelocity[0]*dt;
+   rotation[1]=Math.max(-80,Math.min(80,rotation[1]+spinVelocity[1]*dt));
+   const inertiaDecay=Math.pow(.90,dt/16.67);
+   spinVelocity[0]*=inertiaDecay;spinVelocity[1]*=inertiaDecay;
+   targetRotation=rotation.slice();
+ }else if(nowValue>manualUntil){
+   spinVelocity=[0,0];
    rotation[0]=lerpAngle(rotation[0],targetRotation[0],.045);
    rotation[1]+= (targetRotation[1]-rotation[1])*.045;
  }
@@ -734,6 +850,7 @@ function tick(t){
  }
  draw();requestAnimationFrame(tick);
 }
+updateSolarPosition(true);
 requestAnimationFrame(tick);
 
 Promise.all([
