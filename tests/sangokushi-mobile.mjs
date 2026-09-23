@@ -34,6 +34,11 @@ for (const target of targets) {
       scrollWidth:document.documentElement.scrollWidth,
       bodyScrollWidth:document.body.scrollWidth,
       stage,timeline,story,play,prev,slider,next,romance,app,
+      eventCount:document.querySelectorAll(".eventChip").length,
+      sliderMax:Number(document.querySelector("#yearSlider").max),
+      sceneNo:document.querySelector("#sceneNo")?.textContent || "",
+      titleText:document.querySelector("#title")?.textContent || "",
+      yearText:document.querySelector("#yearText")?.textContent || "",
       loadingPresent:!!document.querySelector("#loading"),
     };
   });
@@ -46,6 +51,22 @@ for (const target of targets) {
   if (result.timeline.top < result.stage.bottom - 2) err("timeline overlaps globe");
   if (result.story.top < result.timeline.bottom - 2) err("story overlaps timeline");
   if (result.stage.height < 220) err("globe stage too short: " + result.stage.height);
+  if (result.eventCount < 40) err("story is too coarse; expected at least 40 scenes, got " + result.eventCount);
+  if (result.sliderMax !== result.eventCount - 1) err("scene slider max mismatch: " + result.sliderMax + " vs " + (result.eventCount - 1));
+  if (!/^SCENE 01 \/ \d{2}$/.test(result.sceneNo)) err("scene counter missing or malformed: " + result.sceneNo);
+
+  if (target.name === "iphone-se") {
+    const before = {title:result.titleText, year:result.yearText};
+    await page.click("#nextBtn");
+    const after = await page.evaluate(() => ({
+      title:document.querySelector("#title")?.textContent || "",
+      year:document.querySelector("#yearText")?.textContent || "",
+      scene:document.querySelector("#sceneNo")?.textContent || ""
+    }));
+    if (before.year !== "184" || after.year !== "184") err("same-year scene navigation skipped 184 sequence: " + JSON.stringify({before,after}));
+    if (before.title === after.title) err("next scene did not change title");
+    if (!after.scene.startsWith("SCENE 02 /")) err("next scene counter incorrect: " + after.scene);
+  }
 
   if (target.width <= 430 && target.height > target.width) {
     const rowY = [result.play.cy,result.prev.cy,result.slider.cy,result.next.cy];
