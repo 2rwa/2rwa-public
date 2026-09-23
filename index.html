@@ -3,49 +3,377 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>2rwa public</title>
 <style>
-body{font-family:system-ui,-apple-system,sans-serif;max-width:760px;margin:0 auto;padding:40px 20px;line-height:1.7;background:#111;color:#eee}
-a{color:#9dd7ff}.card{border:1px solid #444;border-radius:14px;padding:18px;margin:18px 0;background:#181818}
-small{color:#aaa}.tag{font-size:.82rem;color:#bbb}
+:root{
+  --paper:#fbfaf7;
+  --paper-2:#f5f7fb;
+  --ink:#263444;
+  --muted:#6f7d8b;
+  --line:#d9e0e7;
+  --blue:#dcecff;
+  --blue-ink:#496b8c;
+  --rose:#f7e1ea;
+  --rose-ink:#8d5f73;
+  --lilac:#ebe4fa;
+  --lilac-ink:#6f6490;
+  --sage:#e7efe6;
+  --sage-ink:#5f735f;
+  --cream:#f3ead8;
+  --shadow:0 10px 26px rgba(55,72,91,.07);
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% -4%, rgba(220,236,255,.72), transparent 32rem),
+    radial-gradient(circle at 96% 4%, rgba(247,225,234,.78), transparent 30rem),
+    var(--paper);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI","Yu Gothic",sans-serif;
+  line-height:1.55;
+}
+a{color:inherit}
+.wrap{width:min(1180px,calc(100% - 28px));margin:0 auto}
+.mast{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:end;
+  padding:24px 0 14px;
+  border-bottom:1px solid var(--line);
+}
+.kicker{
+  margin:0 0 4px;
+  font:600 11px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.12em;
+  color:var(--blue-ink);
+  text-transform:uppercase;
+}
+h1{
+  margin:0;
+  font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
+  font-size:clamp(26px,4vw,46px);
+  font-weight:500;
+  letter-spacing:.035em;
+}
+.deck{
+  margin:4px 0 0;
+  max-width:760px;
+  color:var(--muted);
+  font-size:13px;
+}
+.repo-link{
+  white-space:nowrap;
+  font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  text-decoration:none;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:9px 12px;
+  background:rgba(255,255,255,.65);
+}
+.toolbar{
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) auto auto;
+  gap:8px;
+  align-items:center;
+  padding:11px 0;
+}
+.search{
+  width:100%;
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.8);
+  color:var(--ink);
+  padding:8px 10px;
+  font:500 13px/1.2 inherit;
+  outline:none;
+}
+.search:focus{border-color:#a9bdd1;box-shadow:0 0 0 3px rgba(169,189,209,.18)}
+.filters{display:flex;gap:5px;flex-wrap:wrap}
+.filter{
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.58);
+  color:var(--muted);
+  padding:7px 9px;
+  font:700 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.04em;
+  cursor:pointer;
+}
+.filter[aria-pressed="true"]{color:var(--ink);background:var(--blue)}
+.count{
+  min-width:62px;
+  text-align:right;
+  color:var(--muted);
+  font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+.section{margin:6px 0 18px}
+.section-head{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 7px;
+}
+.section-head h2{
+  margin:0;
+  font:700 11px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.rule{height:1px;flex:1;background:var(--line)}
+.section-count{
+  color:var(--muted);
+  font:600 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.item{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:9px;
+  align-items:start;
+  min-height:88px;
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.67);
+  box-shadow:var(--shadow);
+  text-decoration:none;
+  transition:transform .14s ease,border-color .14s ease,background .14s ease;
+}
+.item:hover{transform:translateY(-1px);border-color:#b8c6d4;background:#fff}
+.item:focus-visible{outline:3px solid rgba(73,107,140,.24);outline-offset:2px}
+.mark{
+  width:24px;height:24px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  font:800 10px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+.audio .mark{background:var(--rose);color:var(--rose-ink)}
+.tool .mark{background:var(--blue);color:var(--blue-ink)}
+.item h3{
+  margin:0;
+  font-size:14px;
+  line-height:1.28;
+  letter-spacing:.01em;
+}
+.item p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:11.5px;
+  line-height:1.45;
+}
+.meta{
+  display:flex;
+  gap:4px;
+  flex-wrap:wrap;
+  margin-top:6px;
+}
+.tag{
+  border-radius:999px;
+  padding:3px 6px;
+  font:700 9px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:var(--muted);
+  background:var(--paper-2);
+  border:1px solid #e1e6ec;
+}
+.arrow{
+  align-self:center;
+  color:#9aa6b2;
+  font-size:17px;
+  line-height:1;
+}
+.item[data-accent="lilac"] .mark{background:var(--lilac);color:var(--lilac-ink)}
+.item[data-accent="sage"] .mark{background:var(--sage);color:var(--sage-ink)}
+.item[data-accent="cream"] .mark{background:var(--cream);color:#806b49}
+.empty{
+  display:none;
+  padding:24px 0 34px;
+  color:var(--muted);
+  text-align:center;
+  font-size:13px;
+}
+.footer{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  margin:20px 0 28px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font:600 10px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+.sparkle{color:var(--rose-ink)}
+@media (max-width:860px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mast{grid-template-columns:1fr}
+  .repo-link{justify-self:start}
+}
+@media (max-width:620px){
+  .wrap{width:min(100% - 18px,1180px)}
+  .mast{padding-top:16px;gap:10px}
+  h1{font-size:30px}
+  .deck{font-size:12px}
+  .toolbar{grid-template-columns:1fr;gap:7px}
+  .filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:1px}
+  .count{text-align:left}
+  .grid{grid-template-columns:1fr;gap:6px}
+  .item{min-height:0;padding:9px 10px}
+  .item p{font-size:11px}
+  .footer{display:block}
+}
+@media (prefers-reduced-motion:reduce){
+  .item{transition:none}
+}
 </style>
 </head>
 <body>
-<h1>2rwa public</h1>
-<p>ゲーム、音、実験、文書などの公開置き場です。整理は必要になってから。</p>
-<p><a href="https://github.com/2rwa/2rwa-public">GitHub: 2rwa/2rwa-public</a></p>
+<main class="wrap">
+  <header class="mast">
+    <div>
+      <p class="kicker">2rwa / public experiments</p>
+      <h1>2rwa public</h1>
+      <p class="deck">ゲーム、音、実験、文書などの公開置き場。まとまる前のものも、そのまま並べています。</p>
+    </div>
+    <a class="repo-link" href="https://github.com/2rwa/2rwa-public">GitHub ↗</a>
+  </header>
 
-<div class="card">
-<h2>大太鼓 Mobile</h2>
-<p>スマホ向けのマルチタッチ大太鼓。物理音源 + WASM。</p>
-<p><a href="./audio/odaiko-mobile/">開く</a></p>
-</div>
+  <div class="toolbar" aria-label="公開物の絞り込み">
+    <input class="search" id="searchInput" type="search" placeholder="タイトル・説明・タグを検索" autocomplete="off">
+    <div class="filters" role="group" aria-label="カテゴリ">
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">ALL</button>
+      <button class="filter" type="button" data-filter="audio" aria-pressed="false">AUDIO</button>
+      <button class="filter" type="button" data-filter="tool" aria-pressed="false">TOOLS</button>
+    </div>
+    <div class="count" id="visibleCount">5 items</div>
+  </div>
 
-<div class="card">
-<h2>大太鼓 Rhythm Machine — Realtime</h2>
-<p>WASMを音声コールバックで逐次計算するリアルタイム版。</p>
-<p><a href="./audio/odaiko-rhythm-realtime/">開く</a></p>
-</div>
+  <section class="section" data-section="audio">
+    <div class="section-head">
+      <h2>Audio / Sound</h2><div class="rule"></div><span class="section-count">04</span>
+    </div>
+    <div class="grid">
+      <a class="item audio" data-kind="audio" data-accent="rose" href="./audio/odaiko-mobile/" data-search="大太鼓 mobile スマホ マルチタッチ 物理音源 wasm audio">
+        <span class="mark">01</span>
+        <span>
+          <h3>大太鼓 Mobile</h3>
+          <p>スマホ向けマルチタッチ大太鼓。物理音源 + WASM。</p>
+          <span class="meta"><span class="tag">mobile</span><span class="tag">WASM</span></span>
+        </span>
+        <span class="arrow">›</span>
+      </a>
 
-<div class="card">
-<h2>大太鼓 Rhythm Machine — Buffer</h2>
-<p>演奏前にレンダリングし、AudioBufferとして再生するスマホ向け版。</p>
-<p><a href="./audio/odaiko-rhythm-buffer/">開く</a></p>
-</div>
+      <a class="item audio" data-kind="audio" data-accent="cream" href="./audio/odaiko-rhythm-realtime/" data-search="大太鼓 rhythm machine realtime リアルタイム wasm audio callback">
+        <span class="mark">02</span>
+        <span>
+          <h3>Rhythm Machine — Realtime</h3>
+          <p>音声コールバックで逐次計算するリアルタイム版。</p>
+          <span class="meta"><span class="tag">realtime</span><span class="tag">WASM</span></span>
+        </span>
+        <span class="arrow">›</span>
+      </a>
 
-<div class="card">
-<h2>和太鼓 Rhythm Machine — Research</h2>
-<p>All Presets / Golden Policy の研究版。<span class="tag">実験・検証用</span></p>
-<p><a href="./audio/odaiko-rhythm-research/">開く</a></p>
-</div>
+      <a class="item audio" data-kind="audio" data-accent="sage" href="./audio/odaiko-rhythm-buffer/" data-search="大太鼓 rhythm machine buffer audibuffer スマホ prerender">
+        <span class="mark">03</span>
+        <span>
+          <h3>Rhythm Machine — Buffer</h3>
+          <p>演奏前にレンダリングし、AudioBufferで再生する版。</p>
+          <span class="meta"><span class="tag">buffer</span><span class="tag">mobile</span></span>
+        </span>
+        <span class="arrow">›</span>
+      </a>
 
+      <a class="item audio" data-kind="audio" data-accent="lilac" href="./audio/odaiko-rhythm-research/" data-search="和太鼓 大太鼓 rhythm machine research all presets golden policy 研究 実験">
+        <span class="mark">04</span>
+        <span>
+          <h3>Rhythm Machine — Research</h3>
+          <p>All Presets / Golden Policy を残した研究・検証版。</p>
+          <span class="meta"><span class="tag">research</span><span class="tag">experimental</span></span>
+        </span>
+        <span class="arrow">›</span>
+      </a>
+    </div>
+  </section>
 
-<div class="card">
-<h2>日本のテレビテロップ用語リファレンス v0.7</h2>
-<p>テロップ、スーパー、字幕、セーフ領域、日本語組版などをCanvas上の表示例とともに確認できる教材・リファレンス。</p>
-<p><a href="./tools/telop-reference/">開く</a></p>
-</div>
+  <section class="section" data-section="tool">
+    <div class="section-head">
+      <h2>Tools / Reference</h2><div class="rule"></div><span class="section-count">01</span>
+    </div>
+    <div class="grid">
+      <a class="item tool" data-kind="tool" data-accent="blue" href="./tools/telop-reference/" data-search="日本 テレビ テロップ 用語 リファレンス 字幕 スーパー セーフ領域 日本語組版 canvas">
+        <span class="mark">01</span>
+        <span>
+          <h3>日本のテレビテロップ用語リファレンス v0.7</h3>
+          <p>テロップ、スーパー、字幕、セーフ領域、日本語組版をCanvas上で比較。</p>
+          <span class="meta"><span class="tag">reference</span><span class="tag">canvas</span></span>
+        </span>
+        <span class="arrow">›</span>
+      </a>
+    </div>
+  </section>
 
-<small>work in progress</small>
+  <div class="empty" id="emptyState">一致する公開物がありません。</div>
+
+  <footer class="footer">
+    <span><span class="sparkle">◇</span> compact index / work in progress</span>
+    <span>2rwa-public</span>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const searchInput = document.getElementById('searchInput');
+  const filterButtons = [...document.querySelectorAll('.filter')];
+  const items = [...document.querySelectorAll('.item')];
+  const sections = [...document.querySelectorAll('[data-section]')];
+  const visibleCount = document.getElementById('visibleCount');
+  const emptyState = document.getElementById('emptyState');
+  let currentFilter = 'all';
+
+  function applyFilter() {
+    const query = searchInput.value.trim().toLowerCase();
+    let visible = 0;
+
+    for (const item of items) {
+      const kindMatch = currentFilter === 'all' || item.dataset.kind === currentFilter;
+      const haystack = (item.dataset.search + ' ' + item.textContent).toLowerCase();
+      const textMatch = !query || haystack.includes(query);
+      const show = kindMatch && textMatch;
+      item.hidden = !show;
+      if (show) visible++;
+    }
+
+    for (const section of sections) {
+      const hasVisible = [...section.querySelectorAll('.item')].some(item => !item.hidden);
+      section.hidden = !hasVisible;
+    }
+
+    visibleCount.textContent = visible + (visible === 1 ? ' item' : ' items');
+    emptyState.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  for (const button of filterButtons) {
+    button.addEventListener('click', () => {
+      currentFilter = button.dataset.filter;
+      for (const other of filterButtons) {
+        other.setAttribute('aria-pressed', String(other === button));
+      }
+      applyFilter();
+    });
+  }
+
+  searchInput.addEventListener('input', applyFilter);
+})();
+</script>
 </body>
 </html>
