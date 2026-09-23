@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2a130f">
+<title>三国志・地球儀年代記 184–280</title>
+<style>
+:root{
+  --ink:#f8ead8; --muted:#cdb8a4; --bg:#170c0a; --bg2:#25120e;
+  --panel:#2e1712; --panel2:#3a1c15; --line:#6c3a28;
+  --gold:#efc073; --amber:#d98b3a; --red:#c4573c;
+  --wei:#d47a45; --shu:#e5b35f; --wu:#b9684d; --jin:#d6b890;
+  --shadow:0 16px 50px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:
+ radial-gradient(circle at 70% 5%,#4a2115 0,transparent 30rem),
+ radial-gradient(circle at 5% 65%,#3a1811 0,transparent 24rem),
+ linear-gradient(180deg,#1a0c0a,#100806 80%);color:var(--ink);
+ font-family: ui-serif,"Hiragino Mincho ProN","Yu Mincho",serif;}
+button,input{font:inherit}
+body{overflow-x:hidden}
+.app{min-height:100dvh;max-width:1500px;margin:auto;padding:max(12px,env(safe-area-inset-top)) 14px max(16px,env(safe-area-inset-bottom))}
+header{display:flex;align-items:end;justify-content:space-between;gap:16px;padding:10px 4px 14px}
+.eyebrow{font:700 11px/1.2 ui-sans-serif,system-ui;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+h1{font-size:clamp(25px,5vw,52px);line-height:1.02;margin:6px 0 0;font-weight:700;letter-spacing:.03em}
+.subtitle{color:var(--muted);font:500 13px/1.55 ui-sans-serif,system-ui;max-width:45em;text-align:right}
+.layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(340px,.75fr);gap:14px;align-items:stretch}
+.card{border:1px solid #5d3225;background:linear-gradient(180deg,rgba(57,28,20,.96),rgba(34,17,13,.97));border-radius:24px;box-shadow:var(--shadow)}
+.stage{position:relative;min-height:660px;overflow:hidden}
+#globe{display:block;width:100%;height:100%;min-height:660px;touch-action:none;cursor:grab}
+#globe:active{cursor:grabbing}
+.stageTop{position:absolute;inset:16px 16px auto 16px;display:flex;justify-content:space-between;pointer-events:none;gap:10px}
+.badge,.legend{backdrop-filter:blur(9px);background:rgba(29,13,10,.68);border:1px solid rgba(239,192,115,.22);border-radius:14px;padding:9px 11px;font:700 11px/1.3 ui-sans-serif,system-ui}
+.badge strong{font-size:17px;color:#fff1d7}.legend{display:flex;gap:11px;align-items:center;color:#ead7c5}
+.dot{width:9px;height:9px;border-radius:999px;display:inline-block;margin-right:5px;box-shadow:0 0 14px currentColor}
+.dWei{background:var(--wei)} .dShu{background:var(--shu)} .dWu{background:var(--wu)}
+.stageHint{position:absolute;left:16px;bottom:15px;color:#bfa997;font:600 11px/1.35 ui-sans-serif,system-ui;background:rgba(25,12,9,.6);padding:8px 10px;border-radius:11px;pointer-events:none}
+.side{display:flex;flex-direction:column;min-width:0}
+.story{padding:22px 22px 18px;min-height:0;display:flex;flex-direction:column}
+.chapter{font:800 11px/1.2 ui-sans-serif,system-ui;letter-spacing:.16em;color:var(--gold);text-transform:uppercase}
+.yearLine{display:flex;align-items:baseline;gap:10px;margin-top:8px}
+.year{font:800 clamp(40px,7vw,72px)/.95 ui-sans-serif,system-ui;color:#ffe0aa;letter-spacing:-.05em}
+.ce{font:800 12px/1 ui-sans-serif,system-ui;color:var(--muted)}
+h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
+.place{font:800 12px/1.4 ui-sans-serif,system-ui;color:#d9a567;margin-bottom:14px}
+.desc{font-size:16px;line-height:1.85;color:#f4e4d4;margin:0}
+.keypoint{margin:15px 0 0;border-left:3px solid var(--amber);padding:10px 12px;background:#24100d;border-radius:0 12px 12px 0;color:#ebcda9;font:600 13px/1.65 ui-sans-serif,system-ui}
+.romance{display:none;margin-top:12px;padding:11px 13px;background:#3a1c15;border:1px solid #6d3928;border-radius:14px;color:#f0caa0;font:600 13px/1.65 ui-sans-serif,system-ui}
+.romance.show{display:block}
+.people{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.person{border:1px solid #6c3927;background:#26120e;border-radius:999px;padding:6px 9px;font:700 11px/1 ui-sans-serif,system-ui;color:#ead5bd}
+.timelineCard{margin-top:14px;padding:14px 14px 12px}
+.controls{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px}
+.btn{border:1px solid #76412e;color:#ffe7c4;background:linear-gradient(#4a251b,#321710);border-radius:12px;padding:9px 12px;font:800 12px/1 ui-sans-serif,system-ui;cursor:pointer;min-height:38px}
+.btn:active{transform:translateY(1px)} .btn.primary{background:linear-gradient(#a04e2f,#6b2f20);border-color:#bd6542}
+.btn.on{outline:2px solid #e8b96f;outline-offset:1px}
+#yearSlider{width:100%;accent-color:#d97e43}
+.rangeLine{display:flex;justify-content:space-between;color:#a89484;font:700 10px/1 ui-sans-serif,system-ui;margin:8px 4px 0 89px}
+.eventRail{display:flex;gap:6px;overflow-x:auto;padding:10px 1px 2px;scrollbar-width:none}
+.eventRail::-webkit-scrollbar{display:none}
+.eventChip{white-space:nowrap;border:1px solid #613322;background:#24110d;color:#cfb7a3;border-radius:999px;padding:7px 9px;font:700 10px/1 ui-sans-serif,system-ui;cursor:pointer}
+.eventChip.active{background:#8b4229;color:#fff0d4;border-color:#d0814e}
+.footerGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.info{padding:18px}
+.info h3{font-size:17px;margin:0 0 8px}
+.info p,.info li{color:#cdb8a6;font:600 12px/1.75 ui-sans-serif,system-ui}
+.info ul{padding-left:18px;margin:8px 0}
+.source a{color:#efbd7b}
+.loading{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,#2c160f,#160b08);z-index:10;transition:opacity .5s}
+.loading.hide{opacity:0;pointer-events:none}
+.loader{text-align:center;color:#e7c49a;font:700 12px/1.6 ui-sans-serif,system-ui}
+.loader b{display:block;font-size:28px;color:#ffe4b4;margin-bottom:7px}
+@media(max-width:900px){
+ header{align-items:start;flex-direction:column}.subtitle{text-align:left}
+ .layout{grid-template-columns:1fr}
+ .stage{min-height:52dvh;height:52dvh;border-radius:22px}
+ #globe{min-height:52dvh;height:52dvh}
+ .side{display:contents}
+ .timelineCard{order:2;margin-top:12px}
+ .story{order:3;margin-top:12px;min-height:auto}
+ .controls{grid-template-columns:auto auto 1fr}
+ .controls .romBtn{grid-column:1/-1}
+ .rangeLine{margin-left:90px}
+ .footerGrid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+ .app{padding-left:9px;padding-right:9px}
+ h1{font-size:29px}.subtitle{font-size:12px}
+ .stageTop{inset:10px 10px auto 10px}.legend{gap:7px;padding:8px;font-size:9px}
+ .badge{padding:8px 9px}.badge strong{font-size:15px}
+ .stageHint{left:10px;bottom:9px;font-size:9px}
+ .story{padding:18px 16px}.desc{font-size:15px;line-height:1.8}
+ .timelineCard{padding:11px 10px}
+ .btn{padding:8px 9px}
+ .rangeLine{margin-left:78px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <div class="eyebrow">Animated historical globe · 184–280 CE</div>
+    <h1>三国志・地球儀年代記</h1>
+  </div>
+  <div class="subtitle">後漢末の混乱から魏・蜀・呉、そして西晋の統一まで。地球儀を回しながら「どこで、いつ、何が連鎖したか」を追う。</div>
+</header>
+
+<main class="layout">
+  <section class="stage card">
+    <canvas id="globe"></canvas>
+    <div class="stageTop">
+      <div class="badge">FOCUS<br><strong id="focusName">中国・後漢</strong></div>
+      <div class="legend">
+        <span><i class="dot dWei"></i>魏</span>
+        <span><i class="dot dShu"></i>蜀漢</span>
+        <span><i class="dot dWu"></i>呉</span>
+      </div>
+    </div>
+    <div class="stageHint">ドラッグ：回転　／　ピンチ・ホイール：拡大縮小　／　◎：出来事</div>
+    <div class="loading" id="loading"><div class="loader"><b>三國</b>地図データを読み込み中…</div></div>
+  </section>
+
+  <section class="side">
+    <article class="story card">
+      <div class="chapter" id="chapter"></div>
+      <div class="yearLine"><div class="year" id="yearText"></div><div class="ce">CE</div></div>
+      <h2 id="title"></h2>
+      <div class="place" id="place"></div>
+      <p class="desc" id="desc"></p>
+      <div class="keypoint" id="keypoint"></div>
+      <div class="romance" id="romance"></div>
+      <div class="people" id="people"></div>
+    </article>
+
+    <section class="timelineCard card">
+      <div class="controls">
+        <button class="btn primary" id="playBtn">▶ AUTO</button>
+        <button class="btn" id="prevBtn">←</button>
+        <input id="yearSlider" type="range" min="184" max="280" step="1" value="184" aria-label="年代">
+        <button class="btn" id="nextBtn">→</button>
+        <button class="btn romBtn" id="romBtn">演義メモ OFF</button>
+      </div>
+      <div class="rangeLine"><span>184 後漢末</span><span>220 魏</span><span>280 西晋統一</span></div>
+      <div class="eventRail" id="eventRail"></div>
+    </section>
+  </section>
+</main>
+
+<section class="footerGrid">
+  <article class="info card">
+    <h3>見方</h3>
+    <ul>
+      <li>「三国時代」は一般に220年以後を指すが、このコンテンツでは原因を追うため184年の黄巾の乱から開始。</li>
+      <li>魏・蜀漢・呉の塗りは、国境線の厳密な復元ではなく時代理解用の<strong>概略勢力圏</strong>。</li>
+      <li>史実中心。演義メモをONにすると、後世の小説『三国志演義』で強調されたイメージとの差も表示。</li>
+    </ul>
+  </article>
+  <article class="info card source">
+    <h3>年代の基準</h3>
+    <p>後漢は220年まで。魏220–265、蜀漢221–263、呉は最終的に280年まで存続し、西晋による統一で三国の分立が終わる。</p>
+    <p>参考：<a href="https://www.metmuseum.org/toah/ht/05/eac.html" target="_blank" rel="noopener">The Met: China, 1–500 A.D.</a> ／
+    <a href="https://www.metmuseum.org/essays/han-dynasty-206-b-c-220-a-d" target="_blank" rel="noopener">The Met: Han Dynasty</a></p>
+  </article>
+</section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(() => {
+const events = [
+ {y:184, ch:"序章｜後漢末", t:"黄巾の乱", p:"華北各地", c:[114,34], z:1.18,
+  d:"太平道を背景とする大規模反乱が各地で発生。後漢朝廷は地方の軍事力に頼って鎮圧し、その過程で諸将・豪族が独自の兵力を持つようになる。",
+  k:"三国志の出発点は「三国」ではない。中央政府が地方の武力を必要とし、群雄割拠を生む条件が整ったことが重要。",
+  r:"『演義』では劉備・関羽・張飛の出会いを物語の入口に据え、桃園結義という象徴的場面で英雄譚を始める。",
+  pe:["劉備","関羽","張飛","張角"]},
+ {y:189, ch:"第1章｜中央崩壊", t:"董卓、洛陽を制圧", p:"洛陽", c:[112.45,34.62], z:1.55,
+  d:"霊帝の死後、宦官と外戚の争いが激化。董卓が軍を率いて洛陽へ入り、皇帝を廃立して中央政界を掌握する。",
+  k:"皇帝を擁することが政治的正統性の源になる一方、都そのものが軍閥抗争の舞台となった。",
+  r:"『演義』は董卓を典型的な暴君として描き、呂布・貂蝉を含む劇的な人間関係を強調する。",
+  pe:["董卓","献帝","袁紹","曹操"]},
+ {y:190, ch:"第1章｜群雄割拠", t:"反董卓連合", p:"洛陽周辺〜華北", c:[113.2,35.1], z:1.4,
+  d:"各地の有力者が董卓に反対して挙兵。連合は一枚岩ではなく、やがて諸勢力は互いの領域と主導権を争う。",
+  k:"「漢を救う連合」から「誰が次の秩序を作るか」という競争へ。袁紹・曹操らの対立が前面に出ていく。",
+  r:"虎牢関の戦いや『三英戦呂布』など、演義で著名な場面には小説的脚色が多い。",
+  pe:["袁紹","曹操","孫堅","董卓"]},
+ {y:196, ch:"第2章｜曹操の基盤", t:"曹操、献帝を許へ迎える", p:"許（現在の許昌付近）", c:[113.85,34.04], z:1.7,
+  d:"曹操は献帝を自らの勢力圏へ迎え、朝廷の制度と皇帝の権威を政治運営に組み込む。以後、華北での拡大に大きな優位を得る。",
+  k:"軍事力だけでなく、皇帝・官僚制・命令権を利用できたことが曹操政権の強さを支えた。",
+  r:"『演義』では「天子を挟み諸侯に令す」という構図が強く印象づけられる。",
+  pe:["曹操","献帝","荀彧"]},
+ {y:200, ch:"第2章｜華北の決着", t:"官渡の戦い", p:"官渡（河南省北部）", c:[114.05,34.95], z:1.75,
+  d:"曹操と袁紹が華北の主導権を争う。曹操側の勝利後、袁氏勢力は次第に弱まり、曹操による北方統合が進む。",
+  k:"兵数のイメージだけでなく、補給・指揮系統・同盟関係が結果を左右した戦いとして見ると流れが分かりやすい。",
+  r:"演義では奇襲や人物の機転を中心に劇的に描写され、曹操の知略が強調される。",
+  pe:["曹操","袁紹","許攸"]},
+ {y:208, ch:"第3章｜南北の分岐", t:"赤壁の戦い", p:"長江中流域・赤壁周辺", c:[113.9,29.7], z:1.75,
+  d:"荊州へ南下した曹操軍に対し、孫権陣営と劉備陣営が協力して抗戦。曹操の南方への一気の拡大は止まり、長江流域に別の政治勢力が残る。",
+  k:"三国鼎立の『原因』として最重要級。208年に三国が成立したのではなく、北・長江下流・西南という分立の条件がここで強まった。",
+  r:"諸葛亮の東南風、草船借箭、周瑜との知略比べなどは『演義』を代表する物語化。",
+  pe:["曹操","孫権","周瑜","劉備","諸葛亮"]},
+ {y:214, ch:"第3章｜西南の確保", t:"劉備、益州を掌握", p:"成都", c:[104.07,30.67], z:1.75,
+  d:"劉備は益州を支配下に置き、成都を中心とする安定した地盤を得る。これにより曹操・孫権と並ぶ第三勢力としての条件が整う。",
+  k:"『人材が揃ったから三国になった』だけではない。四川盆地という人口・農業・防御に適した地理的基盤が大きい。",
+  r:"演義では諸葛亮の長期戦略『隆中対』が実現していく過程として読まれることが多い。",
+  pe:["劉備","諸葛亮","法正","劉璋"]},
+ {y:219, ch:"第4章｜均衡の崩れ", t:"漢中獲得と荊州喪失", p:"漢中／荊州", c:[108.95,32.6], z:1.55,
+  d:"劉備は漢中方面で優位を得る一方、荊州では関羽が孫権側に敗れ、劉備勢力は重要な東方拠点を失う。",
+  k:"同じ年に『西では前進、東では大後退』が起きた。蜀漢の後の戦略を強く制約する転換点。",
+  r:"関羽の最期は忠義の象徴として大きく物語化され、後世の関帝信仰とも結びつく。",
+  pe:["劉備","関羽","曹操","孫権","呂蒙"]},
+ {y:220, ch:"第5章｜三国時代へ", t:"後漢滅亡、魏成立", p:"洛陽", c:[112.45,34.62], z:1.5,
+  d:"曹操の死後、曹丕が献帝から禅譲を受けて魏を建てる。約400年続いた漢王朝の時代が終わり、王朝としての三国時代が始まる。",
+  k:"曹操は『魏の皇帝』ではない。皇帝として魏を建国したのは曹丕。",
+  r:"演義では漢への忠義を物語の基準にし、曹魏への王朝交代を道徳的対立として強く描く。",
+  pe:["曹丕","献帝","曹操"]},
+ {y:221, ch:"第5章｜三国の形成", t:"劉備、蜀漢皇帝を称す", p:"成都", c:[104.07,30.67], z:1.6,
+  d:"劉備は漢の継承を掲げて成都で皇帝となる。後世には蜀・蜀漢と呼ばれる政権が成立する。",
+  k:"国号は単純に『蜀』ではなく『漢』。歴史上区別するため『蜀漢』と呼ばれる。",
+  r:"演義では劉備を漢王朝の正統を受け継ぐ存在として描き、読者の感情移入の中心に置く。",
+  pe:["劉備","諸葛亮"]},
+ {y:222, ch:"第5章｜三国の形成", t:"夷陵・猇亭の戦い", p:"長江・三峡東部", c:[111.3,30.7], z:1.65,
+  d:"荊州と関羽を失った劉備は呉へ進攻するが敗北。蜀漢と呉は大きく消耗し、その後は再び魏に対抗する関係へ戻る。",
+  k:"感情的な復讐戦だけで捉えると単純化しすぎる。荊州をめぐる領土・交通・同盟再編の戦争でもあった。",
+  r:"演義では関羽・張飛の死から劉備の報復へという連続した悲劇として構成される。",
+  pe:["劉備","陸遜","孫権"]},
+ {y:229, ch:"第5章｜鼎立", t:"孫権、皇帝を称す", p:"建業（現在の南京）", c:[118.8,32.06], z:1.65,
+  d:"孫権が皇帝を称し、呉の皇帝号が確立。北の魏、西南の蜀漢、長江下流の呉という三政権が明瞭に並立する。",
+  k:"三国の成立年を一つに決めるより、220・221・222/229と段階的に国家体制が固まったと見ると混乱が少ない。",
+  r:"演義では蜀漢中心の物語構造のため、呉の国内制度や江南社会の成長は相対的に目立ちにくい。",
+  pe:["孫権","陸遜"]},
+ {y:234, ch:"第6章｜長期戦", t:"五丈原、諸葛亮死去", p:"五丈原（陝西省）", c:[107.5,34.3], z:1.75,
+  d:"蜀漢の諸葛亮は複数回にわたり北方へ軍を進めるが、234年の遠征中に死去。魏を倒す決定打には至らなかった。",
+  k:"北伐は『一発逆転』だけでなく、魏への圧力、国境防衛、蜀漢政権の正統性維持など複数の意味を持った。",
+  r:"『死せる孔明、生ける仲達を走らす』など、諸葛亮の超人的知略を象徴する逸話が後世に広まった。",
+  pe:["諸葛亮","司馬懿","姜維"]},
+ {y:249, ch:"第7章｜魏の内側", t:"高平陵の変", p:"洛陽", c:[112.45,34.62], z:1.6,
+  d:"司馬懿が政変によって曹爽派を排除し、魏の政権中枢で司馬氏の影響力が急速に拡大する。",
+  k:"三国の終わりは国境で突然起きたのではない。最強国だった魏の内部で、実権が曹氏から司馬氏へ移ったことが統一への前段階。",
+  r:"演義後半では司馬懿は諸葛亮の好敵手として登場するが、実際には魏内部の権力再編でも極めて重要。",
+  pe:["司馬懿","曹爽"]},
+ {y:263, ch:"終章｜崩壊", t:"魏、蜀漢を滅ぼす", p:"成都", c:[104.07,30.67], z:1.65,
+  d:"魏軍が蜀漢へ進攻し、成都が降伏。蜀漢は滅亡する。三国の均衡はここで決定的に崩れる。",
+  k:"険しい山地は防御力になる一方、複数方向から突破されると中央の選択肢が急速に狭まる。",
+  r:"姜維・鄧艾・鍾会をめぐる終盤は、演義でも策略と政変が連続する密度の高い章。",
+  pe:["劉禅","鄧艾","鍾会","姜維"]},
+ {y:265, ch:"終章｜王朝交代", t:"司馬炎、西晋を建国", p:"洛陽", c:[112.45,34.62], z:1.55,
+  d:"司馬炎が魏の皇帝から禅譲を受けて晋を建国。曹魏は滅び、北方の支配は司馬氏の西晋へ移る。",
+  k:"『魏が蜀を滅ぼし、晋がその魏を継ぐ』。統一の主体は三国の創業者たちではなく、魏の政権内部から台頭した司馬氏だった。",
+  r:"物語としては英雄世代の退場後にあたり、前半ほど著名ではないが、三国の結末を理解する核心。",
+  pe:["司馬炎","司馬昭"]},
+ {y:280, ch:"終章｜再統一", t:"西晋、呉を滅ぼして統一", p:"建業（現在の南京）", c:[118.8,32.06], z:1.5,
+  d:"西晋が長江を越えて呉を攻略。呉の降伏により、後漢末から続いた長い分裂の一段階が終わる。",
+  k:"184年から見ると約1世紀。『三国の英雄が天下統一する物語』ではなく、分裂の条件と国家形成、世代交代の末に晋が統一した歴史になる。",
+  r:"『三国志演義』の大きな主題の一つは、英雄の努力も最終的には時代の大きな循環へ飲み込まれるという無常観。",
+  pe:["司馬炎","孫皓"]}
+];
+
+const weiPoly={type:"Feature",geometry:{type:"Polygon",coordinates:[[[103,32],[106,39],[113,42],[122,41],[124,35],[120,30],[114,29],[109,31],[103,32]]]}};
+const shuPoly={type:"Feature",geometry:{type:"Polygon",coordinates:[[[97,29],[100,34],[105,34],[110,32],[111,28],[108,24],[101,24],[97,29]]]}};
+const wuPoly={type:"Feature",geometry:{type:"Polygon",coordinates:[[[109,29],[114,31],[121,31],[123,27],[121,22],[116,20],[110,22],[107,25],[109,29]]]}};
+
+const canvas=document.getElementById("globe"), ctx=canvas.getContext("2d");
+const storyEls={
+ ch:document.getElementById("chapter"), y:document.getElementById("yearText"), t:document.getElementById("title"),
+ p:document.getElementById("place"), d:document.getElementById("desc"), k:document.getElementById("keypoint"),
+ r:document.getElementById("romance"), pe:document.getElementById("people")
+};
+const slider=document.getElementById("yearSlider"), playBtn=document.getElementById("playBtn"),
+ prevBtn=document.getElementById("prevBtn"), nextBtn=document.getElementById("nextBtn"),
+ romBtn=document.getElementById("romBtn"), rail=document.getElementById("eventRail"),
+ focusName=document.getElementById("focusName"), loading=document.getElementById("loading");
+
+let width=0,height=0,dpr=1,world=null,countries=[],china=null,land=null;
+let projection=d3.geoOrthographic().clipAngle(90).precision(.3);
+let path=d3.geoPath(projection,ctx);
+let baseScale=250, zoomK=1, rotation=[-105,-28,0], targetRotation=[-105,-28,0];
+let currentYear=184, currentEvent=events[0], auto=false, romanceOn=false, lastT=performance.now(), pulse=0;
+let manualUntil=0;
+
+function resize(){
+ const r=canvas.getBoundingClientRect(); dpr=Math.min(devicePixelRatio||1,2);
+ width=Math.max(1,r.width); height=Math.max(1,r.height);
+ canvas.width=Math.round(width*dpr); canvas.height=Math.round(height*dpr);
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ baseScale=Math.min(width,height)*.43;
+ projection.translate([width/2,height/2]).scale(baseScale*zoomK);
+ draw();
+}
+new ResizeObserver(resize).observe(canvas);
+
+function roundedLabel(text,x,y,bg="#391c14",fg="#ffe6bd"){
+ ctx.font="700 12px ui-sans-serif, system-ui"; const m=ctx.measureText(text), w=m.width+18,h=26;
+ ctx.fillStyle=bg; ctx.beginPath(); ctx.roundRect(x-w/2,y-h/2,w,h,9); ctx.fill();
+ ctx.fillStyle=fg; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(text,x,y+.5);
+}
+function visible(coord){
+ const center=[-projection.rotate()[0],-projection.rotate()[1]];
+ return d3.geoDistance(coord,center) < Math.PI/2;
+}
+function drawFeature(f, fill, stroke, lw=1){
+ ctx.beginPath(); path(f); if(fill){ctx.fillStyle=fill;ctx.fill()} if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}
+}
+function draw(){
+ if(!width)return;
+ ctx.clearRect(0,0,width,height);
+ const grd=ctx.createRadialGradient(width*.48,height*.40,10,width*.5,height*.5,Math.min(width,height)*.62);
+ grd.addColorStop(0,"#4a2418"); grd.addColorStop(.6,"#25120e"); grd.addColorStop(1,"#120806");
+ ctx.fillStyle=grd; ctx.fillRect(0,0,width,height);
+
+ projection.rotate(rotation).scale(baseScale*zoomK);
+ // globe shadow / rim
+ ctx.save();
+ ctx.shadowColor="rgba(239,170,91,.28)";ctx.shadowBlur=34;
+ drawFeature({type:"Sphere"},"#21120f","#8a5133",1.5);
+ ctx.restore();
+
+ const grat=d3.geoGraticule10();
+ drawFeature(grat,null,"rgba(239,192,115,.09)",.6);
+
+ if(land) drawFeature(land,"#5c3929","rgba(244,210,166,.24)",.55);
+ if(china) drawFeature(china,"#935037","#e0a365",1.2);
+
+ // territory overlays only after political formations become relevant
+ if(currentYear>=220){
+   const fade=currentYear>=263 ? (currentYear>=265? .18:.42) : .58;
+   drawFeature(weiPoly,`rgba(212,122,69,${currentYear>=265?.12:fade})`,"rgba(255,190,130,.78)",1.0);
+   if(currentYear<263) drawFeature(shuPoly,"rgba(229,179,95,.50)","rgba(255,222,158,.85)",1.0);
+   if(currentYear<280) drawFeature(wuPoly,"rgba(185,104,77,.52)","rgba(255,170,135,.82)",1.0);
+   if(currentYear>=265){
+      drawFeature(weiPoly,"rgba(214,184,144,.42)","rgba(248,220,178,.7)",1);
+      if(currentYear>=263) drawFeature(shuPoly,"rgba(214,184,144,.30)","rgba(248,220,178,.55)",.8);
+   }
+ }
+
+ // China focus halo
+ const cp=projection([110,33]);
+ if(cp && visible([110,33])){
+   ctx.save();ctx.globalCompositeOperation="screen";
+   const rg=ctx.createRadialGradient(cp[0],cp[1],0,cp[0],cp[1],80*zoomK);
+   rg.addColorStop(0,"rgba(255,179,91,.18)");rg.addColorStop(1,"rgba(255,179,91,0)");
+   ctx.fillStyle=rg;ctx.beginPath();ctx.arc(cp[0],cp[1],80*zoomK,0,Math.PI*2);ctx.fill();ctx.restore();
+ }
+
+ // event marker
+ if(currentEvent && visible(currentEvent.c)){
+   const q=projection(currentEvent.c), rr=7+4*Math.sin(pulse);
+   ctx.save();
+   ctx.strokeStyle="rgba(255,220,162,.45)";ctx.lineWidth=1.4;
+   ctx.beginPath();ctx.arc(q[0],q[1],rr*2.2,0,Math.PI*2);ctx.stroke();
+   ctx.fillStyle="#ffe4a9";ctx.shadowColor="#ffad63";ctx.shadowBlur=18;
+   ctx.beginPath();ctx.arc(q[0],q[1],5.2,0,Math.PI*2);ctx.fill();
+   ctx.restore();
+   roundedLabel(currentEvent.p.split("（")[0],q[0],q[1]-28);
+ }
+
+ // labels after 220
+ if(currentYear>=220){
+   [["魏",[114,36],"#d47a45"],["蜀漢",[103,29],"#e5b35f"],["呉",[118,26],"#b9684d"]].forEach(([n,c,bg])=>{
+     if((n==="蜀漢"&&currentYear>=263)||(n==="呉"&&currentYear>=280)||(n==="魏"&&currentYear>=265)) return;
+     if(visible(c)){const q=projection(c);roundedLabel(n,q[0],q[1],bg,"#1c0e0a")}
+   });
+   if(currentYear>=265 && visible([114,36])){const q=projection([114,36]);roundedLabel("西晋",q[0],q[1],"#d6b890","#28140e")}
+ }
+ // rim
+ drawFeature({type:"Sphere"},null,"rgba(255,211,149,.42)",1.4);
+}
+
+function nearestEventForYear(y){
+ let e=events[0]; for(const x of events){if(x.y<=y)e=x; else break} return e;
+}
+function eventIndex(e){return events.indexOf(e)}
+function updateStory(e, move=true){
+ currentEvent=e; currentYear=Number(slider.value);
+ storyEls.ch.textContent=e.ch; storyEls.y.textContent=currentYear;
+ storyEls.t.textContent=e.t; storyEls.p.textContent="◎ "+e.p; storyEls.d.textContent=e.d;
+ storyEls.k.innerHTML="<strong>ここがポイント：</strong> "+e.k; storyEls.r.textContent="演義メモ： "+e.r;
+ storyEls.r.classList.toggle("show",romanceOn);
+ storyEls.pe.innerHTML=e.pe.map(x=>`<span class="person">${x}</span>`).join("");
+ focusName.textContent=e.p.split("（")[0].split("／")[0];
+ document.querySelectorAll(".eventChip").forEach((el,i)=>el.classList.toggle("active",events[i]===e));
+ const chip=document.querySelector(`.eventChip[data-y="${e.y}"]`); if(chip)chip.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+ if(move && performance.now()>manualUntil){
+   targetRotation=[-e.c[0],-e.c[1],0];
+   zoomK=e.z;
+ }
+ draw();
+}
+function setYear(y,move=true){
+ y=Math.max(184,Math.min(280,Math.round(y))); slider.value=y; currentYear=y;
+ const e=nearestEventForYear(y); updateStory(e,move);
+}
+function stepEvent(dir){
+ const i=eventIndex(currentEvent), ni=Math.max(0,Math.min(events.length-1,i+dir));
+ slider.value=events[ni].y; setYear(events[ni].y,true);
+}
+events.forEach(e=>{
+ const b=document.createElement("button"); b.className="eventChip"; b.dataset.y=e.y;b.textContent=`${e.y} ${e.t}`;
+ b.onclick=()=>{auto=false;syncPlay();setYear(e.y,true)}; rail.appendChild(b);
+});
+slider.oninput=()=>{auto=false;syncPlay();setYear(+slider.value,true)};
+prevBtn.onclick=()=>{auto=false;syncPlay();stepEvent(-1)};
+nextBtn.onclick=()=>{auto=false;syncPlay();stepEvent(1)};
+romBtn.onclick=()=>{romanceOn=!romanceOn;romBtn.textContent=`演義メモ ${romanceOn?"ON":"OFF"}`;romBtn.classList.toggle("on",romanceOn);updateStory(currentEvent,false)};
+playBtn.onclick=()=>{auto=!auto; if(auto && currentYear>=280)setYear(184,true);syncPlay()};
+function syncPlay(){playBtn.textContent=auto?"❚❚ PAUSE":"▶ AUTO";playBtn.classList.toggle("on",auto)}
+
+let dragStartRot,dragStartPt;
+d3.select(canvas).call(d3.drag()
+ .on("start",(ev)=>{auto=false;syncPlay();manualUntil=performance.now()+3500;dragStartRot=rotation.slice();dragStartPt=[ev.x,ev.y]})
+ .on("drag",(ev)=>{const dx=ev.x-dragStartPt[0],dy=ev.y-dragStartPt[1];rotation=[dragStartRot[0]+dx*.25,Math.max(-80,Math.min(80,dragStartRot[1]-dy*.25)),0];targetRotation=rotation.slice();draw()}));
+d3.select(canvas).call(d3.zoom().scaleExtent([.75,2.2]).on("zoom",(ev)=>{if(ev.sourceEvent){manualUntil=performance.now()+2500;zoomK=ev.transform.k;draw()}}));
+
+function lerpAngle(a,b,t){let d=((b-a+540)%360)-180;return a+d*t}
+let autoClock=0;
+function tick(t){
+ const dt=Math.min(40,t-lastT);lastT=t;pulse=t*.004;
+ if(performance.now()>manualUntil){
+   rotation[0]=lerpAngle(rotation[0],targetRotation[0],.045);
+   rotation[1]+= (targetRotation[1]-rotation[1])*.045;
+ }
+ if(auto){
+   autoClock+=dt;
+   if(autoClock>2500){
+     autoClock=0;
+     const i=eventIndex(currentEvent);
+     if(i>=events.length-1){auto=false;syncPlay()}
+     else{setYear(events[i+1].y,true)}
+   }
+ }
+ draw();requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+Promise.all([
+ fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(r=>r.json())
+]).then(([topology])=>{
+ world=topology;
+ countries=topojson.feature(topology,topology.objects.countries).features;
+ land=topojson.feature(topology,topology.objects.land);
+ china=countries.find(f=>String(f.id)==="156");
+ loading.classList.add("hide");
+ setTimeout(()=>loading.remove(),600);
+ setYear(184,true);
+}).catch(err=>{
+ console.warn(err);
+ loading.querySelector(".loader").innerHTML="<b>三國</b>地図取得に失敗しました。ネット接続後に再読み込みしてください。";
+ setYear(184,true);
+});
+})();
+</script>
+</body>
+</html>
