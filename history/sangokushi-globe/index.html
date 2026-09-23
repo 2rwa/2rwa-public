@@ -46,12 +46,17 @@ h1{font-size:clamp(25px,5vw,52px);line-height:1.02;margin:6px 0 0;font-weight:70
 h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
 .place{font:800 12px/1.4 ui-sans-serif,system-ui;color:#d9a567;margin-bottom:14px}
 .desc{font-size:16px;line-height:1.85;color:#f4e4d4;margin:0}
-.keypoint{margin:15px 0 0;border-left:3px solid var(--amber);padding:10px 12px;background:#24100d;border-radius:0 12px 12px 0;color:#ebcda9;font:600 13px/1.65 ui-sans-serif,system-ui}.bridge{margin-top:10px;padding:9px 11px;border-top:1px solid #5b3022;color:#d8b38d;font:700 12px/1.6 ui-sans-serif,system-ui}.bridge::before{content:"→ 次への流れ　";color:#efb86c}
+.keypoint{margin:15px 0 0;border-left:3px solid var(--amber);padding:10px 12px;background:#24100d;border-radius:0 12px 12px 0;color:#ebcda9;font:600 13px/1.65 ui-sans-serif,system-ui}.bridge{margin-top:10px;padding:9px 11px;border-top:1px solid #5b3022;color:#d8b38d;font:700 12px/1.6 ui-sans-serif,system-ui}.bridge::before{content:"→ 歴史の流れ　";color:#efb86c}
 .romance{display:none;margin-top:12px;padding:11px 13px;background:#3a1c15;border:1px solid #6d3928;border-radius:14px;color:#f0caa0;font:600 13px/1.65 ui-sans-serif,system-ui}
 .romance.show{display:block}
 .people{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
-.person{border:1px solid #6c3927;background:#26120e;border-radius:999px;padding:6px 9px;font:700 11px/1 ui-sans-serif,system-ui;color:#ead5bd}
+.person{border:1px solid #6c3927;background:#26120e;border-radius:999px;padding:7px 10px;font:700 11px/1 ui-sans-serif,system-ui;color:#ead5bd;cursor:pointer}
+.person:hover,.person:focus-visible{border-color:#c47a4e;color:#fff0d7;outline:none}.person.active{background:#7c3d28;border-color:#d78a56;color:#fff2dc}
 .timelineCard{margin-top:14px;padding:14px 14px 12px}
+.personMode{display:grid;grid-template-columns:auto minmax(150px,1fr) auto;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #583024}
+.personMode label{font:800 11px/1 ui-sans-serif,system-ui;color:var(--gold);letter-spacing:.08em}
+.personMode select{min-width:0;width:100%;height:38px;border:1px solid #74402d;border-radius:11px;background:#25120e;color:#ffe8c8;padding:0 34px 0 10px;font:700 12px ui-sans-serif,system-ui}
+#personSummary{white-space:nowrap;color:#bfa892;font:700 10px/1.2 ui-sans-serif,system-ui}
 .controls{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px}
 .btn{border:1px solid #76412e;color:#ffe7c4;background:linear-gradient(#4a251b,#321710);border-radius:12px;padding:9px 12px;font:800 12px/1 ui-sans-serif,system-ui;cursor:pointer;min-height:38px}
 .btn:active{transform:translateY(1px)} .btn.primary{background:linear-gradient(#a04e2f,#6b2f20);border-color:#bd6542}
@@ -96,6 +101,7 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
  .stageHint{left:10px;bottom:9px;max-width:calc(100% - 20px);font-size:9px}
  .story{padding:18px 16px}.desc{font-size:15px;line-height:1.8}
  .timelineCard{padding:11px 10px}
+ .personMode{grid-template-columns:auto minmax(0,1fr);gap:7px}.personMode #personSummary{grid-column:1/-1}
  .controls{grid-template-columns:auto 42px minmax(56px,1fr) 42px;gap:5px}
  .btn{padding:8px 7px;min-height:44px}
  .rangeLine{margin:8px 2px 0}
@@ -112,7 +118,7 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
     <div class="eyebrow">Animated historical globe · 184–280 CE</div>
     <h1>三国志・地球儀年代記</h1>
   </div>
-  <div class="subtitle">後漢末の混乱から魏・蜀・呉、そして西晋の統一まで。47の場面をつないで「何が起き、それが次に何を生んだか」を地球儀で追う。</div>
+  <div class="subtitle">後漢末の混乱から魏・蜀・呉、そして西晋の統一まで。52の場面をつないで「何が起き、それが次に何を生んだか」を地球儀で追う。</div>
 </header>
 
 <main class="layout">
@@ -143,6 +149,11 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
     </article>
 
     <section class="timelineCard card">
+      <div class="personMode">
+        <label for="personSelect">人物を追う</label>
+        <select id="personSelect" aria-label="人物を選択"><option value="">全体史</option></select>
+        <span id="personSummary">全52場面</span>
+      </div>
       <div class="controls">
         <button class="btn primary" id="playBtn">▶ AUTO</button>
         <button class="btn" id="prevBtn">←</button>
@@ -150,7 +161,7 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
         <button class="btn" id="nextBtn">→</button>
         <button class="btn romBtn" id="romBtn">演義メモ OFF</button>
       </div>
-      <div class="rangeLine"><span>184 後漢末</span><span>220 魏</span><span>280 西晋統一</span></div>
+      <div class="rangeLine"><span id="rangeStart">184 後漢末</span><span id="rangeMid">52 scenes</span><span id="rangeEnd">280 西晋統一</span></div>
       <div class="eventRail" id="eventRail"></div>
     </section>
   </section>
@@ -163,6 +174,7 @@ h2{font-size:clamp(24px,3.2vw,38px);line-height:1.15;margin:12px 0 8px}
       <li>「三国時代」は一般に220年以後を指すが、このコンテンツでは原因を追うため184年の黄巾の乱から開始。</li>
       <li>魏・蜀漢・呉の塗りは、国境線の厳密な復元ではなく時代理解用の<strong>概略勢力圏</strong>。</li>
       <li>史実中心。演義メモをONにすると、後世の小説『三国志演義』で強調されたイメージとの差も表示。</li>
+      <li>「人物を追う」で人物別の年代線へ切替。年を置けない逸話はスライダーに無理に追加しない。</li>
     </ul>
   </article>
   <article class="info card source">
@@ -227,6 +239,13 @@ const events = [
   link:"この内戦を切り抜けた曹操に、次は『皇帝を迎える』という政治的な選択肢が現れる。",
   r:"演義では呂布の武勇が前面に出るが、史実のポイントは兗州の内部離反と曹操の政権基盤の脆さ。",
   pe:["曹操","呂布","陳宮"]},
+
+ {y:194,when:"後半",ch:"第2章｜群雄の時代",t:"陶謙死去、劉備が徐州を継ぐ",p:"徐州",c:[117.2,34.3],z:1.55,
+  d:"曹操の徐州侵攻に対し、陶謙は田楷・劉備らへ救援を求めた。曹操が兗州の反乱へ対応するため撤退した後、陶謙が死去し、劉備は徐州の統治を引き受ける。劉備が一地方の独立した政治勢力として大きく踏み出した時期だった。",
+  k:"184年の義勇的な軍事参加から約10年。劉備はここで初めて広い州を預かる立場に進むが、その支配はまだ非常に不安定だった。",
+  link:"徐州は袁術・呂布・曹操など複数勢力の間にあり、劉備はほどなく領地を失って各地を転々とすることになる。",
+  r:"演義では陶謙が何度も徐州を譲ろうとし、劉備が固辞する美談として強く描かれる。史実でも劉備が陶謙死後に徐州を継いだが、政治状況はより複雑だった。",
+  pe:["劉備","陶謙","曹操","関羽","張飛"]},
  {y:195,when:"〜196",ch:"第2章｜群雄の時代",t:"献帝が長安を脱出、曹操が迎える",p:"洛陽 → 許",c:[113.85,34.04],z:1.68,
   d:"李傕・郭汜らの争いから献帝は長安を脱出し、荒廃した洛陽へ戻る。曹操は荀彧らの進言も受けて皇帝を自領へ迎え、朝廷を許に置いた。",
   k:"曹操は軍閥であるだけでなく、皇帝・官僚・詔勅という『漢の制度』を自軍の政治資源として使えるようになった。",
@@ -245,6 +264,13 @@ const events = [
   link:"袁紹の死後に後継者争いが起き、曹操はその分裂を利用して河北へ進む。",
   r:"演義では大逆転の一戦として鮮やかに描かれるが、その後の長い河北攻略まで含めると曹操の北方統一が見えやすい。",
   pe:["曹操","袁紹","許攸"]},
+
+ {y:200,when:"春〜夏",ch:"第3章｜江東の世代交代",t:"孫策死去、孫権が江東を継ぐ",p:"江東・呉郡",c:[120.6,31.3],z:1.58,
+  d:"江東を急速に平定していた孫策が負傷ののち死去し、弟の孫権が若くして勢力を継承する。張昭・周瑜らが新体制を支え、孫氏政権は創業者の死で崩れずに存続した。",
+  k:"赤壁の8年前に、呉の主役は孫策から孫権へ交代している。孫権の強みは、自分で江東を征服したことより、兄が作った勢力を長期政権へ変えた点にある。",
+  link:"孫権は江東内部を固め、208年に曹操の南下を迎え撃つことになる。",
+  r:"演義では孫策の死に于吉をめぐる怪異譚が加えられる。史実では暗殺者の襲撃による負傷が死につながった。",
+  pe:["孫策","孫権","張昭","周瑜"]},
  {y:202,when:"〜204",ch:"第3章｜曹操の北方統一",t:"袁紹死去、後継争いから鄴陥落へ",p:"河北・鄴",c:[114.5,36.6],z:1.55,
   d:"袁紹の死後、袁譚と袁尚の対立が深まり、曹操はその分裂へ介入する。204年には鄴を攻略し、河北の中心部に大きな足場を得た。",
   k:"敵を一度に倒したのではなく、後継争い・同盟・離反を利用して支配地域を段階的に広げた。",
@@ -275,6 +301,19 @@ const events = [
   link:"劉備は荊州だけでは独立国家の基盤が弱く、西の益州へ目を向ける。",
   r:"『荊州を借りた／返さない』という単純な貸借話にすると実態を落としやすい。支配権は段階的に変化した。",
   pe:["劉備","孫権","周瑜","魯粛","関羽"]},
+
+ {y:210,when:"頃",ch:"第4章｜赤壁後の再配置",t:"周瑜死去、魯粛が対劉備外交を引き継ぐ",p:"江陵・江東",c:[114.3,30.4],z:1.58,
+  d:"赤壁と江陵攻略で孫権政権の西方戦略を担った周瑜が死去する。以後、魯粛が劉備との協調を重視しながら、荊州をめぐる複雑な交渉を引き継いだ。",
+  k:"人物の死は外交方針にも影響する。孫権陣営は周瑜の積極的な西進構想から、劉備との協調をより重視する局面へ移る。",
+  link:"その間に劉備は西の益州へ進出し、自前の大きな本拠地を得ようとする。",
+  r:"演義では周瑜は諸葛亮への嫉妬に苦しむ人物として描かれるが、その像は小説的脚色が大きい。史実では孫権政権の重要な軍事指導者だった。",
+  pe:["周瑜","孫権","魯粛","劉備"]},
+ {y:211,when:"春〜秋",ch:"第4章｜曹操の西進",t:"潼関の戦い、曹操が馬超・韓遂連合を破る",p:"潼関・渭水",c:[110.25,34.55],z:1.66,
+  d:"曹操の漢中方面への軍事行動を警戒した関中諸将が、馬超・韓遂を中心に連合して反発する。曹操は潼関・渭水周辺でこれを破り、関中への影響力を大きく強めた。",
+  k:"曹操の南下失敗後も拡大は止まっていない。211年には西へ向かい、後の漢中攻略へつながる地理的条件を整えている。",
+  link:"敗れた馬超はその後勢力を失い、最終的に劉備側へ加わる。曹操はさらに漢中へ進出する。",
+  r:"演義では『父・馬騰を曹操に殺された馬超が復讐する』順序で描かれるが、史実では馬超らの蜂起が先で、馬騰一族の処刑はその後。",
+  pe:["曹操","馬超","韓遂","賈詡","許褚"]},
  {y:211,when:"〜213",ch:"第4章｜劉備の西進",t:"劉備、援軍として益州へ入る",p:"益州北部",c:[105.8,31.7],z:1.62,
   d:"益州牧の劉璋は張魯への備えとして劉備を招き入れる。劉備は当初は客将として入ったが、兵力・補給・人事をめぐる不信が深まり、やがて劉璋との戦争へ変わった。",
   k:"劉備は最初から正面侵攻したのではなく、『同盟者として入境→関係崩壊→内戦』という経路で益州を奪う。",
@@ -286,7 +325,7 @@ const events = [
   k:"三国鼎立を地理で見ると、益州獲得が非常に大きい。険しい山地に囲まれ、内部には大きな農業生産地がある。",
   link:"しかし北の入口・漢中はまだ張魯の支配下で、その背後には曹操が迫っていた。",
   r:"演義では『隆中対』の実現として整理される。戦略的には確かに荊州＋益州という構想に近づいた時期。",
-  pe:["劉備","劉璋","諸葛亮","張飛","趙雲"]},
+  pe:["劉備","劉璋","諸葛亮","張飛","趙雲","馬超"]},
  {y:215,when:"夏〜秋",ch:"第4章｜漢中をめぐる攻防",t:"曹操、漢中を占領",p:"漢中",c:[107.0,33.1],z:1.72,
   d:"曹操は西へ進み、陽平関を突破して張魯を降す。漢中は四川盆地北方への玄関であり、曹操がここを持つと劉備の益州は北から圧力を受ける。",
   k:"漢中は単なる一地方ではなく、関中と四川をつなぐ軍事回廊。",
@@ -353,6 +392,13 @@ const events = [
   link:"後方を整えた諸葛亮は漢中へ進み、魏への北伐準備に入る。",
   r:"『孟獲を七度捕らえて七度放す』は後世に非常に有名だが、史料上の扱いには慎重さが必要。",
   pe:["諸葛亮","劉禅","孟獲"]},
+
+ {y:226,when:"夏",ch:"第6章｜魏の世代交代",t:"曹丕死去、曹叡が魏帝となる",p:"洛陽",c:[112.45,34.62],z:1.62,
+  d:"魏の初代皇帝曹丕が病死し、曹叡が即位する。曹丕は臨終に曹真・陳群・司馬懿らへ後事を託し、魏は創業世代から次の皇帝へ移った。",
+  k:"司馬懿が魏の中枢で重みを増していく背景には、皇帝の代替わりごとに『後見を任される重臣』として残り続けたことがある。",
+  link:"翌年、蜀漢の諸葛亮は漢中へ進み、曹叡の魏に対して北伐を始める。",
+  r:"演義では曹丕の治世は曹操や諸葛亮の時代の間に挟まれて短く扱われやすいが、漢から魏への制度的な王朝交代を定着させた皇帝だった。",
+  pe:["曹丕","曹叡","司馬懿","曹真","陳群"]},
  {y:227,when:"〜228",ch:"第6章｜諸葛亮の時代",t:"北伐開始、隴右三郡が動く",p:"漢中 → 隴右",c:[106.0,34.2],z:1.64,
   d:"諸葛亮は漢中を拠点に魏へ北伐を開始する。228年の第一次北伐では隴右の複数郡が蜀側へ動き、一時は大きな政治的動揺を起こした。",
   k:"蜀漢は国力で魏に劣るため、単純な正面突破より『辺境を揺さぶって局地的な崩れを作る』必要があった。",
@@ -477,6 +523,8 @@ const storyEls={
 const slider=document.getElementById("yearSlider"), playBtn=document.getElementById("playBtn"),
  prevBtn=document.getElementById("prevBtn"), nextBtn=document.getElementById("nextBtn"),
  romBtn=document.getElementById("romBtn"), rail=document.getElementById("eventRail"),
+ personSelect=document.getElementById("personSelect"), personSummary=document.getElementById("personSummary"),
+ rangeStart=document.getElementById("rangeStart"), rangeMid=document.getElementById("rangeMid"), rangeEnd=document.getElementById("rangeEnd"),
  focusName=document.getElementById("focusName"), loading=document.getElementById("loading");
 
 let width=0,height=0,dpr=1,world=null,countries=[],china=null,land=null;
@@ -575,13 +623,50 @@ function draw(){
 }
 
 function eventIndex(e){return events.indexOf(e)}
-slider.max=String(events.length-1);
+let activePerson="", activeEvents=events.slice();
 
+function activeIndex(e){return activeEvents.indexOf(e)}
+function personCounts(){
+ const counts=new Map();
+ for(const e of events) for(const p of e.pe) counts.set(p,(counts.get(p)||0)+1);
+ return [...counts.entries()].sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],"ja"));
+}
+function buildPersonSelect(){
+ personSelect.innerHTML='<option value="">全体史</option>';
+ for(const [name,count] of personCounts()){
+   const o=document.createElement("option");
+   o.value=name;o.textContent=`${name}（${count}）`;personSelect.appendChild(o);
+ }
+}
+function rebuildRail(){
+ rail.innerHTML="";
+ activeEvents.forEach((e,i)=>{
+   const b=document.createElement("button"); b.className="eventChip"; b.dataset.i=String(i);
+   b.textContent=`${e.y}${e.when?" "+e.when:""}｜${e.t}`;
+   b.onclick=()=>{auto=false;syncPlay();setActiveIndex(i,true)}; rail.appendChild(b);
+ });
+ slider.max=String(Math.max(0,activeEvents.length-1));
+ const first=activeEvents[0], last=activeEvents[activeEvents.length-1];
+ rangeStart.textContent=first?`${first.y} 最初`:"—";
+ rangeMid.textContent=activePerson?`${activeEvents.length} episodes`:`${events.length} scenes`;
+ rangeEnd.textContent=last?`${last.y} 最後`:"—";
+ personSummary.textContent=activePerson?`${activePerson} · ${activeEvents.length}場面`:`全${events.length}場面`;
+}
+function setActivePerson(person,preferredEvent=null){
+ activePerson=person||"";
+ activeEvents=activePerson?events.filter(e=>e.pe.includes(activePerson)):events.slice();
+ personSelect.value=activePerson;
+ rebuildRail();
+ let target=preferredEvent && activeEvents.includes(preferredEvent)?preferredEvent:activeEvents[0];
+ setActiveIndex(Math.max(0,activeEvents.indexOf(target)),true);
+}
 function updateStory(e, move=true){
  currentEvent=e; currentYear=e.y;
- const idx=eventIndex(e);
+ const gidx=eventIndex(e), aidx=activeIndex(e);
  storyEls.ch.textContent=e.ch;
- storyEls.scene.textContent=`SCENE ${String(idx+1).padStart(2,"0")} / ${String(events.length).padStart(2,"0")}`;
+ storyEls.scene.textContent=activePerson
+   ?`${activePerson} ${String(aidx+1).padStart(2,"0")} / ${String(activeEvents.length).padStart(2,"0")} · ALL ${String(gidx+1).padStart(2,"0")} / ${String(events.length).padStart(2,"0")}`
+   :`SCENE ${String(gidx+1).padStart(2,"0")} / ${String(events.length).padStart(2,"0")}`;
  storyEls.y.textContent=e.y;
  storyEls.ce.textContent=e.when ? `CE · ${e.when}` : "CE";
  storyEls.t.textContent=e.t; storyEls.p.textContent="◎ "+e.p; storyEls.d.textContent=e.d;
@@ -589,38 +674,39 @@ function updateStory(e, move=true){
  storyEls.bridge.textContent=e.link||"";
  storyEls.r.textContent="演義メモ： "+e.r;
  storyEls.r.classList.toggle("show",romanceOn);
- storyEls.pe.innerHTML=e.pe.map(x=>`<span class="person">${x}</span>`).join("");
+ storyEls.pe.innerHTML=e.pe.map(x=>`<button class="person${x===activePerson?" active":""}" data-person="${x}" type="button">${x}</button>`).join("");
+ storyEls.pe.querySelectorAll(".person").forEach(btn=>btn.onclick=()=>{
+   auto=false;syncPlay();setActivePerson(btn.dataset.person,currentEvent);
+ });
  focusName.textContent=e.p.split("（")[0].split("／")[0];
- document.querySelectorAll(".eventChip").forEach((el,i)=>el.classList.toggle("active",i===idx));
- const chip=document.querySelector(`.eventChip[data-i="${idx}"]`);
+ document.querySelectorAll(".eventChip").forEach((el,i)=>el.classList.toggle("active",i===aidx));
+ const chip=document.querySelector(`.eventChip[data-i="${aidx}"]`);
  if(chip){
    const railTarget=Math.max(0,chip.offsetLeft-(rail.clientWidth-chip.offsetWidth)/2);
    rail.scrollTo({left:railTarget,behavior:"smooth"});
  }
+ slider.value=String(Math.max(0,aidx));
  if(move && performance.now()>manualUntil){
    targetRotation=[-e.c[0],-e.c[1],0];
    zoomK=e.z;
  }
  draw();
 }
-function setEventIndex(index,move=true){
- const idx=Math.max(0,Math.min(events.length-1,Math.round(index)));
+function setActiveIndex(index,move=true){
+ const idx=Math.max(0,Math.min(activeEvents.length-1,Math.round(index)));
  slider.value=String(idx);
- updateStory(events[idx],move);
+ updateStory(activeEvents[idx],move);
 }
-function stepEvent(dir){
- setEventIndex(eventIndex(currentEvent)+dir,true);
-}
-events.forEach((e,i)=>{
- const b=document.createElement("button"); b.className="eventChip"; b.dataset.i=String(i);
- b.textContent=`${e.y}${e.when?" "+e.when:""}｜${e.t}`;
- b.onclick=()=>{auto=false;syncPlay();setEventIndex(i,true)}; rail.appendChild(b);
-});
-slider.oninput=()=>{auto=false;syncPlay();setEventIndex(+slider.value,true)};
+function stepEvent(dir){setActiveIndex(activeIndex(currentEvent)+dir,true)}
+
+buildPersonSelect();
+rebuildRail();
+personSelect.onchange=()=>{auto=false;syncPlay();setActivePerson(personSelect.value)};
+slider.oninput=()=>{auto=false;syncPlay();setActiveIndex(+slider.value,true)};
 prevBtn.onclick=()=>{auto=false;syncPlay();stepEvent(-1)};
 nextBtn.onclick=()=>{auto=false;syncPlay();stepEvent(1)};
 romBtn.onclick=()=>{romanceOn=!romanceOn;romBtn.textContent=`演義メモ ${romanceOn?"ON":"OFF"}`;romBtn.classList.toggle("on",romanceOn);updateStory(currentEvent,false)};
-playBtn.onclick=()=>{auto=!auto; if(auto && eventIndex(currentEvent)>=events.length-1)setEventIndex(0,true);syncPlay()};
+playBtn.onclick=()=>{auto=!auto; if(auto && activeIndex(currentEvent)>=activeEvents.length-1)setActiveIndex(0,true);syncPlay()};
 function syncPlay(){playBtn.textContent=auto?"❚❚ PAUSE":"▶ AUTO";playBtn.classList.toggle("on",auto)}
 
 let dragStartRot,dragStartPt;
@@ -641,9 +727,9 @@ function tick(t){
    autoClock+=dt;
    if(autoClock>4200){
      autoClock=0;
-     const i=eventIndex(currentEvent);
-     if(i>=events.length-1){auto=false;syncPlay()}
-     else{setEventIndex(i+1,true)}
+     const i=activeIndex(currentEvent);
+     if(i>=activeEvents.length-1){auto=false;syncPlay()}
+     else{setActiveIndex(i+1,true)}
    }
  }
  draw();requestAnimationFrame(tick);
@@ -659,11 +745,11 @@ Promise.all([
  china=countries.find(f=>String(f.id)==="156");
  loading.classList.add("hide");
  setTimeout(()=>loading.remove(),600);
- setEventIndex(0,true);
+ setActiveIndex(0,true);
 }).catch(err=>{
  console.warn(err);
  loading.querySelector(".loader").innerHTML="<b>三國</b>地図取得に失敗しました。ネット接続後に再読み込みしてください。";
- setEventIndex(0,true);
+ setActiveIndex(0,true);
 });
 })();
 </script>

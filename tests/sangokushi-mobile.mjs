@@ -39,6 +39,9 @@ for (const target of targets) {
       sceneNo:document.querySelector("#sceneNo")?.textContent || "",
       titleText:document.querySelector("#title")?.textContent || "",
       yearText:document.querySelector("#yearText")?.textContent || "",
+      personSelectPresent:!!document.querySelector("#personSelect"),
+      personOptionCount:document.querySelectorAll("#personSelect option").length,
+      personButtonCount:document.querySelectorAll(".person").length,
       loadingPresent:!!document.querySelector("#loading"),
     };
   });
@@ -54,6 +57,9 @@ for (const target of targets) {
   if (result.eventCount < 40) err("story is too coarse; expected at least 40 scenes, got " + result.eventCount);
   if (result.sliderMax !== result.eventCount - 1) err("scene slider max mismatch: " + result.sliderMax + " vs " + (result.eventCount - 1));
   if (!/^SCENE 01 \/ \d{2}$/.test(result.sceneNo)) err("scene counter missing or malformed: " + result.sceneNo);
+  if (!result.personSelectPresent) err("person selector missing");
+  if (result.personOptionCount < 20) err("too few person choices: " + result.personOptionCount);
+  if (result.personButtonCount < 3) err("story person tags are not clickable buttons");
 
   if (target.name === "iphone-se") {
     const before = {title:result.titleText, year:result.yearText};
@@ -66,6 +72,34 @@ for (const target of targets) {
     if (before.year !== "184" || after.year !== "184") err("same-year scene navigation skipped 184 sequence: " + JSON.stringify({before,after}));
     if (before.title === after.title) err("next scene did not change title");
     if (!after.scene.startsWith("SCENE 02 /")) err("next scene counter incorrect: " + after.scene);
+
+    await page.selectOption("#personSelect", "曹操");
+    const cao = await page.evaluate(() => ({
+      count:document.querySelectorAll(".eventChip").length,
+      sliderMax:Number(document.querySelector("#yearSlider").max),
+      summary:document.querySelector("#personSummary")?.textContent || "",
+      scene:document.querySelector("#sceneNo")?.textContent || "",
+      people:[...document.querySelectorAll(".person")].map(x=>x.textContent)
+    }));
+    if (cao.count < 8) err("Cao Cao person trail unexpectedly short: " + cao.count);
+    if (cao.sliderMax !== cao.count - 1) err("person slider max mismatch: " + JSON.stringify(cao));
+    if (!cao.summary.startsWith("曹操 · ")) err("person summary not switched: " + cao.summary);
+    if (!cao.scene.startsWith("曹操 ")) err("scene counter not in person mode: " + cao.scene);
+    if (!cao.people.includes("曹操")) err("selected person missing from current episode");
+    await page.screenshot({path:"artifacts/mobile/iphone-se-person-cao-cao.png", fullPage:true});
+
+    const personBefore = await page.evaluate(() => ({
+      scene:document.querySelector("#sceneNo")?.textContent || "",
+      year:document.querySelector("#yearText")?.textContent || ""
+    }));
+    await page.click("#nextBtn");
+    const personAfter = await page.evaluate(() => ({
+      scene:document.querySelector("#sceneNo")?.textContent || "",
+      year:document.querySelector("#yearText")?.textContent || "",
+      selected:document.querySelector("#personSelect")?.value || ""
+    }));
+    if (personBefore.scene === personAfter.scene) err("person next did not advance");
+    if (personAfter.selected !== "曹操") err("person mode was lost after next");
   }
 
   if (target.width <= 430 && target.height > target.width) {
