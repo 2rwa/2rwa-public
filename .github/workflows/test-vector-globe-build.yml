@@ -4,9 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'tests/vector-globe/build/**'
       - 'tests/vector-globe/PREVIEW_REQUEST.json'
-      - '.github/workflows/test-vector-globe-build.yml'
 
 permissions:
   contents: write

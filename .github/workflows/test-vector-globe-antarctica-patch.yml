@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: test-vector-globe-build
+  group: test-vector-globe-antarctica-patch
   cancel-in-progress: false
 
 jobs:
