@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vector Globe — GSHHG Preview</title>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<style>
+:root{color-scheme:dark;--panel:rgba(16,17,18,.78);--line:rgba(255,255,255,.15);--text:#eee;--muted:#aaa}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050708;color:var(--text);font-family:system-ui,-apple-system,sans-serif}
+#gl{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+#panel{position:absolute;left:max(12px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));width:min(440px,calc(100vw - 24px));padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);backdrop-filter:blur(10px)}
+#panel.collapsed{width:auto;padding:8px 9px}
+#panel.collapsed #panelBody{display:none}
+.header{display:flex;align-items:center;gap:10px}
+.title{font-weight:650;flex:1}
+.row{display:flex;gap:10px;align-items:center;margin-top:6px}
+.grow{flex:1}
+input[type=range]{width:100%}
+.muted{color:var(--muted);font-size:12px;line-height:1.45}
+.value{font-variant-numeric:tabular-nums;min-width:58px;text-align:right}
+button{background:#24282b;border:1px solid var(--line);color:var(--text);padding:6px 9px;border-radius:8px}
+#panelToggle{min-width:34px;padding:4px 8px}
+#status{margin-top:7px}
+#metrics{margin-top:3px;font-variant-numeric:tabular-nums}
+@media(max-width:600px){
+  #panel{font-size:13px;padding:10px 12px;width:min(360px,calc(100vw - 24px))}
+  .muted{font-size:11px}
+  .row{gap:7px}
+}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="panel">
+  <div class="header">
+    <div class="title">Vector Globe / GSHHG Preview</div>
+    <button id="panelToggle" type="button" aria-expanded="true" aria-label="操作パネルを折りたたむ">−</button>
+  </div>
+  <div id="panelBody">
+    <div class="row">
+      <span>Zoom</span>
+      <input id="zoom" class="grow" type="range" min="100" max="1000" step="1" value="100">
+      <span id="zoomValue" class="value">100%</span>
+    </div>
+    <div class="row">
+      <button id="japan" type="button">日本</button>
+      <button id="reset" type="button">全球</button>
+      <span id="clock" class="muted grow"></span>
+    </div>
+    <div class="muted" style="margin-top:7px">途中公開版: 100〜500%は全球、1000% full LODは日本周辺のみ。</div><div id="status" class="muted">manifest loading…</div>
+    <div id="metrics" class="muted">performance metrics loading…</div>
+    <div class="muted">ドラッグ: 回転 / ホイール・2本指: ズーム。100–1000%。都市光なし。時刻はブラウザ現在時刻を使用。</div>
+  </div>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
