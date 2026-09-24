@@ -1,0 +1,16 @@
+{
+  "task": "build-test-vector-globe-pages-preview",
+  "requested_at": "2026-09-24T10:55:00+09:00",
+  "target": "tests/vector-globe/",
+  "publish": {
+    "global_zoom": "100-500%",
+    "full_zoom": "1000%",
+    "full_bbox": [
+      120,
+      20,
+      150,
+      50
+    ]
+  },
+  "top_page_link": false
+}
