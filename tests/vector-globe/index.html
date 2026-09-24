@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Vector Globe — GSHHG Preview</title>
+<title>Vector Globe — GSHHG</title>
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <style>
 :root{color-scheme:dark;--panel:rgba(16,17,18,.78);--line:rgba(255,255,255,.15);--text:#eee;--muted:#aaa}
@@ -35,7 +35,7 @@ button{background:#24282b;border:1px solid var(--line);color:var(--text);padding
 <canvas id="gl"></canvas>
 <div id="panel">
   <div class="header">
-    <div class="title">Vector Globe / GSHHG Preview</div>
+    <div class="title">Vector Globe / GSHHG</div>
     <button id="panelToggle" type="button" aria-expanded="true" aria-label="操作パネルを折りたたむ">−</button>
   </div>
   <div id="panelBody">
@@ -49,7 +49,7 @@ button{background:#24282b;border:1px solid var(--line);color:var(--text);padding
       <button id="reset" type="button">全球</button>
       <span id="clock" class="muted grow"></span>
     </div>
-    <div class="muted" style="margin-top:7px">途中公開版: 100〜500%は全球、1000% full LODは日本周辺のみ。</div><div id="status" class="muted">manifest loading…</div>
+    <div class="muted" style="margin-top:7px">全球対応: 100〜500%は軽量bundle、1000%は全球full LOD4。</div><div id="status" class="muted">manifest loading…</div>
     <div id="metrics" class="muted">performance metrics loading…</div>
     <div class="muted">ドラッグ: 回転 / ホイール・2本指: ズーム。100–1000%。都市光なし。時刻はブラウザ現在時刻を使用。</div>
   </div>

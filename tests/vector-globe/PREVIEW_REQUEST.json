@@ -1,16 +1,19 @@
 {
-  "task": "build-test-vector-globe-pages-preview",
-  "requested_at": "2026-09-24T10:55:00+09:00",
+  "task": "global-full-vector-globe",
+  "requested_at": "2026-09-24T11:25:00+09:00",
   "target": "tests/vector-globe/",
+  "status": "complete-for-1000-percent-goal",
   "publish": {
-    "global_zoom": "100-500%",
-    "full_zoom": "1000%",
-    "full_bbox": [
-      120,
-      20,
-      150,
-      50
-    ]
+    "global_zoom": "100-1000%",
+    "full_lod4_bbox": [
+      -180,
+      -90,
+      180,
+      90
+    ],
+    "full_lod4_tiles": 451,
+    "published_data_mib": 185.444
   },
+  "completion_criterion": "Same full-resolution display used for the validated Japan 1000% view is available globally.",
   "top_page_link": false
 }

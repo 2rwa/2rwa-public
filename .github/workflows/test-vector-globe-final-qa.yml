@@ -1,0 +1,53 @@
+name: Final QA vector globe global full LOD
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tests/vector-globe/app.js'
+      - 'tests/vector-globe/data/manifest.json'
+      - 'tests/vector-globe/final_qa.mjs'
+      - '.github/workflows/test-vector-globe-final-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  global-full-browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Use preinstalled Chrome
+        run: |
+          which google-chrome || which google-chrome-stable || which chromium || which chromium-browser
+          google-chrome --version || google-chrome-stable --version || chromium --version || chromium-browser --version
+
+      - name: Install lightweight browser driver
+        run: npm install --no-save playwright-core@1.55.0
+
+      - name: Start local Pages-equivalent server
+        run: |
+          python3 -m http.server 8125 --bind 127.0.0.1 >/tmp/vector-globe-final-http.log 2>&1 &
+          mkdir -p /tmp/vector-globe-final-qa
+
+      - name: Render global full-LOD difficult regions
+        run: |
+          node tests/vector-globe/final_qa.mjs \
+            http://127.0.0.1:8125/tests/vector-globe/ \
+            /tmp/vector-globe-final-qa
+
+      - name: Upload final QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vector-globe-final-global-qa
+          path: |
+            /tmp/vector-globe-final-qa/*.png
+            /tmp/vector-globe-final-http.log
+          if-no-files-found: warn

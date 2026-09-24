@@ -5,9 +5,6 @@ on:
   push:
     paths:
       - 'tests/vector-globe/build/**'
-      - 'tests/vector-globe/index.html'
-      - 'tests/vector-globe/app.js'
-      - 'tests/vector-globe/favicon.svg'
       - 'tests/vector-globe/PREVIEW_REQUEST.json'
       - '.github/workflows/test-vector-globe-build.yml'
 
