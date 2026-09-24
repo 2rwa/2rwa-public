@@ -1,0 +1,302 @@
+{
+  "format": "GVB1",
+  "bbox": [
+    -180.0,
+    -90.0,
+    180.0,
+    90.0
+  ],
+  "tileDegrees": 10,
+  "source": {
+    "name": "GSHHG / GSHHS shoreline polygons",
+    "version": "2.3.7",
+    "upstreamRepository": "GenericMappingTools/gshhg-gmt",
+    "asset": "gshhg-shp-2.3.7.zip",
+    "license": "GNU LGPL v3 (see upstream LICENSE)",
+    "antarctica": "ice-front"
+  },
+  "tiles": 9,
+  "vertices": 434169,
+  "triangles": 420554,
+  "bytes": 6783432,
+  "mib": 6.469,
+  "byLod": {
+    "lod4-f": {
+      "tiles": 9,
+      "vertices": 434169,
+      "triangles": 420554,
+      "bytes": 6783432
+    }
+  },
+  "largestTiles": [
+    {
+      "path": "lod4/N30_E120.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 2738680,
+      "vertices": 176278,
+      "triangles": 169463
+    },
+    {
+      "path": "lod4/N30_E130.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 1665308,
+      "vertices": 106292,
+      "triangles": 103344
+    },
+    {
+      "path": "lod4/N20_E120.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 916164,
+      "vertices": 59373,
+      "triangles": 56555
+    },
+    {
+      "path": "lod4/N40_E140.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 749212,
+      "vertices": 47038,
+      "triangles": 46754
+    },
+    {
+      "path": "lod4/N40_E130.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 371036,
+      "vertices": 23411,
+      "triangles": 23115
+    },
+    {
+      "path": "lod4/N30_E140.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 169012,
+      "vertices": 10750,
+      "triangles": 10500
+    },
+    {
+      "path": "lod4/N40_E120.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 145468,
+      "vertices": 9130,
+      "triangles": 9078
+    },
+    {
+      "path": "lod4/N20_E140.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 23476,
+      "vertices": 1573,
+      "triangles": 1431
+    },
+    {
+      "path": "lod4/N20_E130.gvb",
+      "lod": 4,
+      "resolution": "f",
+      "bytes": 5076,
+      "vertices": 324,
+      "triangles": 314
+    }
+  ],
+  "delivery": {
+    "tiles": 226,
+    "vertices": 2290220,
+    "triangles": 1941438,
+    "bytes": 32460848,
+    "mib": 30.957,
+    "byLod": {
+      "lod0-c": {
+        "tiles": 1,
+        "vertices": 13810,
+        "triangles": 12742,
+        "bytes": 208156
+      },
+      "lod1-l": {
+        "tiles": 8,
+        "vertices": 83804,
+        "triangles": 77736,
+        "bytes": 1268144
+      },
+      "lod2-i": {
+        "tiles": 69,
+        "vertices": 415574,
+        "triangles": 356984,
+        "bytes": 5946932
+      },
+      "lod3-h": {
+        "tiles": 148,
+        "vertices": 1777032,
+        "triangles": 1493976,
+        "bytes": 25037616
+      }
+    },
+    "largestTiles": [
+      {
+        "path": "delivery/lod3/N50_E000.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 1436692,
+        "vertices": 112489,
+        "triangles": 82227
+      },
+      {
+        "path": "delivery/lod3/N50_W080.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 1391296,
+        "vertices": 102427,
+        "triangles": 81798
+      },
+      {
+        "path": "delivery/lod3/N50_E020.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 1174596,
+        "vertices": 93678,
+        "triangles": 66656
+      },
+      {
+        "path": "delivery/lod3/N50_W060.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 838028,
+        "vertices": 66005,
+        "triangles": 47833
+      },
+      {
+        "path": "delivery/lod3/S70_W080.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 800348,
+        "vertices": 57920,
+        "triangles": 47388
+      },
+      {
+        "path": "delivery/lod3/S10_E120.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 781228,
+        "vertices": 54730,
+        "triangles": 46858
+      },
+      {
+        "path": "delivery/lod3/N50_W140.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 779664,
+        "vertices": 55689,
+        "triangles": 46408
+      },
+      {
+        "path": "delivery/lod3/N30_E120.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 740460,
+        "vertices": 53235,
+        "triangles": 43959
+      },
+      {
+        "path": "delivery/lod3/N50_W100.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 731420,
+        "vertices": 50399,
+        "triangles": 44151
+      },
+      {
+        "path": "delivery/lod3/N30_W080.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 663484,
+        "vertices": 45688,
+        "triangles": 40060
+      },
+      {
+        "path": "delivery/lod3/N10_W100.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 628564,
+        "vertices": 45952,
+        "triangles": 37062
+      },
+      {
+        "path": "delivery/lod3/S10_E100.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 588196,
+        "vertices": 41911,
+        "triangles": 35045
+      },
+      {
+        "path": "delivery/lod3/N50_W120.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 563356,
+        "vertices": 36721,
+        "triangles": 34705
+      },
+      {
+        "path": "delivery/lod3/S50_W080.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 557772,
+        "vertices": 39240,
+        "triangles": 33400
+      },
+      {
+        "path": "delivery/lod3/N30_E020.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 526920,
+        "vertices": 36216,
+        "triangles": 31837
+      },
+      {
+        "path": "delivery/lod3/N10_E100.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 523068,
+        "vertices": 38535,
+        "triangles": 30743
+      },
+      {
+        "path": "delivery/lod3/N10_W080.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 498700,
+        "vertices": 37117,
+        "triangles": 29185
+      },
+      {
+        "path": "delivery/lod3/N50_W020.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 418356,
+        "vertices": 29703,
+        "triangles": 24961
+      },
+      {
+        "path": "delivery/lod2/N30_W090.gvb",
+        "lod": 2,
+        "resolution": "i",
+        "bytes": 398284,
+        "vertices": 27136,
+        "triangles": 24144
+      },
+      {
+        "path": "delivery/lod3/N10_E120.gvb",
+        "lod": 3,
+        "resolution": "h",
+        "bytes": 373668,
+        "vertices": 27312,
+        "triangles": 22034
+      }
+    ]
+  },
+  "repositoryBytes": 39244280,
+  "repositoryMiB": 37.426
+}

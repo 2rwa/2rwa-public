@@ -1,0 +1,4350 @@
+{
+  "format": "GVB1",
+  "version": 1,
+  "tileDegrees": 10,
+  "bbox": [
+    -180.0,
+    -90.0,
+    180.0,
+    90.0
+  ],
+  "source": {
+    "name": "GSHHG / GSHHS shoreline polygons",
+    "version": "2.3.7",
+    "upstreamRepository": "GenericMappingTools/gshhg-gmt",
+    "asset": "gshhg-shp-2.3.7.zip",
+    "license": "GNU LGPL v3 (see upstream LICENSE)",
+    "antarctica": "ice-front"
+  },
+  "lods": [
+    {
+      "id": 0,
+      "gshhgResolution": "c",
+      "name": "crude",
+      "hierarchyLevels": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 1,
+      "gshhgResolution": "l",
+      "name": "low",
+      "hierarchyLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 2,
+      "gshhgResolution": "i",
+      "name": "intermediate",
+      "hierarchyLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 3,
+      "gshhgResolution": "h",
+      "name": "high",
+      "hierarchyLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "id": 4,
+      "gshhgResolution": "f",
+      "name": "full",
+      "hierarchyLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "tiles": [
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E120.gvb",
+      "bounds": [
+        120,
+        20,
+        130,
+        30
+      ],
+      "vertices": 59373,
+      "indices": 169665,
+      "triangles": 56555,
+      "bytes": 916164
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E120.gvb",
+      "bounds": [
+        120,
+        30,
+        130,
+        40
+      ],
+      "vertices": 176278,
+      "indices": 508389,
+      "triangles": 169463,
+      "bytes": 2738680
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E120.gvb",
+      "bounds": [
+        120,
+        40,
+        130,
+        50
+      ],
+      "vertices": 9130,
+      "indices": 27234,
+      "triangles": 9078,
+      "bytes": 145468
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E130.gvb",
+      "bounds": [
+        130,
+        20,
+        140,
+        30
+      ],
+      "vertices": 324,
+      "indices": 942,
+      "triangles": 314,
+      "bytes": 5076
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E130.gvb",
+      "bounds": [
+        130,
+        30,
+        140,
+        40
+      ],
+      "vertices": 106292,
+      "indices": 310032,
+      "triangles": 103344,
+      "bytes": 1665308
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E130.gvb",
+      "bounds": [
+        130,
+        40,
+        140,
+        50
+      ],
+      "vertices": 23411,
+      "indices": 69345,
+      "triangles": 23115,
+      "bytes": 371036
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E140.gvb",
+      "bounds": [
+        140,
+        20,
+        150,
+        30
+      ],
+      "vertices": 1573,
+      "indices": 4293,
+      "triangles": 1431,
+      "bytes": 23476
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E140.gvb",
+      "bounds": [
+        140,
+        30,
+        150,
+        40
+      ],
+      "vertices": 10750,
+      "indices": 31500,
+      "triangles": 10500,
+      "bytes": 169012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E140.gvb",
+      "bounds": [
+        140,
+        40,
+        150,
+        50
+      ],
+      "vertices": 47038,
+      "indices": 140262,
+      "triangles": 46754,
+      "bytes": 749212
+    }
+  ],
+  "preview": {
+    "status": "work-in-progress",
+    "globalLods": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "fullLod4BBox": [
+      120,
+      20,
+      150,
+      50
+    ],
+    "pagesPath": "/2rwa-public/tests/vector-globe/"
+  },
+  "delivery": {
+    "version": 1,
+    "description": "HTTP request optimized bundles; canonical 10-degree tiles remain in tiles[]",
+    "schemes": {
+      "0": {
+        "lonSpanDegrees": 360,
+        "latSpanDegrees": 180,
+        "bundleCount": 1,
+        "sourceTileCount": 414,
+        "bytes": 208156
+      },
+      "1": {
+        "lonSpanDegrees": 90,
+        "latSpanDegrees": 90,
+        "bundleCount": 8,
+        "sourceTileCount": 455,
+        "bytes": 1268144
+      },
+      "2": {
+        "lonSpanDegrees": 30,
+        "latSpanDegrees": 30,
+        "bundleCount": 69,
+        "sourceTileCount": 468,
+        "bytes": 5946932
+      },
+      "3": {
+        "lonSpanDegrees": 20,
+        "latSpanDegrees": 20,
+        "bundleCount": 148,
+        "sourceTileCount": 469,
+        "bytes": 25037616
+      }
+    },
+    "lods": {
+      "0": [
+        {
+          "lod": 0,
+          "gshhgResolution": "c",
+          "path": "delivery/lod0/global.gvb",
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": true,
+          "vertices": 13810,
+          "indices": 38226,
+          "triangles": 12742,
+          "bytes": 208156,
+          "sourceTiles": 414
+        }
+      ],
+      "1": [
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/S90_W180.gvb",
+          "bounds": [
+            -180,
+            -90,
+            -90,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 763,
+          "indices": 1335,
+          "triangles": 445,
+          "bytes": 8404,
+          "sourceTiles": 36
+        },
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/N00_W180.gvb",
+          "bounds": [
+            -180,
+            0,
+            -90,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 14504,
+          "indices": 44700,
+          "triangles": 14900,
+          "bytes": 236828,
+          "sourceTiles": 49
+        },
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/S90_W090.gvb",
+          "bounds": [
+            -90,
+            -90,
+            0,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7323,
+          "indices": 18297,
+          "triangles": 6099,
+          "bytes": 102492,
+          "sourceTiles": 54
+        },
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/N00_W090.gvb",
+          "bounds": [
+            -90,
+            0,
+            0,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 19160,
+          "indices": 51750,
+          "triangles": 17250,
+          "bytes": 283652,
+          "sourceTiles": 63
+        },
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/S90_E000.gvb",
+          "bounds": [
+            0,
+            -90,
+            90,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2707,
+          "indices": 7725,
+          "triangles": 2575,
+          "bytes": 41740,
+          "sourceTiles": 55
+        },
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/N00_E000.gvb",
+          "bounds": [
+            0,
+            0,
+            90,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 19024,
+          "indices": 58044,
+          "triangles": 19348,
+          "bytes": 308284,
+          "sourceTiles": 77
+        },
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/S90_E090.gvb",
+          "bounds": [
+            90,
+            -90,
+            180,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7741,
+          "indices": 18279,
+          "triangles": 6093,
+          "bytes": 104092,
+          "sourceTiles": 60
+        },
+        {
+          "lod": 1,
+          "gshhgResolution": "l",
+          "path": "delivery/lod1/N00_E090.gvb",
+          "bounds": [
+            90,
+            0,
+            180,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 12582,
+          "indices": 33078,
+          "triangles": 11026,
+          "bytes": 182652,
+          "sourceTiles": 61
+        }
+      ],
+      "2": [
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_W180.gvb",
+          "bounds": [
+            -180,
+            -90,
+            -150,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 211,
+          "indices": 585,
+          "triangles": 195,
+          "bytes": 3196,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_W180.gvb",
+          "bounds": [
+            -180,
+            -60,
+            -150,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 80,
+          "indices": 222,
+          "triangles": 74,
+          "bytes": 1220,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_W180.gvb",
+          "bounds": [
+            -180,
+            -30,
+            -150,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1129,
+          "indices": 2109,
+          "triangles": 703,
+          "bytes": 12964,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_W180.gvb",
+          "bounds": [
+            -180,
+            0,
+            -150,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 365,
+          "indices": 885,
+          "triangles": 295,
+          "bytes": 5012,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_W180.gvb",
+          "bounds": [
+            -180,
+            30,
+            -150,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4629,
+          "indices": 12279,
+          "triangles": 4093,
+          "bytes": 67644,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_W180.gvb",
+          "bounds": [
+            -180,
+            60,
+            -150,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5120,
+          "indices": 15819,
+          "triangles": 5273,
+          "bytes": 83768,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_W150.gvb",
+          "bounds": [
+            -150,
+            -90,
+            -120,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 297,
+          "indices": 843,
+          "triangles": 281,
+          "bytes": 4572,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_W150.gvb",
+          "bounds": [
+            -150,
+            -30,
+            -120,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1134,
+          "indices": 1758,
+          "triangles": 586,
+          "bytes": 11580,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_W150.gvb",
+          "bounds": [
+            -150,
+            30,
+            -120,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 12234,
+          "indices": 30498,
+          "triangles": 10166,
+          "bytes": 170940,
+          "sourceTiles": 5
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_W150.gvb",
+          "bounds": [
+            -150,
+            60,
+            -120,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5248,
+          "indices": 14532,
+          "triangles": 4844,
+          "bytes": 79132,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_W120.gvb",
+          "bounds": [
+            -120,
+            -90,
+            -90,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 382,
+          "indices": 1068,
+          "triangles": 356,
+          "bytes": 5812,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_W120.gvb",
+          "bounds": [
+            -120,
+            -30,
+            -90,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 184,
+          "indices": 462,
+          "triangles": 154,
+          "bytes": 2596,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_W120.gvb",
+          "bounds": [
+            -120,
+            0,
+            -90,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5966,
+          "indices": 15606,
+          "triangles": 5202,
+          "bytes": 86300,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_W120.gvb",
+          "bounds": [
+            -120,
+            30,
+            -90,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10140,
+          "indices": 33096,
+          "triangles": 11032,
+          "bytes": 172956,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_W120.gvb",
+          "bounds": [
+            -120,
+            60,
+            -90,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 21034,
+          "indices": 55212,
+          "triangles": 18404,
+          "bytes": 304996,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_W090.gvb",
+          "bounds": [
+            -90,
+            -90,
+            -60,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2146,
+          "indices": 5736,
+          "triangles": 1912,
+          "bytes": 31540,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_W090.gvb",
+          "bounds": [
+            -90,
+            -60,
+            -60,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 19197,
+          "indices": 46152,
+          "triangles": 15384,
+          "bytes": 261408,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_W090.gvb",
+          "bounds": [
+            -90,
+            -30,
+            -60,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2605,
+          "indices": 7209,
+          "triangles": 2403,
+          "bytes": 39268,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_W090.gvb",
+          "bounds": [
+            -90,
+            0,
+            -60,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 18172,
+          "indices": 41472,
+          "triangles": 13824,
+          "bytes": 238588,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_W090.gvb",
+          "bounds": [
+            -90,
+            30,
+            -60,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 27136,
+          "indices": 72432,
+          "triangles": 24144,
+          "bytes": 398284,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_W090.gvb",
+          "bounds": [
+            -90,
+            60,
+            -60,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 18833,
+          "indices": 46059,
+          "triangles": 15353,
+          "bytes": 259580,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_W060.gvb",
+          "bounds": [
+            -60,
+            -90,
+            -30,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 901,
+          "indices": 2427,
+          "triangles": 809,
+          "bytes": 13324,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_W060.gvb",
+          "bounds": [
+            -60,
+            -60,
+            -30,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2308,
+          "indices": 6174,
+          "triangles": 2058,
+          "bytes": 33940,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_W060.gvb",
+          "bounds": [
+            -60,
+            -30,
+            -30,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 8713,
+          "indices": 22233,
+          "triangles": 7411,
+          "bytes": 123796,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_W060.gvb",
+          "bounds": [
+            -60,
+            0,
+            -30,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 954,
+          "indices": 2298,
+          "triangles": 766,
+          "bytes": 13020,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_W060.gvb",
+          "bounds": [
+            -60,
+            30,
+            -30,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 6103,
+          "indices": 14631,
+          "triangles": 4877,
+          "bytes": 82948,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_W060.gvb",
+          "bounds": [
+            -60,
+            60,
+            -30,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 11923,
+          "indices": 27819,
+          "triangles": 9273,
+          "bytes": 158980,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_W030.gvb",
+          "bounds": [
+            -30,
+            -90,
+            0,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 313,
+          "indices": 897,
+          "triangles": 299,
+          "bytes": 4852,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_W030.gvb",
+          "bounds": [
+            -30,
+            -60,
+            0,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 81,
+          "indices": 153,
+          "triangles": 51,
+          "bytes": 948,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_W030.gvb",
+          "bounds": [
+            -30,
+            -30,
+            0,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 23,
+          "indices": 51,
+          "triangles": 17,
+          "bytes": 308,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_W030.gvb",
+          "bounds": [
+            -30,
+            0,
+            0,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4375,
+          "indices": 12297,
+          "triangles": 4099,
+          "bytes": 66700,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_W030.gvb",
+          "bounds": [
+            -30,
+            30,
+            0,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7580,
+          "indices": 20772,
+          "triangles": 6924,
+          "bytes": 113420,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_W030.gvb",
+          "bounds": [
+            -30,
+            60,
+            0,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5603,
+          "indices": 14667,
+          "triangles": 4889,
+          "bytes": 81092,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_E000.gvb",
+          "bounds": [
+            0,
+            -90,
+            30,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 480,
+          "indices": 1302,
+          "triangles": 434,
+          "bytes": 7140,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_E000.gvb",
+          "bounds": [
+            0,
+            -60,
+            30,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 373,
+          "indices": 1095,
+          "triangles": 365,
+          "bytes": 5884,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_E000.gvb",
+          "bounds": [
+            0,
+            -30,
+            30,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2524,
+          "indices": 7380,
+          "triangles": 2460,
+          "bytes": 39628,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_E000.gvb",
+          "bounds": [
+            0,
+            0,
+            30,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2759,
+          "indices": 7536,
+          "triangles": 2512,
+          "bytes": 41192,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_E000.gvb",
+          "bounds": [
+            0,
+            30,
+            30,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 22767,
+          "indices": 61803,
+          "triangles": 20601,
+          "bytes": 338292,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_E000.gvb",
+          "bounds": [
+            0,
+            60,
+            30,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 23428,
+          "indices": 55902,
+          "triangles": 18634,
+          "bytes": 317332,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_E030.gvb",
+          "bounds": [
+            30,
+            -90,
+            60,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 583,
+          "indices": 1665,
+          "triangles": 555,
+          "bytes": 9004,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_E030.gvb",
+          "bounds": [
+            30,
+            -60,
+            60,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 88,
+          "indices": 204,
+          "triangles": 68,
+          "bytes": 1180,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_E030.gvb",
+          "bounds": [
+            30,
+            -30,
+            60,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 6927,
+          "indices": 18429,
+          "triangles": 6143,
+          "bytes": 101436,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_E030.gvb",
+          "bounds": [
+            30,
+            0,
+            60,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 8262,
+          "indices": 19716,
+          "triangles": 6572,
+          "bytes": 111924,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_E030.gvb",
+          "bounds": [
+            30,
+            30,
+            60,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7943,
+          "indices": 23682,
+          "triangles": 7894,
+          "bytes": 126512,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_E030.gvb",
+          "bounds": [
+            30,
+            60,
+            60,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7183,
+          "indices": 19629,
+          "triangles": 6543,
+          "bytes": 107260,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_E060.gvb",
+          "bounds": [
+            60,
+            -90,
+            90,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 391,
+          "indices": 1119,
+          "triangles": 373,
+          "bytes": 6052,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_E060.gvb",
+          "bounds": [
+            60,
+            -60,
+            90,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 679,
+          "indices": 1635,
+          "triangles": 545,
+          "bytes": 9268,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_E060.gvb",
+          "bounds": [
+            60,
+            -30,
+            90,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 129,
+          "indices": 195,
+          "triangles": 65,
+          "bytes": 1308,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_E060.gvb",
+          "bounds": [
+            60,
+            0,
+            90,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5605,
+          "indices": 14331,
+          "triangles": 4777,
+          "bytes": 79756,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_E060.gvb",
+          "bounds": [
+            60,
+            30,
+            90,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4986,
+          "indices": 16620,
+          "triangles": 5540,
+          "bytes": 86436,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_E060.gvb",
+          "bounds": [
+            60,
+            60,
+            90,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5578,
+          "indices": 15288,
+          "triangles": 5096,
+          "bytes": 83476,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_E090.gvb",
+          "bounds": [
+            90,
+            -90,
+            120,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 419,
+          "indices": 1197,
+          "triangles": 399,
+          "bytes": 6476,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_E090.gvb",
+          "bounds": [
+            90,
+            -60,
+            120,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 323,
+          "indices": 879,
+          "triangles": 293,
+          "bytes": 4820,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_E090.gvb",
+          "bounds": [
+            90,
+            -30,
+            120,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 6443,
+          "indices": 15927,
+          "triangles": 5309,
+          "bytes": 89492,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_E090.gvb",
+          "bounds": [
+            90,
+            0,
+            120,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 21621,
+          "indices": 50373,
+          "triangles": 16791,
+          "bytes": 287988,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_E090.gvb",
+          "bounds": [
+            90,
+            30,
+            120,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3692,
+          "indices": 11790,
+          "triangles": 3930,
+          "bytes": 61940,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_E090.gvb",
+          "bounds": [
+            90,
+            60,
+            120,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3895,
+          "indices": 10641,
+          "triangles": 3547,
+          "bytes": 58156,
+          "sourceTiles": 7
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_E120.gvb",
+          "bounds": [
+            120,
+            -90,
+            150,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 436,
+          "indices": 1254,
+          "triangles": 418,
+          "bytes": 6772,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_E120.gvb",
+          "bounds": [
+            120,
+            -60,
+            150,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3076,
+          "indices": 8136,
+          "triangles": 2712,
+          "bytes": 44860,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_E120.gvb",
+          "bounds": [
+            120,
+            -30,
+            150,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 19365,
+          "indices": 46149,
+          "triangles": 15383,
+          "bytes": 262068,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_E120.gvb",
+          "bounds": [
+            120,
+            0,
+            150,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10295,
+          "indices": 23271,
+          "triangles": 7757,
+          "bytes": 134276,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_E120.gvb",
+          "bounds": [
+            120,
+            30,
+            150,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 14492,
+          "indices": 36480,
+          "triangles": 12160,
+          "bytes": 203900,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_E120.gvb",
+          "bounds": [
+            120,
+            60,
+            150,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5514,
+          "indices": 15522,
+          "triangles": 5174,
+          "bytes": 84156,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S90_E150.gvb",
+          "bounds": [
+            150,
+            -90,
+            180,
+            -60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 914,
+          "indices": 2634,
+          "triangles": 878,
+          "bytes": 14204,
+          "sourceTiles": 8
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S60_E150.gvb",
+          "bounds": [
+            150,
+            -60,
+            180,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4267,
+          "indices": 11835,
+          "triangles": 3945,
+          "bytes": 64420,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/S30_E150.gvb",
+          "bounds": [
+            150,
+            -30,
+            180,
+            0
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7898,
+          "indices": 17676,
+          "triangles": 5892,
+          "bytes": 102308,
+          "sourceTiles": 9
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N00_E150.gvb",
+          "bounds": [
+            150,
+            0,
+            180,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 974,
+          "indices": 1356,
+          "triangles": 452,
+          "bytes": 9332,
+          "sourceTiles": 6
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N30_E150.gvb",
+          "bounds": [
+            150,
+            30,
+            180,
+            60
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1462,
+          "indices": 3990,
+          "triangles": 1330,
+          "bytes": 21820,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 2,
+          "gshhgResolution": "i",
+          "path": "delivery/lod2/N60_E150.gvb",
+          "bounds": [
+            150,
+            60,
+            180,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4684,
+          "indices": 15858,
+          "triangles": 5286,
+          "bytes": 82180,
+          "sourceTiles": 6
+        }
+      ],
+      "3": [
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W180.gvb",
+          "bounds": [
+            -180,
+            -90,
+            -160,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 215,
+          "indices": 621,
+          "triangles": 207,
+          "bytes": 3356,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_W180.gvb",
+          "bounds": [
+            -180,
+            -50,
+            -160,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 331,
+          "indices": 855,
+          "triangles": 285,
+          "bytes": 4756,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W180.gvb",
+          "bounds": [
+            -180,
+            -30,
+            -160,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2935,
+          "indices": 6663,
+          "triangles": 2221,
+          "bytes": 38404,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W180.gvb",
+          "bounds": [
+            -180,
+            -10,
+            -160,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 405,
+          "indices": 819,
+          "triangles": 273,
+          "bytes": 4908,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W180.gvb",
+          "bounds": [
+            -180,
+            10,
+            -160,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 227,
+          "indices": 435,
+          "triangles": 145,
+          "bytes": 2660,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W180.gvb",
+          "bounds": [
+            -180,
+            50,
+            -160,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 21915,
+          "indices": 57453,
+          "triangles": 19151,
+          "bytes": 317484,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W180.gvb",
+          "bounds": [
+            -180,
+            70,
+            -160,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 857,
+          "indices": 2331,
+          "triangles": 777,
+          "bytes": 12764,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W160.gvb",
+          "bounds": [
+            -160,
+            -90,
+            -140,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1081,
+          "indices": 3195,
+          "triangles": 1065,
+          "bytes": 17116,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W160.gvb",
+          "bounds": [
+            -160,
+            -30,
+            -140,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5760,
+          "indices": 10104,
+          "triangles": 3368,
+          "bytes": 63468,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W160.gvb",
+          "bounds": [
+            -160,
+            -10,
+            -140,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 968,
+          "indices": 2232,
+          "triangles": 744,
+          "bytes": 12812,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W160.gvb",
+          "bounds": [
+            -160,
+            10,
+            -140,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1288,
+          "indices": 3492,
+          "triangles": 1164,
+          "bytes": 19132,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W160.gvb",
+          "bounds": [
+            -160,
+            50,
+            -140,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 20993,
+          "indices": 55752,
+          "triangles": 18584,
+          "bytes": 306992,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W160.gvb",
+          "bounds": [
+            -160,
+            70,
+            -140,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4184,
+          "indices": 11052,
+          "triangles": 3684,
+          "bytes": 60956,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W140.gvb",
+          "bounds": [
+            -140,
+            -90,
+            -120,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 794,
+          "indices": 2352,
+          "triangles": 784,
+          "bytes": 12596,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W140.gvb",
+          "bounds": [
+            -140,
+            -30,
+            -120,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 933,
+          "indices": 1833,
+          "triangles": 611,
+          "bytes": 11076,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W140.gvb",
+          "bounds": [
+            -140,
+            -10,
+            -120,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 264,
+          "indices": 720,
+          "triangles": 240,
+          "bytes": 3948,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_W140.gvb",
+          "bounds": [
+            -140,
+            30,
+            -120,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 11332,
+          "indices": 30402,
+          "triangles": 10134,
+          "bytes": 166948,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W140.gvb",
+          "bounds": [
+            -140,
+            50,
+            -120,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 55689,
+          "indices": 139224,
+          "triangles": 46408,
+          "bytes": 779664,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W140.gvb",
+          "bounds": [
+            -140,
+            70,
+            -120,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3646,
+          "indices": 9936,
+          "triangles": 3312,
+          "bytes": 54340,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W120.gvb",
+          "bounds": [
+            -120,
+            -90,
+            -100,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1399,
+          "indices": 4137,
+          "triangles": 1379,
+          "bytes": 22156,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W120.gvb",
+          "bounds": [
+            -120,
+            -30,
+            -100,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 68,
+          "indices": 180,
+          "triangles": 60,
+          "bytes": 1004,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W120.gvb",
+          "bounds": [
+            -120,
+            10,
+            -100,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 12252,
+          "indices": 32406,
+          "triangles": 10802,
+          "bytes": 178644,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_W120.gvb",
+          "bounds": [
+            -120,
+            30,
+            -100,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5282,
+          "indices": 16086,
+          "triangles": 5362,
+          "bytes": 85484,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W120.gvb",
+          "bounds": [
+            -120,
+            50,
+            -100,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 36721,
+          "indices": 104115,
+          "triangles": 34705,
+          "bytes": 563356,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W120.gvb",
+          "bounds": [
+            -120,
+            70,
+            -100,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 17256,
+          "indices": 45114,
+          "triangles": 15038,
+          "bytes": 249492,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W100.gvb",
+          "bounds": [
+            -100,
+            -90,
+            -80,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 995,
+          "indices": 2961,
+          "triangles": 987,
+          "bytes": 15836,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_W100.gvb",
+          "bounds": [
+            -100,
+            -70,
+            -80,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 37,
+          "indices": 105,
+          "triangles": 35,
+          "bytes": 580,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_W100.gvb",
+          "bounds": [
+            -100,
+            -50,
+            -80,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 17,
+          "indices": 45,
+          "triangles": 15,
+          "bytes": 260,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W100.gvb",
+          "bounds": [
+            -100,
+            -30,
+            -80,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 21,
+          "indices": 39,
+          "triangles": 13,
+          "bytes": 252,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W100.gvb",
+          "bounds": [
+            -100,
+            -10,
+            -80,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 6944,
+          "indices": 18018,
+          "triangles": 6006,
+          "bytes": 99860,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W100.gvb",
+          "bounds": [
+            -100,
+            10,
+            -80,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 45952,
+          "indices": 111186,
+          "triangles": 37062,
+          "bytes": 628564,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_W100.gvb",
+          "bounds": [
+            -100,
+            30,
+            -80,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16927,
+          "indices": 50100,
+          "triangles": 16700,
+          "bytes": 268120,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W100.gvb",
+          "bounds": [
+            -100,
+            50,
+            -80,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 50399,
+          "indices": 132453,
+          "triangles": 44151,
+          "bytes": 731420,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W100.gvb",
+          "bounds": [
+            -100,
+            70,
+            -80,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 21182,
+          "indices": 58380,
+          "triangles": 19460,
+          "bytes": 318260,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W080.gvb",
+          "bounds": [
+            -80,
+            -90,
+            -60,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1713,
+          "indices": 5115,
+          "triangles": 1705,
+          "bytes": 27324,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_W080.gvb",
+          "bounds": [
+            -80,
+            -70,
+            -60,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 57920,
+          "indices": 142164,
+          "triangles": 47388,
+          "bytes": 800348,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_W080.gvb",
+          "bounds": [
+            -80,
+            -50,
+            -60,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 39240,
+          "indices": 100200,
+          "triangles": 33400,
+          "bytes": 557772,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W080.gvb",
+          "bounds": [
+            -80,
+            -30,
+            -60,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4341,
+          "indices": 11883,
+          "triangles": 3961,
+          "bytes": 64908,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W080.gvb",
+          "bounds": [
+            -80,
+            -10,
+            -60,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 13911,
+          "indices": 37653,
+          "triangles": 12551,
+          "bytes": 206268,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W080.gvb",
+          "bounds": [
+            -80,
+            10,
+            -60,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 37117,
+          "indices": 87555,
+          "triangles": 29185,
+          "bytes": 498700,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_W080.gvb",
+          "bounds": [
+            -80,
+            30,
+            -60,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 45688,
+          "indices": 120180,
+          "triangles": 40060,
+          "bytes": 663484,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W080.gvb",
+          "bounds": [
+            -80,
+            50,
+            -60,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 102427,
+          "indices": 245394,
+          "triangles": 81798,
+          "bytes": 1391296,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W080.gvb",
+          "bounds": [
+            -80,
+            70,
+            -60,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10550,
+          "indices": 28746,
+          "triangles": 9582,
+          "bytes": 157196,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W060.gvb",
+          "bounds": [
+            -60,
+            -90,
+            -40,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 430,
+          "indices": 1242,
+          "triangles": 414,
+          "bytes": 6700,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_W060.gvb",
+          "bounds": [
+            -60,
+            -70,
+            -40,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7861,
+          "indices": 21393,
+          "triangles": 7131,
+          "bytes": 117028,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_W060.gvb",
+          "bounds": [
+            -60,
+            -50,
+            -40,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3888,
+          "indices": 10926,
+          "triangles": 3642,
+          "bytes": 59268,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W060.gvb",
+          "bounds": [
+            -60,
+            -30,
+            -40,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10311,
+          "indices": 27705,
+          "triangles": 9235,
+          "bytes": 152076,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W060.gvb",
+          "bounds": [
+            -60,
+            -10,
+            -40,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 18684,
+          "indices": 49848,
+          "triangles": 16616,
+          "bytes": 274140,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W060.gvb",
+          "bounds": [
+            -60,
+            10,
+            -40,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 55,
+          "indices": 159,
+          "triangles": 53,
+          "bytes": 868,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_W060.gvb",
+          "bounds": [
+            -60,
+            30,
+            -40,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 13866,
+          "indices": 35118,
+          "triangles": 11706,
+          "bytes": 195948,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W060.gvb",
+          "bounds": [
+            -60,
+            50,
+            -40,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 66005,
+          "indices": 143499,
+          "triangles": 47833,
+          "bytes": 838028,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W060.gvb",
+          "bounds": [
+            -60,
+            70,
+            -40,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10371,
+          "indices": 24849,
+          "triangles": 8283,
+          "bytes": 140892,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W040.gvb",
+          "bounds": [
+            -40,
+            -90,
+            -20,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 893,
+          "indices": 2655,
+          "triangles": 885,
+          "bytes": 14204,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_W040.gvb",
+          "bounds": [
+            -40,
+            -70,
+            -20,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1482,
+          "indices": 3876,
+          "triangles": 1292,
+          "bytes": 21444,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W040.gvb",
+          "bounds": [
+            -40,
+            -30,
+            -20,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2154,
+          "indices": 5622,
+          "triangles": 1874,
+          "bytes": 31116,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W040.gvb",
+          "bounds": [
+            -40,
+            -10,
+            -20,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2109,
+          "indices": 5520,
+          "triangles": 1840,
+          "bytes": 30528,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W040.gvb",
+          "bounds": [
+            -40,
+            10,
+            -20,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1023,
+          "indices": 2871,
+          "triangles": 957,
+          "bytes": 15588,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_W040.gvb",
+          "bounds": [
+            -40,
+            30,
+            -20,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 671,
+          "indices": 1809,
+          "triangles": 603,
+          "bytes": 9932,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W040.gvb",
+          "bounds": [
+            -40,
+            50,
+            -20,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 13304,
+          "indices": 31350,
+          "triangles": 10450,
+          "bytes": 178628,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W040.gvb",
+          "bounds": [
+            -40,
+            70,
+            -20,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 8650,
+          "indices": 23670,
+          "triangles": 7890,
+          "bytes": 129292,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_W020.gvb",
+          "bounds": [
+            -20,
+            -90,
+            0,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 752,
+          "indices": 2232,
+          "triangles": 744,
+          "bytes": 11948,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_W020.gvb",
+          "bounds": [
+            -20,
+            -70,
+            0,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 65,
+          "indices": 189,
+          "triangles": 63,
+          "bytes": 1028,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_W020.gvb",
+          "bounds": [
+            -20,
+            -50,
+            0,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 122,
+          "indices": 282,
+          "triangles": 94,
+          "bytes": 1628,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_W020.gvb",
+          "bounds": [
+            -20,
+            -30,
+            0,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 64,
+          "indices": 174,
+          "triangles": 58,
+          "bytes": 964,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_W020.gvb",
+          "bounds": [
+            -20,
+            -10,
+            0,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4946,
+          "indices": 13740,
+          "triangles": 4580,
+          "bytes": 74756,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_W020.gvb",
+          "bounds": [
+            -20,
+            10,
+            0,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10027,
+          "indices": 28701,
+          "triangles": 9567,
+          "bytes": 154924,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_W020.gvb",
+          "bounds": [
+            -20,
+            30,
+            0,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 12364,
+          "indices": 32364,
+          "triangles": 10788,
+          "bytes": 178924,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_W020.gvb",
+          "bounds": [
+            -20,
+            50,
+            0,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 29703,
+          "indices": 74883,
+          "triangles": 24961,
+          "bytes": 418356,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_W020.gvb",
+          "bounds": [
+            -20,
+            70,
+            0,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3718,
+          "indices": 9132,
+          "triangles": 3044,
+          "bytes": 51412,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E000.gvb",
+          "bounds": [
+            0,
+            -90,
+            20,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 524,
+          "indices": 1548,
+          "triangles": 516,
+          "bytes": 8300,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E000.gvb",
+          "bounds": [
+            0,
+            -70,
+            20,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 758,
+          "indices": 2166,
+          "triangles": 722,
+          "bytes": 11708,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E000.gvb",
+          "bounds": [
+            0,
+            -50,
+            20,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 889,
+          "indices": 2481,
+          "triangles": 827,
+          "bytes": 13492,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E000.gvb",
+          "bounds": [
+            0,
+            -30,
+            20,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1771,
+          "indices": 4995,
+          "triangles": 1665,
+          "bytes": 27076,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E000.gvb",
+          "bounds": [
+            0,
+            -10,
+            20,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 11128,
+          "indices": 31284,
+          "triangles": 10428,
+          "bytes": 169660,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E000.gvb",
+          "bounds": [
+            0,
+            10,
+            20,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 950,
+          "indices": 2856,
+          "triangles": 952,
+          "bytes": 15236,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E000.gvb",
+          "bounds": [
+            0,
+            30,
+            20,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 24607,
+          "indices": 64239,
+          "triangles": 21413,
+          "bytes": 355396,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E000.gvb",
+          "bounds": [
+            0,
+            50,
+            20,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 112489,
+          "indices": 246681,
+          "triangles": 82227,
+          "bytes": 1436692,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E000.gvb",
+          "bounds": [
+            0,
+            70,
+            20,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5062,
+          "indices": 13212,
+          "triangles": 4404,
+          "bytes": 73108,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E020.gvb",
+          "bounds": [
+            20,
+            -90,
+            40,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 326,
+          "indices": 942,
+          "triangles": 314,
+          "bytes": 5084,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E020.gvb",
+          "bounds": [
+            20,
+            -70,
+            40,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1219,
+          "indices": 3603,
+          "triangles": 1201,
+          "bytes": 19300,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E020.gvb",
+          "bounds": [
+            20,
+            -50,
+            40,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1287,
+          "indices": 3705,
+          "triangles": 1235,
+          "bytes": 19980,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E020.gvb",
+          "bounds": [
+            20,
+            -30,
+            40,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 6577,
+          "indices": 18831,
+          "triangles": 6277,
+          "bytes": 101644,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E020.gvb",
+          "bounds": [
+            20,
+            -10,
+            40,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 11483,
+          "indices": 33381,
+          "triangles": 11127,
+          "bytes": 179468,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E020.gvb",
+          "bounds": [
+            20,
+            10,
+            40,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10878,
+          "indices": 27066,
+          "triangles": 9022,
+          "bytes": 151788,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E020.gvb",
+          "bounds": [
+            20,
+            30,
+            40,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 36216,
+          "indices": 95511,
+          "triangles": 31837,
+          "bytes": 526920,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E020.gvb",
+          "bounds": [
+            20,
+            50,
+            40,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 93678,
+          "indices": 199968,
+          "triangles": 66656,
+          "bytes": 1174596,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E020.gvb",
+          "bounds": [
+            20,
+            70,
+            40,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7484,
+          "indices": 19050,
+          "triangles": 6350,
+          "bytes": 106148,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E040.gvb",
+          "bounds": [
+            40,
+            -90,
+            60,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16,
+          "indices": 24,
+          "triangles": 8,
+          "bytes": 172,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E040.gvb",
+          "bounds": [
+            40,
+            -70,
+            60,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1685,
+          "indices": 5037,
+          "triangles": 1679,
+          "bytes": 26900,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E040.gvb",
+          "bounds": [
+            40,
+            -50,
+            60,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 179,
+          "indices": 459,
+          "triangles": 153,
+          "bytes": 2564,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E040.gvb",
+          "bounds": [
+            40,
+            -30,
+            60,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 11664,
+          "indices": 31368,
+          "triangles": 10456,
+          "bytes": 172140,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E040.gvb",
+          "bounds": [
+            40,
+            -10,
+            60,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3165,
+          "indices": 7203,
+          "triangles": 2401,
+          "bytes": 41484,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E040.gvb",
+          "bounds": [
+            40,
+            10,
+            60,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 18089,
+          "indices": 46221,
+          "triangles": 15407,
+          "bytes": 257252,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E040.gvb",
+          "bounds": [
+            40,
+            30,
+            60,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 8788,
+          "indices": 26148,
+          "triangles": 8716,
+          "bytes": 139756,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E040.gvb",
+          "bounds": [
+            40,
+            50,
+            60,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 7258,
+          "indices": 21006,
+          "triangles": 7002,
+          "bytes": 113068,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E040.gvb",
+          "bounds": [
+            40,
+            70,
+            60,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 8754,
+          "indices": 23958,
+          "triangles": 7986,
+          "bytes": 130860,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E060.gvb",
+          "bounds": [
+            60,
+            -90,
+            80,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16,
+          "indices": 24,
+          "triangles": 8,
+          "bytes": 172,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E060.gvb",
+          "bounds": [
+            60,
+            -70,
+            80,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1315,
+          "indices": 3855,
+          "triangles": 1285,
+          "bytes": 20692,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E060.gvb",
+          "bounds": [
+            60,
+            -50,
+            80,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2840,
+          "indices": 7044,
+          "triangles": 2348,
+          "bytes": 39548,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E060.gvb",
+          "bounds": [
+            60,
+            -30,
+            80,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 131,
+          "indices": 315,
+          "triangles": 105,
+          "bytes": 1796,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E060.gvb",
+          "bounds": [
+            60,
+            -10,
+            80,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5541,
+          "indices": 10221,
+          "triangles": 3407,
+          "bytes": 63060,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E060.gvb",
+          "bounds": [
+            60,
+            10,
+            80,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10151,
+          "indices": 27783,
+          "triangles": 9261,
+          "bytes": 151748,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E060.gvb",
+          "bounds": [
+            60,
+            30,
+            80,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4325,
+          "indices": 13065,
+          "triangles": 4355,
+          "bytes": 69572,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E060.gvb",
+          "bounds": [
+            60,
+            50,
+            80,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10896,
+          "indices": 33048,
+          "triangles": 11016,
+          "bytes": 175788,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E060.gvb",
+          "bounds": [
+            60,
+            70,
+            80,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3868,
+          "indices": 10854,
+          "triangles": 3618,
+          "bytes": 58900,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E080.gvb",
+          "bounds": [
+            80,
+            -90,
+            100,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16,
+          "indices": 24,
+          "triangles": 8,
+          "bytes": 172,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E080.gvb",
+          "bounds": [
+            80,
+            -70,
+            100,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1199,
+          "indices": 3579,
+          "triangles": 1193,
+          "bytes": 19124,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E080.gvb",
+          "bounds": [
+            80,
+            -30,
+            100,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 102,
+          "indices": 222,
+          "triangles": 74,
+          "bytes": 1308,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E080.gvb",
+          "bounds": [
+            80,
+            -10,
+            100,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 12401,
+          "indices": 30285,
+          "triangles": 10095,
+          "bytes": 170756,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E080.gvb",
+          "bounds": [
+            80,
+            10,
+            100,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 24725,
+          "indices": 61713,
+          "triangles": 20571,
+          "bytes": 345764,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E080.gvb",
+          "bounds": [
+            80,
+            30,
+            100,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5403,
+          "indices": 16968,
+          "triangles": 5656,
+          "bytes": 89496,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E080.gvb",
+          "bounds": [
+            80,
+            50,
+            100,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3824,
+          "indices": 11634,
+          "triangles": 3878,
+          "bytes": 61844,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E080.gvb",
+          "bounds": [
+            80,
+            70,
+            100,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10344,
+          "indices": 28302,
+          "triangles": 9434,
+          "bytes": 154596,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E100.gvb",
+          "bounds": [
+            100,
+            -90,
+            120,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16,
+          "indices": 24,
+          "triangles": 8,
+          "bytes": 172,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E100.gvb",
+          "bounds": [
+            100,
+            -70,
+            120,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1251,
+          "indices": 3729,
+          "triangles": 1243,
+          "bytes": 19932,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E100.gvb",
+          "bounds": [
+            100,
+            -50,
+            120,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1845,
+          "indices": 4341,
+          "triangles": 1447,
+          "bytes": 24756,
+          "sourceTiles": 1
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E100.gvb",
+          "bounds": [
+            100,
+            -30,
+            120,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5497,
+          "indices": 13857,
+          "triangles": 4619,
+          "bytes": 77428,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E100.gvb",
+          "bounds": [
+            100,
+            -10,
+            120,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 41911,
+          "indices": 105135,
+          "triangles": 35045,
+          "bytes": 588196,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E100.gvb",
+          "bounds": [
+            100,
+            10,
+            120,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 38535,
+          "indices": 92229,
+          "triangles": 30743,
+          "bytes": 523068,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E100.gvb",
+          "bounds": [
+            100,
+            30,
+            120,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5178,
+          "indices": 15678,
+          "triangles": 5226,
+          "bytes": 83436,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E100.gvb",
+          "bounds": [
+            100,
+            50,
+            120,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 2575,
+          "indices": 7887,
+          "triangles": 2629,
+          "bytes": 41860,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E100.gvb",
+          "bounds": [
+            100,
+            70,
+            120,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5965,
+          "indices": 16881,
+          "triangles": 5627,
+          "bytes": 91396,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E120.gvb",
+          "bounds": [
+            120,
+            -90,
+            140,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16,
+          "indices": 24,
+          "triangles": 8,
+          "bytes": 172,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E120.gvb",
+          "bounds": [
+            120,
+            -70,
+            140,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1154,
+          "indices": 3450,
+          "triangles": 1150,
+          "bytes": 18428,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E120.gvb",
+          "bounds": [
+            120,
+            -50,
+            140,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5709,
+          "indices": 13875,
+          "triangles": 4625,
+          "bytes": 78348,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E120.gvb",
+          "bounds": [
+            120,
+            -30,
+            140,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 24554,
+          "indices": 62496,
+          "triangles": 20832,
+          "bytes": 348212,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E120.gvb",
+          "bounds": [
+            120,
+            -10,
+            140,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 54730,
+          "indices": 140574,
+          "triangles": 46858,
+          "bytes": 781228,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E120.gvb",
+          "bounds": [
+            120,
+            10,
+            140,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 27312,
+          "indices": 66102,
+          "triangles": 22034,
+          "bytes": 373668,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E120.gvb",
+          "bounds": [
+            120,
+            30,
+            140,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 53235,
+          "indices": 131877,
+          "triangles": 43959,
+          "bytes": 740460,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E120.gvb",
+          "bounds": [
+            120,
+            50,
+            140,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 4392,
+          "indices": 12804,
+          "triangles": 4268,
+          "bytes": 68796,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E120.gvb",
+          "bounds": [
+            120,
+            70,
+            140,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 8355,
+          "indices": 22005,
+          "triangles": 7335,
+          "bytes": 121452,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E140.gvb",
+          "bounds": [
+            140,
+            -90,
+            160,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16,
+          "indices": 24,
+          "triangles": 8,
+          "bytes": 172,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E140.gvb",
+          "bounds": [
+            140,
+            -70,
+            160,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 1779,
+          "indices": 5289,
+          "triangles": 1763,
+          "bytes": 28284,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E140.gvb",
+          "bounds": [
+            140,
+            -50,
+            160,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10932,
+          "indices": 29862,
+          "triangles": 9954,
+          "bytes": 163188,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E140.gvb",
+          "bounds": [
+            140,
+            -30,
+            160,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16074,
+          "indices": 38484,
+          "triangles": 12828,
+          "bytes": 218244,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E140.gvb",
+          "bounds": [
+            140,
+            -10,
+            160,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 23641,
+          "indices": 57561,
+          "triangles": 19187,
+          "bytes": 324820,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E140.gvb",
+          "bounds": [
+            140,
+            10,
+            160,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 781,
+          "indices": 1881,
+          "triangles": 627,
+          "bytes": 10660,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N30_E140.gvb",
+          "bounds": [
+            140,
+            30,
+            160,
+            50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 6907,
+          "indices": 19344,
+          "triangles": 6448,
+          "bytes": 105016,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E140.gvb",
+          "bounds": [
+            140,
+            50,
+            160,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 11955,
+          "indices": 36576,
+          "triangles": 12192,
+          "bytes": 194136,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E140.gvb",
+          "bounds": [
+            140,
+            70,
+            160,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 6502,
+          "indices": 19305,
+          "triangles": 6435,
+          "bytes": 103240,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S90_E160.gvb",
+          "bounds": [
+            160,
+            -90,
+            180,
+            -70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 3174,
+          "indices": 9420,
+          "triangles": 3140,
+          "bytes": 50388,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S70_E160.gvb",
+          "bounds": [
+            160,
+            -70,
+            180,
+            -50
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 758,
+          "indices": 2064,
+          "triangles": 688,
+          "bytes": 11300,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S50_E160.gvb",
+          "bounds": [
+            160,
+            -50,
+            180,
+            -30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 16229,
+          "indices": 43947,
+          "triangles": 14649,
+          "bytes": 240716,
+          "sourceTiles": 3
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S30_E160.gvb",
+          "bounds": [
+            160,
+            -30,
+            180,
+            -10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 10900,
+          "indices": 28176,
+          "triangles": 9392,
+          "bytes": 156316,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/S10_E160.gvb",
+          "bounds": [
+            160,
+            -10,
+            180,
+            10
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 5338,
+          "indices": 10914,
+          "triangles": 3638,
+          "bytes": 65020,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N10_E160.gvb",
+          "bounds": [
+            160,
+            10,
+            180,
+            30
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 797,
+          "indices": 1215,
+          "triangles": 405,
+          "bytes": 8060,
+          "sourceTiles": 2
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N50_E160.gvb",
+          "bounds": [
+            160,
+            50,
+            180,
+            70
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 8961,
+          "indices": 24597,
+          "triangles": 8199,
+          "bytes": 134244,
+          "sourceTiles": 4
+        },
+        {
+          "lod": 3,
+          "gshhgResolution": "h",
+          "path": "delivery/lod3/N70_E160.gvb",
+          "bounds": [
+            160,
+            70,
+            180,
+            90
+          ],
+          "deliveryBundle": true,
+          "alwaysVisible": false,
+          "vertices": 343,
+          "indices": 927,
+          "triangles": 309,
+          "bytes": 5092,
+          "sourceTiles": 2
+        }
+      ]
+    }
+  }
+}
