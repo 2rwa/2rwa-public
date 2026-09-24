@@ -15,17 +15,17 @@
     "license": "GNU LGPL v3 (see upstream LICENSE)",
     "antarctica": "ice-front"
   },
-  "tiles": 451,
-  "vertices": 10397146,
-  "triangles": 10033148,
-  "bytes": 161991772,
-  "mib": 154.487,
+  "tiles": 469,
+  "vertices": 10408487,
+  "triangles": 10044208,
+  "bytes": 162170072,
+  "mib": 154.657,
   "byLod": {
     "lod4-f": {
-      "tiles": 451,
-      "vertices": 10397146,
-      "triangles": 10033148,
-      "bytes": 161991772
+      "tiles": 469,
+      "vertices": 10408487,
+      "triangles": 10044208,
+      "bytes": 162170072
     }
   },
   "largestTiles": [
@@ -192,34 +192,34 @@
   ],
   "delivery": {
     "tiles": 226,
-    "vertices": 2290220,
-    "triangles": 1941438,
-    "bytes": 32460848,
-    "mib": 30.957,
+    "vertices": 2307994,
+    "triangles": 1959120,
+    "bytes": 32744128,
+    "mib": 31.227,
     "byLod": {
       "lod0-c": {
         "tiles": 1,
-        "vertices": 13810,
-        "triangles": 12742,
-        "bytes": 208156
+        "vertices": 18228,
+        "triangles": 17160,
+        "bytes": 278844
       },
       "lod1-l": {
         "tiles": 8,
-        "vertices": 83804,
-        "triangles": 77736,
-        "bytes": 1268144
+        "vertices": 88255,
+        "triangles": 82141,
+        "bytes": 1338808
       },
       "lod2-i": {
         "tiles": 69,
-        "vertices": 415574,
-        "triangles": 356984,
-        "bytes": 5946932
+        "vertices": 420031,
+        "triangles": 361395,
+        "bytes": 6017692
       },
       "lod3-h": {
         "tiles": 148,
-        "vertices": 1777032,
-        "triangles": 1493976,
-        "bytes": 25037616
+        "vertices": 1781480,
+        "triangles": 1498424,
+        "bytes": 25108784
       }
     },
     "largestTiles": [
@@ -259,9 +259,9 @@
         "path": "delivery/lod3/S70_W080.gvb",
         "lod": 3,
         "resolution": "h",
-        "bytes": 800348,
-        "vertices": 57920,
-        "triangles": 47388
+        "bytes": 800764,
+        "vertices": 57946,
+        "triangles": 47414
       },
       {
         "path": "delivery/lod3/S10_E120.gvb",
@@ -385,6 +385,6 @@
       }
     ]
   },
-  "repositoryBytes": 194452620,
-  "repositoryMiB": 185.444
+  "repositoryBytes": 194914200,
+  "repositoryMiB": 185.885
 }
