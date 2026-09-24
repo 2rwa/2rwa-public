@@ -1,0 +1,12 @@
+Vector Globe preview data notice
+
+Source: GSHHG / GSHHS shoreline polygons
+Version: 2.3.7
+Upstream: https://github.com/GenericMappingTools/gshhg-gmt
+License: GNU LGPL v3 (see upstream LICENSE)
+
+Published in this preview:
+- global delivery bundles for LOD0-LOD3
+- full-resolution LOD4 only for 120E-150E / 20N-50N
+
+The source archive itself is not redistributed here.
