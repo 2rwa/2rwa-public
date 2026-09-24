@@ -21,14 +21,13 @@ concurrency:
 jobs:
   build-preview:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       GSHHG_VERSION: '2.3.7'
       GSHHG_ASSET: 'gshhg-shp-2.3.7.zip'
       SOURCE_ARCHIVE: '.cache/gshhg/source/gshhg-shp-2.3.7.zip'
       OUT_DIR: 'tests/vector-globe/data'
-      GLOBAL_TMP: '.cache/vector-globe-global'
-      JAPAN_TMP: '.cache/vector-globe-japan'
+      GLOBAL_TMP: '.cache/vector-globe-global-all'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,66 +59,45 @@ jobs:
             --asset "$GSHHG_ASSET" \
             --output "$SOURCE_ARCHIVE"
 
-      - name: Build global LOD0-LOD3
+      - name: Restore generated global tile cache
+        id: world-cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/vector-globe-global-all
+          key: test-vector-globe-world-v1-${{ env.GSHHG_VERSION }}-${{ hashFiles('tests/vector-globe/build/build_gshhg_tiles.py', 'tests/vector-globe/build/build_tiles.py', 'tests/vector-globe/build/bundle_delivery.py', 'tests/vector-globe/build/validate_tiles.py') }}
+
+      - name: Build global LOD0-LOD4 on cache miss
+        if: steps.world-cache.outputs.cache-hit != 'true'
         run: |
-          rm -rf "$GLOBAL_TMP" .cache/gshhg/extracted-global
+          rm -rf "$GLOBAL_TMP" .cache/gshhg/extracted-global-all
           python tests/vector-globe/build/build_gshhg_tiles.py \
             --archive "$SOURCE_ARCHIVE" \
             --output "$GLOBAL_TMP" \
             --bbox=-180,-90,180,90 \
             --tile-deg 10 \
-            --resolutions c,l,i,h \
-            --extract-dir .cache/gshhg/extracted-global
+            --resolutions c,l,i,h,f \
+            --extract-dir .cache/gshhg/extracted-global-all
 
-      - name: Build Japan full LOD4
-        run: |
-          rm -rf "$JAPAN_TMP" .cache/gshhg/extracted-japan
-          python tests/vector-globe/build/build_gshhg_tiles.py \
-            --archive "$SOURCE_ARCHIVE" \
-            --output "$JAPAN_TMP" \
-            --bbox=120,20,150,50 \
-            --tile-deg 10 \
-            --resolutions f \
-            --extract-dir .cache/gshhg/extracted-japan
-
-      - name: Assemble preview manifest
+      - name: Assemble global preview
         run: |
           rm -rf "$OUT_DIR"
           mkdir -p "$OUT_DIR"
           cp -a "$GLOBAL_TMP"/. "$OUT_DIR"/
-          mkdir -p "$OUT_DIR/lod4"
-          cp -a "$JAPAN_TMP/lod0"/. "$OUT_DIR/lod4"/
+          cp "$SOURCE_ARCHIVE.json" "$OUT_DIR/source.json"
           python - <<'PY'
           import json
           from pathlib import Path
 
-          out = Path("tests/vector-globe/data")
-          japan = Path(".cache/vector-globe-japan")
-          manifest = json.loads((out / "manifest.json").read_text())
-          jm = json.loads((japan / "manifest.json").read_text())
-
-          full_lod = dict(jm["lods"][0])
-          full_lod["id"] = 4
-          full_lod["gshhgResolution"] = "f"
-          full_lod["name"] = "full"
-          manifest["lods"].append(full_lod)
-
-          for tile in jm["tiles"]:
-              tile = dict(tile)
-              tile["lod"] = 4
-              tile["gshhgResolution"] = "f"
-              tile["path"] = tile["path"].replace("lod0/", "lod4/", 1)
-              manifest["tiles"].append(tile)
-
-          manifest["preview"] = {
-              "status": "work-in-progress",
-              "globalLods": [0, 1, 2, 3],
-              "fullLod4BBox": [120, 20, 150, 50],
-              "pagesPath": "/2rwa-public/tests/vector-globe/"
+          p = Path("tests/vector-globe/data/manifest.json")
+          m = json.loads(p.read_text())
+          m["preview"] = {
+              "status": "complete-for-1000-percent-goal",
+              "globalLods": [0, 1, 2, 3, 4],
+              "fullLod4BBox": [-180, -90, 180, 90],
+              "pagesPath": "/2rwa-public/tests/vector-globe/",
+              "goal": "global full-resolution display comparable to the validated Japan 1000% view"
           }
-          (out / "manifest.json").write_text(
-              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
-          )
+          p.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
           PY
 
       - name: Build low-LOD delivery bundles
@@ -128,7 +106,7 @@ jobs:
             --data "$OUT_DIR" \
             --schemes 0:360x180,1:90x90,2:30x30,3:20x20
 
-      - name: Remove low-LOD canonical files from public preview
+      - name: Keep delivery bundles plus global full LOD4
         run: |
           rm -rf "$OUT_DIR/lod0" "$OUT_DIR/lod1" "$OUT_DIR/lod2" "$OUT_DIR/lod3"
           python - <<'PY'
@@ -140,14 +118,27 @@ jobs:
           p.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
           PY
 
-      - name: Validate published preview
+      - name: Validate published global preview
         run: |
           python tests/vector-globe/build/validate_tiles.py --data "$OUT_DIR" \
             | tee "$OUT_DIR/build-report.json"
           node --check tests/vector-globe/app.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("tests/vector-globe/data/build-report.json").read_text())
+          manifest = json.loads(Path("tests/vector-globe/data/manifest.json").read_text())
+          full_tiles = [t for t in manifest["tiles"] if int(t["lod"]) == 4]
+          if len(full_tiles) < 400:
+              raise SystemExit(f"expected global LOD4 coverage, got only {len(full_tiles)} tiles")
+          if report["repositoryBytes"] > 300 * 1024 * 1024:
+              raise SystemExit(f"published dataset unexpectedly large: {report['repositoryBytes']}")
+          print(f"global LOD4 tiles: {len(full_tiles)}")
+          print(f"published data: {report['repositoryMiB']} MiB")
+          PY
           du -sh "$OUT_DIR"
 
-      - name: Commit generated preview data
+      - name: Commit generated global preview data
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -156,14 +147,15 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No preview data changes.'
           else
-            git commit -m 'Build vector globe Pages preview data'
+            git commit -m 'Build global full-resolution vector globe data'
             git push
           fi
 
       - uses: actions/upload-artifact@v4
         with:
-          name: test-vector-globe-preview-report
+          name: test-vector-globe-global-report
           path: |
             tests/vector-globe/data/manifest.json
             tests/vector-globe/data/build-report.json
+            tests/vector-globe/data/source.json
           if-no-files-found: error
