@@ -27,7 +27,7 @@ jobs:
       GSHHG_ASSET: 'gshhg-shp-2.3.7.zip'
       SOURCE_ARCHIVE: '.cache/gshhg/source/gshhg-shp-2.3.7.zip'
       OUT_DIR: 'tests/vector-globe/data'
-      GLOBAL_TMP: '.cache/vector-globe-global-all'
+      FULL_TMP: '.cache/vector-globe-full-global'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,63 +59,70 @@ jobs:
             --asset "$GSHHG_ASSET" \
             --output "$SOURCE_ARCHIVE"
 
-      - name: Restore generated global tile cache
-        id: world-cache
+      - name: Restore global full-LOD cache
+        id: full-cache
         uses: actions/cache@v4
         with:
-          path: .cache/vector-globe-global-all
-          key: test-vector-globe-world-v1-${{ env.GSHHG_VERSION }}-${{ hashFiles('tests/vector-globe/build/build_gshhg_tiles.py', 'tests/vector-globe/build/build_tiles.py', 'tests/vector-globe/build/bundle_delivery.py', 'tests/vector-globe/build/validate_tiles.py') }}
+          path: .cache/vector-globe-full-global
+          key: test-vector-globe-full-v1-${{ env.GSHHG_VERSION }}-${{ hashFiles('tests/vector-globe/build/build_gshhg_tiles.py', 'tests/vector-globe/build/build_tiles.py') }}
 
-      - name: Build global LOD0-LOD4 on cache miss
-        if: steps.world-cache.outputs.cache-hit != 'true'
+      - name: Build global full LOD on cache miss
+        if: steps.full-cache.outputs.cache-hit != 'true'
         run: |
-          rm -rf "$GLOBAL_TMP" .cache/gshhg/extracted-global-all
+          rm -rf "$FULL_TMP" .cache/gshhg/extracted-full-global
           python tests/vector-globe/build/build_gshhg_tiles.py \
             --archive "$SOURCE_ARCHIVE" \
-            --output "$GLOBAL_TMP" \
+            --output "$FULL_TMP" \
             --bbox=-180,-90,180,90 \
             --tile-deg 10 \
-            --resolutions c,l,i,h,f \
-            --extract-dir .cache/gshhg/extracted-global-all
+            --resolutions f \
+            --extract-dir .cache/gshhg/extracted-full-global
 
-      - name: Assemble global preview
+      - name: Replace preview LOD4 with global full data
         run: |
-          rm -rf "$OUT_DIR"
-          mkdir -p "$OUT_DIR"
-          cp -a "$GLOBAL_TMP"/. "$OUT_DIR"/
+          test -d "$OUT_DIR/delivery"
+          rm -rf "$OUT_DIR/lod4"
+          mkdir -p "$OUT_DIR/lod4"
+          cp -a "$FULL_TMP/lod0"/. "$OUT_DIR/lod4"/
           cp "$SOURCE_ARCHIVE.json" "$OUT_DIR/source.json"
           python - <<'PY'
           import json
           from pathlib import Path
 
-          p = Path("tests/vector-globe/data/manifest.json")
-          m = json.loads(p.read_text())
-          m["preview"] = {
+          out = Path("tests/vector-globe/data")
+          full = Path(".cache/vector-globe-full-global")
+          manifest = json.loads((out / "manifest.json").read_text())
+          fm = json.loads((full / "manifest.json").read_text())
+
+          full_lod = dict(fm["lods"][0])
+          full_lod["id"] = 4
+          full_lod["gshhgResolution"] = "f"
+          full_lod["name"] = "full"
+
+          lods = [lod for lod in manifest["lods"] if int(lod["id"]) != 4]
+          lods.append(full_lod)
+          lods.sort(key=lambda lod: int(lod["id"]))
+          manifest["lods"] = lods
+
+          tiles = []
+          for tile in fm["tiles"]:
+              tile = dict(tile)
+              tile["lod"] = 4
+              tile["gshhgResolution"] = "f"
+              tile["path"] = tile["path"].replace("lod0/", "lod4/", 1)
+              tiles.append(tile)
+          manifest["tiles"] = tiles
+
+          manifest["preview"] = {
               "status": "complete-for-1000-percent-goal",
               "globalLods": [0, 1, 2, 3, 4],
               "fullLod4BBox": [-180, -90, 180, 90],
               "pagesPath": "/2rwa-public/tests/vector-globe/",
               "goal": "global full-resolution display comparable to the validated Japan 1000% view"
           }
-          p.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
-          PY
-
-      - name: Build low-LOD delivery bundles
-        run: |
-          python tests/vector-globe/build/bundle_delivery.py \
-            --data "$OUT_DIR" \
-            --schemes 0:360x180,1:90x90,2:30x30,3:20x20
-
-      - name: Keep delivery bundles plus global full LOD4
-        run: |
-          rm -rf "$OUT_DIR/lod0" "$OUT_DIR/lod1" "$OUT_DIR/lod2" "$OUT_DIR/lod3"
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p = Path("tests/vector-globe/data/manifest.json")
-          m = json.loads(p.read_text())
-          m["tiles"] = [tile for tile in m["tiles"] if int(tile["lod"]) == 4]
-          p.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
+          (out / "manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
+          )
           PY
 
       - name: Validate published global preview
@@ -142,7 +149,6 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git pull --rebase origin main
           git add -A tests/vector-globe/data
           if git diff --cached --quiet; then
             echo 'No preview data changes.'
