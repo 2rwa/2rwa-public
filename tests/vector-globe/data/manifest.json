@@ -86,6 +86,5706 @@
     {
       "lod": 4,
       "gshhgResolution": "f",
+      "path": "lod4/S90_W180.gvb",
+      "bounds": [
+        -180,
+        -90,
+        -170,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W180.gvb",
+      "bounds": [
+        -180,
+        -80,
+        -170,
+        -70
+      ],
+      "vertices": 1242,
+      "indices": 3720,
+      "triangles": 1240,
+      "bytes": 19860
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_W180.gvb",
+      "bounds": [
+        -180,
+        -50,
+        -170,
+        -40
+      ],
+      "vertices": 2392,
+      "indices": 7008,
+      "triangles": 2336,
+      "bytes": 37612
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_W180.gvb",
+      "bounds": [
+        -180,
+        -40,
+        -170,
+        -30
+      ],
+      "vertices": 50,
+      "indices": 132,
+      "triangles": 44,
+      "bytes": 740
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W180.gvb",
+      "bounds": [
+        -180,
+        -30,
+        -170,
+        -20
+      ],
+      "vertices": 2231,
+      "indices": 6213,
+      "triangles": 2071,
+      "bytes": 33788
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W180.gvb",
+      "bounds": [
+        -180,
+        -20,
+        -170,
+        -10
+      ],
+      "vertices": 13588,
+      "indices": 38970,
+      "triangles": 12990,
+      "bytes": 210244
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W180.gvb",
+      "bounds": [
+        -180,
+        -10,
+        -170,
+        0
+      ],
+      "vertices": 1999,
+      "indices": 5469,
+      "triangles": 1823,
+      "bytes": 29884
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W180.gvb",
+      "bounds": [
+        -180,
+        0,
+        -170,
+        10
+      ],
+      "vertices": 62,
+      "indices": 174,
+      "triangles": 58,
+      "bytes": 956
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W180.gvb",
+      "bounds": [
+        -180,
+        20,
+        -170,
+        30
+      ],
+      "vertices": 330,
+      "indices": 900,
+      "triangles": 300,
+      "bytes": 4932
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W180.gvb",
+      "bounds": [
+        -180,
+        50,
+        -170,
+        60
+      ],
+      "vertices": 15196,
+      "indices": 43506,
+      "triangles": 14502,
+      "bytes": 234820
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W180.gvb",
+      "bounds": [
+        -180,
+        60,
+        -170,
+        70
+      ],
+      "vertices": 26361,
+      "indices": 78690,
+      "triangles": 26230,
+      "bytes": 420216
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W180.gvb",
+      "bounds": [
+        -180,
+        70,
+        -170,
+        80
+      ],
+      "vertices": 3225,
+      "indices": 9603,
+      "triangles": 3201,
+      "bytes": 51324
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W170.gvb",
+      "bounds": [
+        -170,
+        -90,
+        -160,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W170.gvb",
+      "bounds": [
+        -170,
+        -80,
+        -160,
+        -70
+      ],
+      "vertices": 1454,
+      "indices": 4356,
+      "triangles": 1452,
+      "bytes": 23252
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W170.gvb",
+      "bounds": [
+        -170,
+        -20,
+        -160,
+        -10
+      ],
+      "vertices": 1498,
+      "indices": 4206,
+      "triangles": 1402,
+      "bytes": 22828
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W170.gvb",
+      "bounds": [
+        -170,
+        -10,
+        -160,
+        0
+      ],
+      "vertices": 22,
+      "indices": 60,
+      "triangles": 20,
+      "bytes": 340
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W170.gvb",
+      "bounds": [
+        -170,
+        0,
+        -160,
+        10
+      ],
+      "vertices": 3399,
+      "indices": 10149,
+      "triangles": 3383,
+      "bytes": 54204
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W170.gvb",
+      "bounds": [
+        -170,
+        10,
+        -160,
+        20
+      ],
+      "vertices": 90,
+      "indices": 246,
+      "triangles": 82,
+      "bytes": 1356
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W170.gvb",
+      "bounds": [
+        -170,
+        20,
+        -160,
+        30
+      ],
+      "vertices": 825,
+      "indices": 2331,
+      "triangles": 777,
+      "bytes": 12636
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W170.gvb",
+      "bounds": [
+        -170,
+        50,
+        -160,
+        60
+      ],
+      "vertices": 53191,
+      "indices": 154413,
+      "triangles": 51471,
+      "bytes": 830428
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W170.gvb",
+      "bounds": [
+        -170,
+        60,
+        -160,
+        70
+      ],
+      "vertices": 68694,
+      "indices": 204147,
+      "triangles": 68049,
+      "bytes": 1091376
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W170.gvb",
+      "bounds": [
+        -170,
+        70,
+        -160,
+        80
+      ],
+      "vertices": 3326,
+      "indices": 9810,
+      "triangles": 3270,
+      "bytes": 52556
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W160.gvb",
+      "bounds": [
+        -160,
+        -90,
+        -150,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W160.gvb",
+      "bounds": [
+        -160,
+        -80,
+        -150,
+        -70
+      ],
+      "vertices": 3844,
+      "indices": 11508,
+      "triangles": 3836,
+      "bytes": 61420
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W160.gvb",
+      "bounds": [
+        -160,
+        -30,
+        -150,
+        -20
+      ],
+      "vertices": 813,
+      "indices": 2343,
+      "triangles": 781,
+      "bytes": 12636
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W160.gvb",
+      "bounds": [
+        -160,
+        -20,
+        -150,
+        -10
+      ],
+      "vertices": 4363,
+      "indices": 12381,
+      "triangles": 4127,
+      "bytes": 66988
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W160.gvb",
+      "bounds": [
+        -160,
+        -10,
+        -150,
+        0
+      ],
+      "vertices": 1220,
+      "indices": 3324,
+      "triangles": 1108,
+      "bytes": 18188
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W160.gvb",
+      "bounds": [
+        -160,
+        0,
+        -150,
+        10
+      ],
+      "vertices": 3397,
+      "indices": 9945,
+      "triangles": 3315,
+      "bytes": 53380
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W160.gvb",
+      "bounds": [
+        -160,
+        10,
+        -150,
+        20
+      ],
+      "vertices": 2969,
+      "indices": 8877,
+      "triangles": 2959,
+      "bytes": 47396
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W160.gvb",
+      "bounds": [
+        -160,
+        20,
+        -150,
+        30
+      ],
+      "vertices": 7863,
+      "indices": 23217,
+      "triangles": 7739,
+      "bytes": 124332
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W160.gvb",
+      "bounds": [
+        -160,
+        50,
+        -150,
+        60
+      ],
+      "vertices": 80738,
+      "indices": 237270,
+      "triangles": 79090,
+      "bytes": 1272044
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W160.gvb",
+      "bounds": [
+        -160,
+        60,
+        -150,
+        70
+      ],
+      "vertices": 9496,
+      "indices": 28437,
+      "triangles": 9479,
+      "bytes": 151744
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W160.gvb",
+      "bounds": [
+        -160,
+        70,
+        -150,
+        80
+      ],
+      "vertices": 13371,
+      "indices": 39729,
+      "triangles": 13243,
+      "bytes": 212412
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W150.gvb",
+      "bounds": [
+        -150,
+        -90,
+        -140,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W150.gvb",
+      "bounds": [
+        -150,
+        -80,
+        -140,
+        -70
+      ],
+      "vertices": 3086,
+      "indices": 9240,
+      "triangles": 3080,
+      "bytes": 49316
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W150.gvb",
+      "bounds": [
+        -150,
+        -30,
+        -140,
+        -20
+      ],
+      "vertices": 1250,
+      "indices": 3414,
+      "triangles": 1138,
+      "bytes": 18668
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W150.gvb",
+      "bounds": [
+        -150,
+        -20,
+        -140,
+        -10
+      ],
+      "vertices": 19615,
+      "indices": 51783,
+      "triangles": 17261,
+      "bytes": 285604
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W150.gvb",
+      "bounds": [
+        -150,
+        -10,
+        -140,
+        0
+      ],
+      "vertices": 1720,
+      "indices": 4968,
+      "triangles": 1656,
+      "bytes": 26764
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W150.gvb",
+      "bounds": [
+        -150,
+        50,
+        -140,
+        60
+      ],
+      "vertices": 7551,
+      "indices": 22197,
+      "triangles": 7399,
+      "bytes": 119004
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W150.gvb",
+      "bounds": [
+        -150,
+        60,
+        -140,
+        70
+      ],
+      "vertices": 44428,
+      "indices": 130392,
+      "triangles": 43464,
+      "bytes": 699292
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W150.gvb",
+      "bounds": [
+        -150,
+        70,
+        -140,
+        80
+      ],
+      "vertices": 8344,
+      "indices": 23568,
+      "triangles": 7856,
+      "bytes": 127660
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W140.gvb",
+      "bounds": [
+        -140,
+        -90,
+        -130,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W140.gvb",
+      "bounds": [
+        -140,
+        -80,
+        -130,
+        -70
+      ],
+      "vertices": 2943,
+      "indices": 8817,
+      "triangles": 2939,
+      "bytes": 47052
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W140.gvb",
+      "bounds": [
+        -140,
+        -30,
+        -130,
+        -20
+      ],
+      "vertices": 3355,
+      "indices": 9321,
+      "triangles": 3107,
+      "bytes": 50716
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W140.gvb",
+      "bounds": [
+        -140,
+        -20,
+        -130,
+        -10
+      ],
+      "vertices": 1914,
+      "indices": 5334,
+      "triangles": 1778,
+      "bytes": 29004
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W140.gvb",
+      "bounds": [
+        -140,
+        -10,
+        -130,
+        0
+      ],
+      "vertices": 1662,
+      "indices": 4836,
+      "triangles": 1612,
+      "bytes": 26004
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W140.gvb",
+      "bounds": [
+        -140,
+        50,
+        -130,
+        60
+      ],
+      "vertices": 184894,
+      "indices": 532329,
+      "triangles": 177443,
+      "bytes": 2868904
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W140.gvb",
+      "bounds": [
+        -140,
+        60,
+        -130,
+        70
+      ],
+      "vertices": 18900,
+      "indices": 55890,
+      "triangles": 18630,
+      "bytes": 299172
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W140.gvb",
+      "bounds": [
+        -140,
+        70,
+        -130,
+        80
+      ],
+      "vertices": 1510,
+      "indices": 4509,
+      "triangles": 1503,
+      "bytes": 24088
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W130.gvb",
+      "bounds": [
+        -130,
+        -90,
+        -120,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W130.gvb",
+      "bounds": [
+        -130,
+        -80,
+        -120,
+        -70
+      ],
+      "vertices": 3237,
+      "indices": 9705,
+      "triangles": 3235,
+      "bytes": 51780
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W130.gvb",
+      "bounds": [
+        -130,
+        -30,
+        -120,
+        -20
+      ],
+      "vertices": 234,
+      "indices": 672,
+      "triangles": 224,
+      "bytes": 3636
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W130.gvb",
+      "bounds": [
+        -130,
+        30,
+        -120,
+        40
+      ],
+      "vertices": 10852,
+      "indices": 32445,
+      "triangles": 10815,
+      "bytes": 173200
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W130.gvb",
+      "bounds": [
+        -130,
+        40,
+        -120,
+        50
+      ],
+      "vertices": 73946,
+      "indices": 217914,
+      "triangles": 72638,
+      "bytes": 1167452
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W130.gvb",
+      "bounds": [
+        -130,
+        50,
+        -120,
+        60
+      ],
+      "vertices": 92007,
+      "indices": 268305,
+      "triangles": 89435,
+      "bytes": 1441260
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W130.gvb",
+      "bounds": [
+        -130,
+        60,
+        -120,
+        70
+      ],
+      "vertices": 15227,
+      "indices": 44898,
+      "triangles": 14966,
+      "bytes": 240512
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W130.gvb",
+      "bounds": [
+        -130,
+        70,
+        -120,
+        80
+      ],
+      "vertices": 17197,
+      "indices": 49791,
+      "triangles": 16597,
+      "bytes": 267964
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W120.gvb",
+      "bounds": [
+        -120,
+        -90,
+        -110,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W120.gvb",
+      "bounds": [
+        -120,
+        -80,
+        -110,
+        -70
+      ],
+      "vertices": 2879,
+      "indices": 8631,
+      "triangles": 2877,
+      "bytes": 46052
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W120.gvb",
+      "bounds": [
+        -120,
+        10,
+        -110,
+        20
+      ],
+      "vertices": 1896,
+      "indices": 5604,
+      "triangles": 1868,
+      "bytes": 30012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W120.gvb",
+      "bounds": [
+        -120,
+        20,
+        -110,
+        30
+      ],
+      "vertices": 61476,
+      "indices": 181347,
+      "triangles": 60449,
+      "bytes": 971304
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W120.gvb",
+      "bounds": [
+        -120,
+        30,
+        -110,
+        40
+      ],
+      "vertices": 21494,
+      "indices": 64173,
+      "triangles": 21391,
+      "bytes": 342680
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W120.gvb",
+      "bounds": [
+        -120,
+        40,
+        -110,
+        50
+      ],
+      "vertices": 4451,
+      "indices": 13308,
+      "triangles": 4436,
+      "bytes": 71048
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W120.gvb",
+      "bounds": [
+        -120,
+        50,
+        -110,
+        60
+      ],
+      "vertices": 6290,
+      "indices": 18891,
+      "triangles": 6297,
+      "bytes": 100736
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W120.gvb",
+      "bounds": [
+        -120,
+        60,
+        -110,
+        70
+      ],
+      "vertices": 42903,
+      "indices": 126636,
+      "triangles": 42212,
+      "bytes": 678168
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W120.gvb",
+      "bounds": [
+        -120,
+        70,
+        -110,
+        80
+      ],
+      "vertices": 35751,
+      "indices": 102906,
+      "triangles": 34302,
+      "bytes": 554640
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W110.gvb",
+      "bounds": [
+        -110,
+        -90,
+        -100,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W110.gvb",
+      "bounds": [
+        -110,
+        -80,
+        -100,
+        -70
+      ],
+      "vertices": 8066,
+      "indices": 24153,
+      "triangles": 8051,
+      "bytes": 128888
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W110.gvb",
+      "bounds": [
+        -110,
+        -30,
+        -100,
+        -20
+      ],
+      "vertices": 500,
+      "indices": 1476,
+      "triangles": 492,
+      "bytes": 7916
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W110.gvb",
+      "bounds": [
+        -110,
+        10,
+        -100,
+        20
+      ],
+      "vertices": 10456,
+      "indices": 31074,
+      "triangles": 10358,
+      "bytes": 166132
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W110.gvb",
+      "bounds": [
+        -110,
+        20,
+        -100,
+        30
+      ],
+      "vertices": 30562,
+      "indices": 90237,
+      "triangles": 30079,
+      "bytes": 483208
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W110.gvb",
+      "bounds": [
+        -110,
+        30,
+        -100,
+        40
+      ],
+      "vertices": 977,
+      "indices": 2964,
+      "triangles": 988,
+      "bytes": 15776
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W110.gvb",
+      "bounds": [
+        -110,
+        40,
+        -100,
+        50
+      ],
+      "vertices": 5219,
+      "indices": 15693,
+      "triangles": 5231,
+      "bytes": 83660
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W110.gvb",
+      "bounds": [
+        -110,
+        50,
+        -100,
+        60
+      ],
+      "vertices": 26872,
+      "indices": 80295,
+      "triangles": 26765,
+      "bytes": 428680
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W110.gvb",
+      "bounds": [
+        -110,
+        60,
+        -100,
+        70
+      ],
+      "vertices": 70179,
+      "indices": 204201,
+      "triangles": 68067,
+      "bytes": 1097532
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W110.gvb",
+      "bounds": [
+        -110,
+        70,
+        -100,
+        80
+      ],
+      "vertices": 42328,
+      "indices": 121974,
+      "triangles": 40658,
+      "bytes": 657220
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W110.gvb",
+      "bounds": [
+        -110,
+        80,
+        -100,
+        90
+      ],
+      "vertices": 73,
+      "indices": 201,
+      "triangles": 67,
+      "bytes": 1108
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W100.gvb",
+      "bounds": [
+        -100,
+        -90,
+        -90,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W100.gvb",
+      "bounds": [
+        -100,
+        -80,
+        -90,
+        -70
+      ],
+      "vertices": 2942,
+      "indices": 8820,
+      "triangles": 2940,
+      "bytes": 47060
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_W100.gvb",
+      "bounds": [
+        -100,
+        -70,
+        -90,
+        -60
+      ],
+      "vertices": 156,
+      "indices": 462,
+      "triangles": 154,
+      "bytes": 2484
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W100.gvb",
+      "bounds": [
+        -100,
+        -10,
+        -90,
+        0
+      ],
+      "vertices": 5772,
+      "indices": 16845,
+      "triangles": 5615,
+      "bytes": 90480
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W100.gvb",
+      "bounds": [
+        -100,
+        0,
+        -90,
+        10
+      ],
+      "vertices": 1148,
+      "indices": 3360,
+      "triangles": 1120,
+      "bytes": 18044
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W100.gvb",
+      "bounds": [
+        -100,
+        10,
+        -90,
+        20
+      ],
+      "vertices": 25261,
+      "indices": 75513,
+      "triangles": 25171,
+      "bytes": 403108
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W100.gvb",
+      "bounds": [
+        -100,
+        20,
+        -90,
+        30
+      ],
+      "vertices": 76518,
+      "indices": 221523,
+      "triangles": 73841,
+      "bytes": 1192176
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W100.gvb",
+      "bounds": [
+        -100,
+        30,
+        -90,
+        40
+      ],
+      "vertices": 2460,
+      "indices": 7368,
+      "triangles": 2456,
+      "bytes": 39324
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W100.gvb",
+      "bounds": [
+        -100,
+        40,
+        -90,
+        50
+      ],
+      "vertices": 13665,
+      "indices": 41700,
+      "triangles": 13900,
+      "bytes": 221472
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W100.gvb",
+      "bounds": [
+        -100,
+        50,
+        -90,
+        60
+      ],
+      "vertices": 32531,
+      "indices": 97032,
+      "triangles": 32344,
+      "bytes": 518264
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W100.gvb",
+      "bounds": [
+        -100,
+        60,
+        -90,
+        70
+      ],
+      "vertices": 103354,
+      "indices": 294540,
+      "triangles": 98180,
+      "bytes": 1591588
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W100.gvb",
+      "bounds": [
+        -100,
+        70,
+        -90,
+        80
+      ],
+      "vertices": 49385,
+      "indices": 143529,
+      "triangles": 47843,
+      "bytes": 771668
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W100.gvb",
+      "bounds": [
+        -100,
+        80,
+        -90,
+        90
+      ],
+      "vertices": 4838,
+      "indices": 14130,
+      "triangles": 4710,
+      "bytes": 75884
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W090.gvb",
+      "bounds": [
+        -90,
+        -90,
+        -80,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W090.gvb",
+      "bounds": [
+        -90,
+        -80,
+        -80,
+        -70
+      ],
+      "vertices": 3863,
+      "indices": 11583,
+      "triangles": 3861,
+      "bytes": 61796
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_W090.gvb",
+      "bounds": [
+        -90,
+        -40,
+        -80,
+        -30
+      ],
+      "vertices": 168,
+      "indices": 498,
+      "triangles": 166,
+      "bytes": 2676
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W090.gvb",
+      "bounds": [
+        -90,
+        -30,
+        -80,
+        -20
+      ],
+      "vertices": 79,
+      "indices": 213,
+      "triangles": 71,
+      "bytes": 1180
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W090.gvb",
+      "bounds": [
+        -90,
+        -10,
+        -80,
+        0
+      ],
+      "vertices": 13367,
+      "indices": 39561,
+      "triangles": 13187,
+      "bytes": 211724
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W090.gvb",
+      "bounds": [
+        -90,
+        0,
+        -80,
+        10
+      ],
+      "vertices": 30955,
+      "indices": 90822,
+      "triangles": 30274,
+      "bytes": 487120
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W090.gvb",
+      "bounds": [
+        -90,
+        10,
+        -80,
+        20
+      ],
+      "vertices": 72809,
+      "indices": 213576,
+      "triangles": 71192,
+      "bytes": 1145552
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W090.gvb",
+      "bounds": [
+        -90,
+        20,
+        -80,
+        30
+      ],
+      "vertices": 130760,
+      "indices": 376485,
+      "triangles": 125495,
+      "bytes": 2028992
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W090.gvb",
+      "bounds": [
+        -90,
+        30,
+        -80,
+        40
+      ],
+      "vertices": 38336,
+      "indices": 113559,
+      "triangles": 37853,
+      "bytes": 607592
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W090.gvb",
+      "bounds": [
+        -90,
+        40,
+        -80,
+        50
+      ],
+      "vertices": 23094,
+      "indices": 68574,
+      "triangles": 22858,
+      "bytes": 366684
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W090.gvb",
+      "bounds": [
+        -90,
+        50,
+        -80,
+        60
+      ],
+      "vertices": 15164,
+      "indices": 44544,
+      "triangles": 14848,
+      "bytes": 238844
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W090.gvb",
+      "bounds": [
+        -90,
+        60,
+        -80,
+        70
+      ],
+      "vertices": 68915,
+      "indices": 196704,
+      "triangles": 65568,
+      "bytes": 1062488
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W090.gvb",
+      "bounds": [
+        -90,
+        70,
+        -80,
+        80
+      ],
+      "vertices": 39851,
+      "indices": 118191,
+      "triangles": 39397,
+      "bytes": 632180
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W090.gvb",
+      "bounds": [
+        -90,
+        80,
+        -80,
+        90
+      ],
+      "vertices": 8517,
+      "indices": 25341,
+      "triangles": 8447,
+      "bytes": 135444
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W080.gvb",
+      "bounds": [
+        -80,
+        -90,
+        -70,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W080.gvb",
+      "bounds": [
+        -80,
+        -80,
+        -70,
+        -70
+      ],
+      "vertices": 9433,
+      "indices": 28293,
+      "triangles": 9431,
+      "bytes": 150916
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_W080.gvb",
+      "bounds": [
+        -80,
+        -70,
+        -70,
+        -60
+      ],
+      "vertices": 3182,
+      "indices": 9534,
+      "triangles": 3178,
+      "bytes": 50876
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_W080.gvb",
+      "bounds": [
+        -80,
+        -60,
+        -70,
+        -50
+      ],
+      "vertices": 190918,
+      "indices": 548841,
+      "triangles": 182947,
+      "bytes": 2959048
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_W080.gvb",
+      "bounds": [
+        -80,
+        -50,
+        -70,
+        -40
+      ],
+      "vertices": 217550,
+      "indices": 635382,
+      "triangles": 211794,
+      "bytes": 3411740
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_W080.gvb",
+      "bounds": [
+        -80,
+        -40,
+        -70,
+        -30
+      ],
+      "vertices": 14847,
+      "indices": 43791,
+      "triangles": 14597,
+      "bytes": 234564
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W080.gvb",
+      "bounds": [
+        -80,
+        -30,
+        -70,
+        -20
+      ],
+      "vertices": 11544,
+      "indices": 33450,
+      "triangles": 11150,
+      "bytes": 179988
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W080.gvb",
+      "bounds": [
+        -80,
+        -20,
+        -70,
+        -10
+      ],
+      "vertices": 13058,
+      "indices": 38313,
+      "triangles": 12771,
+      "bytes": 205496
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W080.gvb",
+      "bounds": [
+        -80,
+        -10,
+        -70,
+        0
+      ],
+      "vertices": 9617,
+      "indices": 28272,
+      "triangles": 9424,
+      "bytes": 151568
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W080.gvb",
+      "bounds": [
+        -80,
+        0,
+        -70,
+        10
+      ],
+      "vertices": 49202,
+      "indices": 144606,
+      "triangles": 48202,
+      "bytes": 775244
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W080.gvb",
+      "bounds": [
+        -80,
+        10,
+        -70,
+        20
+      ],
+      "vertices": 38879,
+      "indices": 114651,
+      "triangles": 38217,
+      "bytes": 614132
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W080.gvb",
+      "bounds": [
+        -80,
+        20,
+        -70,
+        30
+      ],
+      "vertices": 129224,
+      "indices": 367092,
+      "triangles": 122364,
+      "bytes": 1985276
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W080.gvb",
+      "bounds": [
+        -80,
+        30,
+        -70,
+        40
+      ],
+      "vertices": 90700,
+      "indices": 267225,
+      "triangles": 89075,
+      "bytes": 1431712
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W080.gvb",
+      "bounds": [
+        -80,
+        40,
+        -70,
+        50
+      ],
+      "vertices": 63240,
+      "indices": 186516,
+      "triangles": 62172,
+      "bytes": 999036
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W080.gvb",
+      "bounds": [
+        -80,
+        50,
+        -70,
+        60
+      ],
+      "vertices": 90944,
+      "indices": 254505,
+      "triangles": 84835,
+      "bytes": 1381808
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W080.gvb",
+      "bounds": [
+        -80,
+        60,
+        -70,
+        70
+      ],
+      "vertices": 123813,
+      "indices": 346920,
+      "triangles": 115640,
+      "bytes": 1882944
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W080.gvb",
+      "bounds": [
+        -80,
+        70,
+        -70,
+        80
+      ],
+      "vertices": 43877,
+      "indices": 129714,
+      "triangles": 43238,
+      "bytes": 694376
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W080.gvb",
+      "bounds": [
+        -80,
+        80,
+        -70,
+        90
+      ],
+      "vertices": 5175,
+      "indices": 15489,
+      "triangles": 5163,
+      "bytes": 82668
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W070.gvb",
+      "bounds": [
+        -70,
+        -90,
+        -60,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W070.gvb",
+      "bounds": [
+        -70,
+        -80,
+        -60,
+        -70
+      ],
+      "vertices": 3913,
+      "indices": 11733,
+      "triangles": 3911,
+      "bytes": 62596
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_W070.gvb",
+      "bounds": [
+        -70,
+        -70,
+        -60,
+        -60
+      ],
+      "vertices": 46948,
+      "indices": 139260,
+      "triangles": 46420,
+      "bytes": 744844
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_W070.gvb",
+      "bounds": [
+        -70,
+        -60,
+        -60,
+        -50
+      ],
+      "vertices": 62360,
+      "indices": 180213,
+      "triangles": 60071,
+      "bytes": 970304
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_W070.gvb",
+      "bounds": [
+        -70,
+        -50,
+        -60,
+        -40
+      ],
+      "vertices": 21577,
+      "indices": 63768,
+      "triangles": 21256,
+      "bytes": 341392
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_W070.gvb",
+      "bounds": [
+        -70,
+        -40,
+        -60,
+        -30
+      ],
+      "vertices": 8879,
+      "indices": 25854,
+      "triangles": 8618,
+      "bytes": 138944
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W070.gvb",
+      "bounds": [
+        -70,
+        -30,
+        -60,
+        -20
+      ],
+      "vertices": 76,
+      "indices": 228,
+      "triangles": 76,
+      "bytes": 1228
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W070.gvb",
+      "bounds": [
+        -70,
+        -20,
+        -60,
+        -10
+      ],
+      "vertices": 3365,
+      "indices": 9951,
+      "triangles": 3317,
+      "bytes": 53276
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W070.gvb",
+      "bounds": [
+        -70,
+        -10,
+        -60,
+        0
+      ],
+      "vertices": 10834,
+      "indices": 31785,
+      "triangles": 10595,
+      "bytes": 170488
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W070.gvb",
+      "bounds": [
+        -70,
+        0,
+        -60,
+        10
+      ],
+      "vertices": 14311,
+      "indices": 42153,
+      "triangles": 14051,
+      "bytes": 225868
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W070.gvb",
+      "bounds": [
+        -70,
+        10,
+        -60,
+        20
+      ],
+      "vertices": 56081,
+      "indices": 162942,
+      "triangles": 54314,
+      "bytes": 876104
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W070.gvb",
+      "bounds": [
+        -70,
+        30,
+        -60,
+        40
+      ],
+      "vertices": 1434,
+      "indices": 4110,
+      "triangles": 1370,
+      "bytes": 22188
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W070.gvb",
+      "bounds": [
+        -70,
+        40,
+        -60,
+        50
+      ],
+      "vertices": 151155,
+      "indices": 442854,
+      "triangles": 147618,
+      "bytes": 2376048
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W070.gvb",
+      "bounds": [
+        -70,
+        50,
+        -60,
+        60
+      ],
+      "vertices": 120736,
+      "indices": 346971,
+      "triangles": 115657,
+      "bytes": 1870840
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W070.gvb",
+      "bounds": [
+        -70,
+        60,
+        -60,
+        70
+      ],
+      "vertices": 194546,
+      "indices": 564204,
+      "triangles": 188068,
+      "bytes": 3035012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W070.gvb",
+      "bounds": [
+        -70,
+        70,
+        -60,
+        80
+      ],
+      "vertices": 22417,
+      "indices": 65751,
+      "triangles": 21917,
+      "bytes": 352684
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W070.gvb",
+      "bounds": [
+        -70,
+        80,
+        -60,
+        90
+      ],
+      "vertices": 8169,
+      "indices": 24327,
+      "triangles": 8109,
+      "bytes": 129996
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W060.gvb",
+      "bounds": [
+        -60,
+        -90,
+        -50,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W060.gvb",
+      "bounds": [
+        -60,
+        -80,
+        -50,
+        -70
+      ],
+      "vertices": 2715,
+      "indices": 8103,
+      "triangles": 2701,
+      "bytes": 43284
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_W060.gvb",
+      "bounds": [
+        -60,
+        -70,
+        -50,
+        -60
+      ],
+      "vertices": 20222,
+      "indices": 60444,
+      "triangles": 20148,
+      "bytes": 322676
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_W060.gvb",
+      "bounds": [
+        -60,
+        -60,
+        -50,
+        -50
+      ],
+      "vertices": 24023,
+      "indices": 70089,
+      "triangles": 23363,
+      "bytes": 376460
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_W060.gvb",
+      "bounds": [
+        -60,
+        -40,
+        -50,
+        -30
+      ],
+      "vertices": 30397,
+      "indices": 90327,
+      "triangles": 30109,
+      "bytes": 482908
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W060.gvb",
+      "bounds": [
+        -60,
+        -30,
+        -50,
+        -20
+      ],
+      "vertices": 4471,
+      "indices": 13059,
+      "triangles": 4353,
+      "bytes": 70132
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W060.gvb",
+      "bounds": [
+        -60,
+        -20,
+        -50,
+        -10
+      ],
+      "vertices": 215,
+      "indices": 642,
+      "triangles": 214,
+      "bytes": 3440
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W060.gvb",
+      "bounds": [
+        -60,
+        -10,
+        -50,
+        0
+      ],
+      "vertices": 26253,
+      "indices": 77085,
+      "triangles": 25695,
+      "bytes": 413364
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W060.gvb",
+      "bounds": [
+        -60,
+        0,
+        -50,
+        10
+      ],
+      "vertices": 32825,
+      "indices": 97518,
+      "triangles": 32506,
+      "bytes": 521384
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W060.gvb",
+      "bounds": [
+        -60,
+        10,
+        -50,
+        20
+      ],
+      "vertices": 575,
+      "indices": 1719,
+      "triangles": 573,
+      "bytes": 9188
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W060.gvb",
+      "bounds": [
+        -60,
+        40,
+        -50,
+        50
+      ],
+      "vertices": 94516,
+      "indices": 275940,
+      "triangles": 91980,
+      "bytes": 1481836
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W060.gvb",
+      "bounds": [
+        -60,
+        50,
+        -50,
+        60
+      ],
+      "vertices": 72889,
+      "indices": 206706,
+      "triangles": 68902,
+      "bytes": 1118392
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W060.gvb",
+      "bounds": [
+        -60,
+        60,
+        -50,
+        70
+      ],
+      "vertices": 180386,
+      "indices": 483828,
+      "triangles": 161276,
+      "bytes": 2656868
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W060.gvb",
+      "bounds": [
+        -60,
+        70,
+        -50,
+        80
+      ],
+      "vertices": 57544,
+      "indices": 162747,
+      "triangles": 54249,
+      "bytes": 881176
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W060.gvb",
+      "bounds": [
+        -60,
+        80,
+        -50,
+        90
+      ],
+      "vertices": 2241,
+      "indices": 6648,
+      "triangles": 2216,
+      "bytes": 35568
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W050.gvb",
+      "bounds": [
+        -50,
+        -90,
+        -40,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W050.gvb",
+      "bounds": [
+        -50,
+        -80,
+        -40,
+        -70
+      ],
+      "vertices": 1642,
+      "indices": 4914,
+      "triangles": 1638,
+      "bytes": 26236
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_W050.gvb",
+      "bounds": [
+        -50,
+        -70,
+        -40,
+        -60
+      ],
+      "vertices": 1781,
+      "indices": 5325,
+      "triangles": 1775,
+      "bytes": 28436
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W050.gvb",
+      "bounds": [
+        -50,
+        -30,
+        -40,
+        -20
+      ],
+      "vertices": 42532,
+      "indices": 124071,
+      "triangles": 41357,
+      "bytes": 666424
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W050.gvb",
+      "bounds": [
+        -50,
+        -20,
+        -40,
+        -10
+      ],
+      "vertices": 2201,
+      "indices": 6549,
+      "triangles": 2183,
+      "bytes": 35012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W050.gvb",
+      "bounds": [
+        -50,
+        -10,
+        -40,
+        0
+      ],
+      "vertices": 68956,
+      "indices": 202797,
+      "triangles": 67599,
+      "bytes": 1087024
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W050.gvb",
+      "bounds": [
+        -50,
+        0,
+        -40,
+        10
+      ],
+      "vertices": 2610,
+      "indices": 7656,
+      "triangles": 2552,
+      "bytes": 41076
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W050.gvb",
+      "bounds": [
+        -50,
+        50,
+        -40,
+        60
+      ],
+      "vertices": 7918,
+      "indices": 21432,
+      "triangles": 7144,
+      "bytes": 117412
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W050.gvb",
+      "bounds": [
+        -50,
+        60,
+        -40,
+        70
+      ],
+      "vertices": 122903,
+      "indices": 338505,
+      "triangles": 112835,
+      "bytes": 1845644
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W050.gvb",
+      "bounds": [
+        -50,
+        70,
+        -40,
+        80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W050.gvb",
+      "bounds": [
+        -50,
+        80,
+        -40,
+        90
+      ],
+      "vertices": 1578,
+      "indices": 4575,
+      "triangles": 1525,
+      "bytes": 24624
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W040.gvb",
+      "bounds": [
+        -40,
+        -90,
+        -30,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W040.gvb",
+      "bounds": [
+        -40,
+        -80,
+        -30,
+        -70
+      ],
+      "vertices": 2442,
+      "indices": 7320,
+      "triangles": 2440,
+      "bytes": 39060
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_W040.gvb",
+      "bounds": [
+        -40,
+        -60,
+        -30,
+        -50
+      ],
+      "vertices": 6709,
+      "indices": 19653,
+      "triangles": 6551,
+      "bytes": 105460
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W040.gvb",
+      "bounds": [
+        -40,
+        -20,
+        -30,
+        -10
+      ],
+      "vertices": 15311,
+      "indices": 45045,
+      "triangles": 15015,
+      "bytes": 241436
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W040.gvb",
+      "bounds": [
+        -40,
+        -10,
+        -30,
+        0
+      ],
+      "vertices": 13598,
+      "indices": 39894,
+      "triangles": 13298,
+      "bytes": 213980
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W040.gvb",
+      "bounds": [
+        -40,
+        30,
+        -30,
+        40
+      ],
+      "vertices": 507,
+      "indices": 1461,
+      "triangles": 487,
+      "bytes": 7884
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W040.gvb",
+      "bounds": [
+        -40,
+        60,
+        -30,
+        70
+      ],
+      "vertices": 39324,
+      "indices": 114546,
+      "triangles": 38182,
+      "bytes": 615492
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W040.gvb",
+      "bounds": [
+        -40,
+        70,
+        -30,
+        80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W040.gvb",
+      "bounds": [
+        -40,
+        80,
+        -30,
+        90
+      ],
+      "vertices": 913,
+      "indices": 2637,
+      "triangles": 879,
+      "bytes": 14212
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W030.gvb",
+      "bounds": [
+        -30,
+        -90,
+        -20,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W030.gvb",
+      "bounds": [
+        -30,
+        -80,
+        -20,
+        -70
+      ],
+      "vertices": 4617,
+      "indices": 13845,
+      "triangles": 4615,
+      "bytes": 73860
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_W030.gvb",
+      "bounds": [
+        -30,
+        -60,
+        -20,
+        -50
+      ],
+      "vertices": 1341,
+      "indices": 3909,
+      "triangles": 1303,
+      "bytes": 21012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_W030.gvb",
+      "bounds": [
+        -30,
+        -30,
+        -20,
+        -20
+      ],
+      "vertices": 137,
+      "indices": 381,
+      "triangles": 127,
+      "bytes": 2084
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W030.gvb",
+      "bounds": [
+        -30,
+        10,
+        -20,
+        20
+      ],
+      "vertices": 6269,
+      "indices": 18591,
+      "triangles": 6197,
+      "bytes": 99452
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W030.gvb",
+      "bounds": [
+        -30,
+        30,
+        -20,
+        40
+      ],
+      "vertices": 4416,
+      "indices": 13074,
+      "triangles": 4358,
+      "bytes": 69972
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W030.gvb",
+      "bounds": [
+        -30,
+        60,
+        -20,
+        70
+      ],
+      "vertices": 43763,
+      "indices": 125235,
+      "triangles": 41745,
+      "bytes": 676004
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W030.gvb",
+      "bounds": [
+        -30,
+        70,
+        -20,
+        80
+      ],
+      "vertices": 56976,
+      "indices": 168876,
+      "triangles": 56292,
+      "bytes": 903420
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W030.gvb",
+      "bounds": [
+        -30,
+        80,
+        -20,
+        90
+      ],
+      "vertices": 2142,
+      "indices": 6180,
+      "triangles": 2060,
+      "bytes": 33300
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W020.gvb",
+      "bounds": [
+        -20,
+        -90,
+        -10,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W020.gvb",
+      "bounds": [
+        -20,
+        -80,
+        -10,
+        -70
+      ],
+      "vertices": 3669,
+      "indices": 11001,
+      "triangles": 3667,
+      "bytes": 58692
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_W020.gvb",
+      "bounds": [
+        -20,
+        -50,
+        -10,
+        -40
+      ],
+      "vertices": 42,
+      "indices": 108,
+      "triangles": 36,
+      "bytes": 612
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_W020.gvb",
+      "bounds": [
+        -20,
+        -40,
+        -10,
+        -30
+      ],
+      "vertices": 479,
+      "indices": 1401,
+      "triangles": 467,
+      "bytes": 7532
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_W020.gvb",
+      "bounds": [
+        -20,
+        -10,
+        -10,
+        0
+      ],
+      "vertices": 363,
+      "indices": 1077,
+      "triangles": 359,
+      "bytes": 5772
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W020.gvb",
+      "bounds": [
+        -20,
+        0,
+        -10,
+        10
+      ],
+      "vertices": 14437,
+      "indices": 42426,
+      "triangles": 14142,
+      "bytes": 227464
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W020.gvb",
+      "bounds": [
+        -20,
+        10,
+        -10,
+        20
+      ],
+      "vertices": 38382,
+      "indices": 113715,
+      "triangles": 37905,
+      "bytes": 608400
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W020.gvb",
+      "bounds": [
+        -20,
+        20,
+        -10,
+        30
+      ],
+      "vertices": 18054,
+      "indices": 53826,
+      "triangles": 17942,
+      "bytes": 287532
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W020.gvb",
+      "bounds": [
+        -20,
+        30,
+        -10,
+        40
+      ],
+      "vertices": 1682,
+      "indices": 4866,
+      "triangles": 1622,
+      "bytes": 26204
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W020.gvb",
+      "bounds": [
+        -20,
+        50,
+        -10,
+        60
+      ],
+      "vertices": 5621,
+      "indices": 15843,
+      "triangles": 5281,
+      "bytes": 85868
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W020.gvb",
+      "bounds": [
+        -20,
+        60,
+        -10,
+        70
+      ],
+      "vertices": 20907,
+      "indices": 61491,
+      "triangles": 20497,
+      "bytes": 329604
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W020.gvb",
+      "bounds": [
+        -20,
+        70,
+        -10,
+        80
+      ],
+      "vertices": 18885,
+      "indices": 54675,
+      "triangles": 18225,
+      "bytes": 294252
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_W020.gvb",
+      "bounds": [
+        -20,
+        80,
+        -10,
+        90
+      ],
+      "vertices": 4362,
+      "indices": 12924,
+      "triangles": 4308,
+      "bytes": 69156
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S90_W010.gvb",
+      "bounds": [
+        -10,
+        -90,
+        0,
+        -80
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_W010.gvb",
+      "bounds": [
+        -10,
+        -80,
+        0,
+        -70
+      ],
+      "vertices": 2921,
+      "indices": 8757,
+      "triangles": 2919,
+      "bytes": 46724
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_W010.gvb",
+      "bounds": [
+        -10,
+        -70,
+        0,
+        -60
+      ],
+      "vertices": 604,
+      "indices": 1806,
+      "triangles": 602,
+      "bytes": 9652
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_W010.gvb",
+      "bounds": [
+        -10,
+        -50,
+        0,
+        -40
+      ],
+      "vertices": 314,
+      "indices": 894,
+      "triangles": 298,
+      "bytes": 4844
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_W010.gvb",
+      "bounds": [
+        -10,
+        -20,
+        0,
+        -10
+      ],
+      "vertices": 377,
+      "indices": 1113,
+      "triangles": 371,
+      "bytes": 5972
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_W010.gvb",
+      "bounds": [
+        -10,
+        0,
+        0,
+        10
+      ],
+      "vertices": 13318,
+      "indices": 39621,
+      "triangles": 13207,
+      "bytes": 211768
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_W010.gvb",
+      "bounds": [
+        -10,
+        10,
+        0,
+        20
+      ],
+      "vertices": 6894,
+      "indices": 20625,
+      "triangles": 6875,
+      "bytes": 110088
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_W010.gvb",
+      "bounds": [
+        -10,
+        20,
+        0,
+        30
+      ],
+      "vertices": 260,
+      "indices": 774,
+      "triangles": 258,
+      "bytes": 4148
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_W010.gvb",
+      "bounds": [
+        -10,
+        30,
+        0,
+        40
+      ],
+      "vertices": 32579,
+      "indices": 96561,
+      "triangles": 32187,
+      "bytes": 516572
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_W010.gvb",
+      "bounds": [
+        -10,
+        40,
+        0,
+        50
+      ],
+      "vertices": 55777,
+      "indices": 160506,
+      "triangles": 53502,
+      "bytes": 865144
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_W010.gvb",
+      "bounds": [
+        -10,
+        50,
+        0,
+        60
+      ],
+      "vertices": 124337,
+      "indices": 359427,
+      "triangles": 119809,
+      "bytes": 1935068
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_W010.gvb",
+      "bounds": [
+        -10,
+        60,
+        0,
+        70
+      ],
+      "vertices": 14946,
+      "indices": 43482,
+      "triangles": 14494,
+      "bytes": 233724
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_W010.gvb",
+      "bounds": [
+        -10,
+        70,
+        0,
+        80
+      ],
+      "vertices": 7344,
+      "indices": 22059,
+      "triangles": 7353,
+      "bytes": 117624
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E000.gvb",
+      "bounds": [
+        0,
+        -80,
+        10,
+        -70
+      ],
+      "vertices": 145,
+      "indices": 423,
+      "triangles": 141,
+      "bytes": 2284
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E000.gvb",
+      "bounds": [
+        0,
+        -70,
+        10,
+        -60
+      ],
+      "vertices": 527,
+      "indices": 1551,
+      "triangles": 517,
+      "bytes": 8324
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_E000.gvb",
+      "bounds": [
+        0,
+        -60,
+        10,
+        -50
+      ],
+      "vertices": 189,
+      "indices": 555,
+      "triangles": 185,
+      "bytes": 2988
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E000.gvb",
+      "bounds": [
+        0,
+        -10,
+        10,
+        0
+      ],
+      "vertices": 5214,
+      "indices": 15510,
+      "triangles": 5170,
+      "bytes": 82908
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E000.gvb",
+      "bounds": [
+        0,
+        0,
+        10,
+        10
+      ],
+      "vertices": 42305,
+      "indices": 125343,
+      "triangles": 41781,
+      "bytes": 670604
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E000.gvb",
+      "bounds": [
+        0,
+        10,
+        10,
+        20
+      ],
+      "vertices": 1665,
+      "indices": 4962,
+      "triangles": 1654,
+      "bytes": 26520
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E000.gvb",
+      "bounds": [
+        0,
+        20,
+        10,
+        30
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E000.gvb",
+      "bounds": [
+        0,
+        30,
+        10,
+        40
+      ],
+      "vertices": 21903,
+      "indices": 63732,
+      "triangles": 21244,
+      "bytes": 342552
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E000.gvb",
+      "bounds": [
+        0,
+        40,
+        10,
+        50
+      ],
+      "vertices": 38680,
+      "indices": 112575,
+      "triangles": 37525,
+      "bytes": 605032
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E000.gvb",
+      "bounds": [
+        0,
+        50,
+        10,
+        60
+      ],
+      "vertices": 73561,
+      "indices": 213051,
+      "triangles": 71017,
+      "bytes": 1146460
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E000.gvb",
+      "bounds": [
+        0,
+        60,
+        10,
+        70
+      ],
+      "vertices": 104562,
+      "indices": 295359,
+      "triangles": 98453,
+      "bytes": 1599696
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E010.gvb",
+      "bounds": [
+        10,
+        -80,
+        20,
+        -70
+      ],
+      "vertices": 645,
+      "indices": 1929,
+      "triangles": 643,
+      "bytes": 10308
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E010.gvb",
+      "bounds": [
+        10,
+        -70,
+        20,
+        -60
+      ],
+      "vertices": 4447,
+      "indices": 13305,
+      "triangles": 4435,
+      "bytes": 71020
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E010.gvb",
+      "bounds": [
+        10,
+        -40,
+        20,
+        -30
+      ],
+      "vertices": 7729,
+      "indices": 22521,
+      "triangles": 7507,
+      "bytes": 121012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E010.gvb",
+      "bounds": [
+        10,
+        -30,
+        20,
+        -20
+      ],
+      "vertices": 8584,
+      "indices": 25224,
+      "triangles": 8408,
+      "bytes": 135244
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E010.gvb",
+      "bounds": [
+        10,
+        -20,
+        20,
+        -10
+      ],
+      "vertices": 7914,
+      "indices": 23664,
+      "triangles": 7888,
+      "bytes": 126324
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E010.gvb",
+      "bounds": [
+        10,
+        -10,
+        20,
+        0
+      ],
+      "vertices": 13595,
+      "indices": 40191,
+      "triangles": 13397,
+      "bytes": 215156
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E010.gvb",
+      "bounds": [
+        10,
+        0,
+        20,
+        10
+      ],
+      "vertices": 3923,
+      "indices": 11451,
+      "triangles": 3817,
+      "bytes": 61508
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E010.gvb",
+      "bounds": [
+        10,
+        10,
+        20,
+        20
+      ],
+      "vertices": 1763,
+      "indices": 5232,
+      "triangles": 1744,
+      "bytes": 27992
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E010.gvb",
+      "bounds": [
+        10,
+        20,
+        20,
+        30
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E010.gvb",
+      "bounds": [
+        10,
+        30,
+        20,
+        40
+      ],
+      "vertices": 33246,
+      "indices": 98100,
+      "triangles": 32700,
+      "bytes": 525396
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E010.gvb",
+      "bounds": [
+        10,
+        40,
+        20,
+        50
+      ],
+      "vertices": 82163,
+      "indices": 237762,
+      "triangles": 79254,
+      "bytes": 1279712
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E010.gvb",
+      "bounds": [
+        10,
+        50,
+        20,
+        60
+      ],
+      "vertices": 174923,
+      "indices": 480156,
+      "triangles": 160052,
+      "bytes": 2620328
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E010.gvb",
+      "bounds": [
+        10,
+        60,
+        20,
+        70
+      ],
+      "vertices": 210457,
+      "indices": 586545,
+      "triangles": 195515,
+      "bytes": 3188020
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E010.gvb",
+      "bounds": [
+        10,
+        70,
+        20,
+        80
+      ],
+      "vertices": 33437,
+      "indices": 97083,
+      "triangles": 32361,
+      "bytes": 522092
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E010.gvb",
+      "bounds": [
+        10,
+        80,
+        20,
+        90
+      ],
+      "vertices": 2622,
+      "indices": 7536,
+      "triangles": 2512,
+      "bytes": 40644
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E020.gvb",
+      "bounds": [
+        20,
+        -80,
+        30,
+        -70
+      ],
+      "vertices": 2614,
+      "indices": 7830,
+      "triangles": 2610,
+      "bytes": 41788
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E020.gvb",
+      "bounds": [
+        20,
+        -70,
+        30,
+        -60
+      ],
+      "vertices": 2497,
+      "indices": 7473,
+      "triangles": 2491,
+      "bytes": 39892
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E020.gvb",
+      "bounds": [
+        20,
+        -40,
+        30,
+        -30
+      ],
+      "vertices": 9077,
+      "indices": 26922,
+      "triangles": 8974,
+      "bytes": 144008
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E020.gvb",
+      "bounds": [
+        20,
+        -30,
+        30,
+        -20
+      ],
+      "vertices": 1642,
+      "indices": 4884,
+      "triangles": 1628,
+      "bytes": 26116
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E020.gvb",
+      "bounds": [
+        20,
+        -20,
+        30,
+        -10
+      ],
+      "vertices": 3230,
+      "indices": 9528,
+      "triangles": 3176,
+      "bytes": 51044
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E020.gvb",
+      "bounds": [
+        20,
+        -10,
+        30,
+        0
+      ],
+      "vertices": 5748,
+      "indices": 17145,
+      "triangles": 5715,
+      "bytes": 91584
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E020.gvb",
+      "bounds": [
+        20,
+        0,
+        30,
+        10
+      ],
+      "vertices": 2825,
+      "indices": 8403,
+      "triangles": 2801,
+      "bytes": 44924
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E020.gvb",
+      "bounds": [
+        20,
+        10,
+        30,
+        20
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E020.gvb",
+      "bounds": [
+        20,
+        20,
+        30,
+        30
+      ],
+      "vertices": 25,
+      "indices": 75,
+      "triangles": 25,
+      "bytes": 412
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E020.gvb",
+      "bounds": [
+        20,
+        30,
+        30,
+        40
+      ],
+      "vertices": 119669,
+      "indices": 347760,
+      "triangles": 115920,
+      "bytes": 1869728
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E020.gvb",
+      "bounds": [
+        20,
+        40,
+        30,
+        50
+      ],
+      "vertices": 37415,
+      "indices": 111213,
+      "triangles": 37071,
+      "bytes": 594524
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E020.gvb",
+      "bounds": [
+        20,
+        50,
+        30,
+        60
+      ],
+      "vertices": 74767,
+      "indices": 198411,
+      "triangles": 66137,
+      "bytes": 1092724
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E020.gvb",
+      "bounds": [
+        20,
+        60,
+        30,
+        70
+      ],
+      "vertices": 252392,
+      "indices": 672126,
+      "triangles": 224042,
+      "bytes": 3698084
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E020.gvb",
+      "bounds": [
+        20,
+        70,
+        30,
+        80
+      ],
+      "vertices": 41801,
+      "indices": 121785,
+      "triangles": 40595,
+      "bytes": 654356
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E020.gvb",
+      "bounds": [
+        20,
+        80,
+        30,
+        90
+      ],
+      "vertices": 4865,
+      "indices": 14085,
+      "triangles": 4695,
+      "bytes": 75812
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E030.gvb",
+      "bounds": [
+        30,
+        -80,
+        40,
+        -70
+      ],
+      "vertices": 100,
+      "indices": 276,
+      "triangles": 92,
+      "bytes": 1516
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E030.gvb",
+      "bounds": [
+        30,
+        -70,
+        40,
+        -60
+      ],
+      "vertices": 6837,
+      "indices": 20475,
+      "triangles": 6825,
+      "bytes": 109260
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_E030.gvb",
+      "bounds": [
+        30,
+        -50,
+        40,
+        -40
+      ],
+      "vertices": 852,
+      "indices": 2508,
+      "triangles": 836,
+      "bytes": 13452
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E030.gvb",
+      "bounds": [
+        30,
+        -40,
+        40,
+        -30
+      ],
+      "vertices": 1280,
+      "indices": 3834,
+      "triangles": 1278,
+      "bytes": 20468
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E030.gvb",
+      "bounds": [
+        30,
+        -30,
+        40,
+        -20
+      ],
+      "vertices": 17317,
+      "indices": 51537,
+      "triangles": 17179,
+      "bytes": 275428
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E030.gvb",
+      "bounds": [
+        30,
+        -20,
+        40,
+        -10
+      ],
+      "vertices": 16293,
+      "indices": 48042,
+      "triangles": 16014,
+      "bytes": 257352
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E030.gvb",
+      "bounds": [
+        30,
+        -10,
+        40,
+        0
+      ],
+      "vertices": 30791,
+      "indices": 90948,
+      "triangles": 30316,
+      "bytes": 486968
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E030.gvb",
+      "bounds": [
+        30,
+        0,
+        40,
+        10
+      ],
+      "vertices": 7692,
+      "indices": 23022,
+      "triangles": 7674,
+      "bytes": 122868
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E030.gvb",
+      "bounds": [
+        30,
+        10,
+        40,
+        20
+      ],
+      "vertices": 12204,
+      "indices": 35424,
+      "triangles": 11808,
+      "bytes": 190524
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E030.gvb",
+      "bounds": [
+        30,
+        20,
+        40,
+        30
+      ],
+      "vertices": 50536,
+      "indices": 147078,
+      "triangles": 49026,
+      "bytes": 790468
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E030.gvb",
+      "bounds": [
+        30,
+        30,
+        40,
+        40
+      ],
+      "vertices": 46895,
+      "indices": 135441,
+      "triangles": 45147,
+      "bytes": 729356
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E030.gvb",
+      "bounds": [
+        30,
+        40,
+        40,
+        50
+      ],
+      "vertices": 52853,
+      "indices": 156564,
+      "triangles": 52188,
+      "bytes": 837680
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E030.gvb",
+      "bounds": [
+        30,
+        50,
+        40,
+        60
+      ],
+      "vertices": 6249,
+      "indices": 18603,
+      "triangles": 6201,
+      "bytes": 99420
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E030.gvb",
+      "bounds": [
+        30,
+        60,
+        40,
+        70
+      ],
+      "vertices": 68329,
+      "indices": 198822,
+      "triangles": 66274,
+      "bytes": 1068616
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E030.gvb",
+      "bounds": [
+        30,
+        70,
+        40,
+        80
+      ],
+      "vertices": 1456,
+      "indices": 4278,
+      "triangles": 1426,
+      "bytes": 22948
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E030.gvb",
+      "bounds": [
+        30,
+        80,
+        40,
+        90
+      ],
+      "vertices": 716,
+      "indices": 2064,
+      "triangles": 688,
+      "bytes": 11132
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E040.gvb",
+      "bounds": [
+        40,
+        -80,
+        50,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E040.gvb",
+      "bounds": [
+        40,
+        -70,
+        50,
+        -60
+      ],
+      "vertices": 5855,
+      "indices": 17553,
+      "triangles": 5851,
+      "bytes": 93644
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E040.gvb",
+      "bounds": [
+        40,
+        -30,
+        50,
+        -20
+      ],
+      "vertices": 16961,
+      "indices": 50289,
+      "triangles": 16763,
+      "bytes": 269012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E040.gvb",
+      "bounds": [
+        40,
+        -20,
+        50,
+        -10
+      ],
+      "vertices": 56694,
+      "indices": 166494,
+      "triangles": 55498,
+      "bytes": 892764
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E040.gvb",
+      "bounds": [
+        40,
+        -10,
+        50,
+        0
+      ],
+      "vertices": 12060,
+      "indices": 34026,
+      "triangles": 11342,
+      "bytes": 184356
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E040.gvb",
+      "bounds": [
+        40,
+        0,
+        50,
+        10
+      ],
+      "vertices": 6461,
+      "indices": 19059,
+      "triangles": 6353,
+      "bytes": 102092
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E040.gvb",
+      "bounds": [
+        40,
+        10,
+        50,
+        20
+      ],
+      "vertices": 47153,
+      "indices": 136905,
+      "triangles": 45635,
+      "bytes": 736244
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E040.gvb",
+      "bounds": [
+        40,
+        20,
+        50,
+        30
+      ],
+      "vertices": 11174,
+      "indices": 33066,
+      "triangles": 11022,
+      "bytes": 176972
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E040.gvb",
+      "bounds": [
+        40,
+        30,
+        50,
+        40
+      ],
+      "vertices": 13745,
+      "indices": 40866,
+      "triangles": 13622,
+      "bytes": 218456
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E040.gvb",
+      "bounds": [
+        40,
+        40,
+        50,
+        50
+      ],
+      "vertices": 12665,
+      "indices": 37557,
+      "triangles": 12519,
+      "bytes": 200900
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E040.gvb",
+      "bounds": [
+        40,
+        50,
+        50,
+        60
+      ],
+      "vertices": 7719,
+      "indices": 22905,
+      "triangles": 7635,
+      "bytes": 122508
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E040.gvb",
+      "bounds": [
+        40,
+        60,
+        50,
+        70
+      ],
+      "vertices": 28640,
+      "indices": 85470,
+      "triangles": 28490,
+      "bytes": 456452
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E040.gvb",
+      "bounds": [
+        40,
+        70,
+        50,
+        80
+      ],
+      "vertices": 172,
+      "indices": 504,
+      "triangles": 168,
+      "bytes": 2716
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E040.gvb",
+      "bounds": [
+        40,
+        80,
+        50,
+        90
+      ],
+      "vertices": 4505,
+      "indices": 13473,
+      "triangles": 4491,
+      "bytes": 71924
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E050.gvb",
+      "bounds": [
+        50,
+        -80,
+        60,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E050.gvb",
+      "bounds": [
+        50,
+        -70,
+        60,
+        -60
+      ],
+      "vertices": 7093,
+      "indices": 21273,
+      "triangles": 7091,
+      "bytes": 113476
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_E050.gvb",
+      "bounds": [
+        50,
+        -50,
+        60,
+        -40
+      ],
+      "vertices": 1307,
+      "indices": 3795,
+      "triangles": 1265,
+      "bytes": 20420
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E050.gvb",
+      "bounds": [
+        50,
+        -30,
+        60,
+        -20
+      ],
+      "vertices": 2780,
+      "indices": 8214,
+      "triangles": 2738,
+      "bytes": 43988
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E050.gvb",
+      "bounds": [
+        50,
+        -20,
+        60,
+        -10
+      ],
+      "vertices": 2986,
+      "indices": 8694,
+      "triangles": 2898,
+      "bytes": 46732
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E050.gvb",
+      "bounds": [
+        50,
+        -10,
+        60,
+        0
+      ],
+      "vertices": 2442,
+      "indices": 6918,
+      "triangles": 2306,
+      "bytes": 37452
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E050.gvb",
+      "bounds": [
+        50,
+        0,
+        60,
+        10
+      ],
+      "vertices": 1340,
+      "indices": 3954,
+      "triangles": 1318,
+      "bytes": 21188
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E050.gvb",
+      "bounds": [
+        50,
+        10,
+        60,
+        20
+      ],
+      "vertices": 12852,
+      "indices": 38382,
+      "triangles": 12794,
+      "bytes": 204948
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E050.gvb",
+      "bounds": [
+        50,
+        20,
+        60,
+        30
+      ],
+      "vertices": 60447,
+      "indices": 177939,
+      "triangles": 59313,
+      "bytes": 953556
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E050.gvb",
+      "bounds": [
+        50,
+        30,
+        60,
+        40
+      ],
+      "vertices": 3040,
+      "indices": 9045,
+      "triangles": 3015,
+      "bytes": 48352
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E050.gvb",
+      "bounds": [
+        50,
+        40,
+        60,
+        50
+      ],
+      "vertices": 9018,
+      "indices": 26832,
+      "triangles": 8944,
+      "bytes": 143412
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E050.gvb",
+      "bounds": [
+        50,
+        50,
+        60,
+        60
+      ],
+      "vertices": 4292,
+      "indices": 12750,
+      "triangles": 4250,
+      "bytes": 68180
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E050.gvb",
+      "bounds": [
+        50,
+        60,
+        60,
+        70
+      ],
+      "vertices": 16488,
+      "indices": 48795,
+      "triangles": 16265,
+      "bytes": 261144
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E050.gvb",
+      "bounds": [
+        50,
+        70,
+        60,
+        80
+      ],
+      "vertices": 39307,
+      "indices": 116316,
+      "triangles": 38772,
+      "bytes": 622504
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E050.gvb",
+      "bounds": [
+        50,
+        80,
+        60,
+        90
+      ],
+      "vertices": 14694,
+      "indices": 43392,
+      "triangles": 14464,
+      "bytes": 232356
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E060.gvb",
+      "bounds": [
+        60,
+        -80,
+        70,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E060.gvb",
+      "bounds": [
+        60,
+        -70,
+        70,
+        -60
+      ],
+      "vertices": 3536,
+      "indices": 10602,
+      "triangles": 3534,
+      "bytes": 56564
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_E060.gvb",
+      "bounds": [
+        60,
+        -60,
+        70,
+        -50
+      ],
+      "vertices": 23,
+      "indices": 51,
+      "triangles": 17,
+      "bytes": 308
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_E060.gvb",
+      "bounds": [
+        60,
+        -50,
+        70,
+        -40
+      ],
+      "vertices": 14324,
+      "indices": 41100,
+      "triangles": 13700,
+      "bytes": 221708
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E060.gvb",
+      "bounds": [
+        60,
+        -20,
+        70,
+        -10
+      ],
+      "vertices": 771,
+      "indices": 2217,
+      "triangles": 739,
+      "bytes": 11964
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E060.gvb",
+      "bounds": [
+        60,
+        20,
+        70,
+        30
+      ],
+      "vertices": 30410,
+      "indices": 90012,
+      "triangles": 30004,
+      "bytes": 481700
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E060.gvb",
+      "bounds": [
+        60,
+        30,
+        70,
+        40
+      ],
+      "vertices": 529,
+      "indices": 1611,
+      "triangles": 537,
+      "bytes": 8572
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E060.gvb",
+      "bounds": [
+        60,
+        40,
+        70,
+        50
+      ],
+      "vertices": 6057,
+      "indices": 17907,
+      "triangles": 5969,
+      "bytes": 95868
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E060.gvb",
+      "bounds": [
+        60,
+        50,
+        70,
+        60
+      ],
+      "vertices": 7317,
+      "indices": 22164,
+      "triangles": 7388,
+      "bytes": 117936
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E060.gvb",
+      "bounds": [
+        60,
+        60,
+        70,
+        70
+      ],
+      "vertices": 20090,
+      "indices": 59961,
+      "triangles": 19987,
+      "bytes": 320216
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E060.gvb",
+      "bounds": [
+        60,
+        70,
+        70,
+        80
+      ],
+      "vertices": 11253,
+      "indices": 33453,
+      "triangles": 11151,
+      "bytes": 178836
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E060.gvb",
+      "bounds": [
+        60,
+        80,
+        70,
+        90
+      ],
+      "vertices": 3429,
+      "indices": 10179,
+      "triangles": 3393,
+      "bytes": 54444
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E070.gvb",
+      "bounds": [
+        70,
+        -80,
+        80,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E070.gvb",
+      "bounds": [
+        70,
+        -70,
+        80,
+        -60
+      ],
+      "vertices": 5588,
+      "indices": 16752,
+      "triangles": 5584,
+      "bytes": 89372
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_E070.gvb",
+      "bounds": [
+        70,
+        -60,
+        80,
+        -50
+      ],
+      "vertices": 772,
+      "indices": 2244,
+      "triangles": 748,
+      "bytes": 12076
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_E070.gvb",
+      "bounds": [
+        70,
+        -50,
+        80,
+        -40
+      ],
+      "vertices": 2089,
+      "indices": 5949,
+      "triangles": 1983,
+      "bytes": 32164
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E070.gvb",
+      "bounds": [
+        70,
+        -40,
+        80,
+        -30
+      ],
+      "vertices": 324,
+      "indices": 954,
+      "triangles": 318,
+      "bytes": 5124
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E070.gvb",
+      "bounds": [
+        70,
+        -10,
+        80,
+        0
+      ],
+      "vertices": 2014,
+      "indices": 5550,
+      "triangles": 1850,
+      "bytes": 30268
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E070.gvb",
+      "bounds": [
+        70,
+        0,
+        80,
+        10
+      ],
+      "vertices": 24822,
+      "indices": 68226,
+      "triangles": 22742,
+      "bytes": 372204
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E070.gvb",
+      "bounds": [
+        70,
+        10,
+        80,
+        20
+      ],
+      "vertices": 23416,
+      "indices": 68898,
+      "triangles": 22966,
+      "bytes": 369268
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E070.gvb",
+      "bounds": [
+        70,
+        20,
+        80,
+        30
+      ],
+      "vertices": 12481,
+      "indices": 36858,
+      "triangles": 12286,
+      "bytes": 197368
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E070.gvb",
+      "bounds": [
+        70,
+        30,
+        80,
+        40
+      ],
+      "vertices": 1889,
+      "indices": 5577,
+      "triangles": 1859,
+      "bytes": 29876
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E070.gvb",
+      "bounds": [
+        70,
+        40,
+        80,
+        50
+      ],
+      "vertices": 5446,
+      "indices": 16134,
+      "triangles": 5378,
+      "bytes": 86332
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E070.gvb",
+      "bounds": [
+        70,
+        50,
+        80,
+        60
+      ],
+      "vertices": 5493,
+      "indices": 16569,
+      "triangles": 5523,
+      "bytes": 88260
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E070.gvb",
+      "bounds": [
+        70,
+        60,
+        80,
+        70
+      ],
+      "vertices": 23079,
+      "indices": 68517,
+      "triangles": 22839,
+      "bytes": 366396
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E070.gvb",
+      "bounds": [
+        70,
+        70,
+        80,
+        80
+      ],
+      "vertices": 17109,
+      "indices": 50922,
+      "triangles": 16974,
+      "bytes": 272136
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E070.gvb",
+      "bounds": [
+        70,
+        80,
+        80,
+        90
+      ],
+      "vertices": 208,
+      "indices": 618,
+      "triangles": 206,
+      "bytes": 3316
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E080.gvb",
+      "bounds": [
+        80,
+        -80,
+        90,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E080.gvb",
+      "bounds": [
+        80,
+        -70,
+        90,
+        -60
+      ],
+      "vertices": 4619,
+      "indices": 13851,
+      "triangles": 4617,
+      "bytes": 73892
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E080.gvb",
+      "bounds": [
+        80,
+        0,
+        90,
+        10
+      ],
+      "vertices": 9396,
+      "indices": 27885,
+      "triangles": 9295,
+      "bytes": 149136
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E080.gvb",
+      "bounds": [
+        80,
+        10,
+        90,
+        20
+      ],
+      "vertices": 12400,
+      "indices": 36777,
+      "triangles": 12259,
+      "bytes": 196720
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E080.gvb",
+      "bounds": [
+        80,
+        20,
+        90,
+        30
+      ],
+      "vertices": 19709,
+      "indices": 58365,
+      "triangles": 19455,
+      "bytes": 312308
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E080.gvb",
+      "bounds": [
+        80,
+        30,
+        90,
+        40
+      ],
+      "vertices": 8211,
+      "indices": 24696,
+      "triangles": 8232,
+      "bytes": 131640
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E080.gvb",
+      "bounds": [
+        80,
+        40,
+        90,
+        50
+      ],
+      "vertices": 4285,
+      "indices": 12684,
+      "triangles": 4228,
+      "bytes": 67888
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E080.gvb",
+      "bounds": [
+        80,
+        50,
+        90,
+        60
+      ],
+      "vertices": 4448,
+      "indices": 13143,
+      "triangles": 4381,
+      "bytes": 70376
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E080.gvb",
+      "bounds": [
+        80,
+        60,
+        90,
+        70
+      ],
+      "vertices": 5923,
+      "indices": 17418,
+      "triangles": 5806,
+      "bytes": 93376
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E080.gvb",
+      "bounds": [
+        80,
+        70,
+        90,
+        80
+      ],
+      "vertices": 33352,
+      "indices": 98574,
+      "triangles": 32858,
+      "bytes": 527716
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E080.gvb",
+      "bounds": [
+        80,
+        80,
+        90,
+        90
+      ],
+      "vertices": 125,
+      "indices": 369,
+      "triangles": 123,
+      "bytes": 1988
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E090.gvb",
+      "bounds": [
+        90,
+        -80,
+        100,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E090.gvb",
+      "bounds": [
+        90,
+        -70,
+        100,
+        -60
+      ],
+      "vertices": 5101,
+      "indices": 15291,
+      "triangles": 5097,
+      "bytes": 81580
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E090.gvb",
+      "bounds": [
+        90,
+        -20,
+        100,
+        -10
+      ],
+      "vertices": 909,
+      "indices": 2601,
+      "triangles": 867,
+      "bytes": 14052
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E090.gvb",
+      "bounds": [
+        90,
+        -10,
+        100,
+        0
+      ],
+      "vertices": 9175,
+      "indices": 26775,
+      "triangles": 8925,
+      "bytes": 143812
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E090.gvb",
+      "bounds": [
+        90,
+        0,
+        100,
+        10
+      ],
+      "vertices": 54824,
+      "indices": 158145,
+      "triangles": 52715,
+      "bytes": 851888
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E090.gvb",
+      "bounds": [
+        90,
+        10,
+        100,
+        20
+      ],
+      "vertices": 94177,
+      "indices": 270579,
+      "triangles": 90193,
+      "bytes": 1459036
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E090.gvb",
+      "bounds": [
+        90,
+        20,
+        100,
+        30
+      ],
+      "vertices": 21711,
+      "indices": 64479,
+      "triangles": 21493,
+      "bytes": 344772
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E090.gvb",
+      "bounds": [
+        90,
+        30,
+        100,
+        40
+      ],
+      "vertices": 4274,
+      "indices": 12732,
+      "triangles": 4244,
+      "bytes": 68036
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E090.gvb",
+      "bounds": [
+        90,
+        40,
+        100,
+        50
+      ],
+      "vertices": 2884,
+      "indices": 8478,
+      "triangles": 2826,
+      "bytes": 45460
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E090.gvb",
+      "bounds": [
+        90,
+        50,
+        100,
+        60
+      ],
+      "vertices": 2586,
+      "indices": 7731,
+      "triangles": 2577,
+      "bytes": 41280
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E090.gvb",
+      "bounds": [
+        90,
+        60,
+        100,
+        70
+      ],
+      "vertices": 2807,
+      "indices": 8313,
+      "triangles": 2771,
+      "bytes": 44492
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E090.gvb",
+      "bounds": [
+        90,
+        70,
+        100,
+        80
+      ],
+      "vertices": 27049,
+      "indices": 80046,
+      "triangles": 26682,
+      "bytes": 428392
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N80_E090.gvb",
+      "bounds": [
+        90,
+        80,
+        100,
+        90
+      ],
+      "vertices": 6013,
+      "indices": 17727,
+      "triangles": 5909,
+      "bytes": 94972
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E100.gvb",
+      "bounds": [
+        100,
+        -80,
+        110,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E100.gvb",
+      "bounds": [
+        100,
+        -70,
+        110,
+        -60
+      ],
+      "vertices": 5094,
+      "indices": 15276,
+      "triangles": 5092,
+      "bytes": 81492
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E100.gvb",
+      "bounds": [
+        100,
+        -20,
+        110,
+        -10
+      ],
+      "vertices": 363,
+      "indices": 1083,
+      "triangles": 361,
+      "bytes": 5796
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E100.gvb",
+      "bounds": [
+        100,
+        -10,
+        110,
+        0
+      ],
+      "vertices": 58997,
+      "indices": 172359,
+      "triangles": 57453,
+      "bytes": 925436
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E100.gvb",
+      "bounds": [
+        100,
+        0,
+        110,
+        10
+      ],
+      "vertices": 80557,
+      "indices": 232989,
+      "triangles": 77663,
+      "bytes": 1254196
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E100.gvb",
+      "bounds": [
+        100,
+        10,
+        110,
+        20
+      ],
+      "vertices": 63802,
+      "indices": 185847,
+      "triangles": 61949,
+      "bytes": 998608
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E100.gvb",
+      "bounds": [
+        100,
+        20,
+        110,
+        30
+      ],
+      "vertices": 42813,
+      "indices": 120321,
+      "triangles": 40107,
+      "bytes": 652548
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E100.gvb",
+      "bounds": [
+        100,
+        30,
+        110,
+        40
+      ],
+      "vertices": 575,
+      "indices": 1689,
+      "triangles": 563,
+      "bytes": 9068
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E100.gvb",
+      "bounds": [
+        100,
+        40,
+        110,
+        50
+      ],
+      "vertices": 443,
+      "indices": 1332,
+      "triangles": 444,
+      "bytes": 7112
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E100.gvb",
+      "bounds": [
+        100,
+        50,
+        110,
+        60
+      ],
+      "vertices": 8323,
+      "indices": 24648,
+      "triangles": 8216,
+      "bytes": 131896
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E100.gvb",
+      "bounds": [
+        100,
+        60,
+        110,
+        70
+      ],
+      "vertices": 33,
+      "indices": 96,
+      "triangles": 32,
+      "bytes": 528
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E100.gvb",
+      "bounds": [
+        100,
+        70,
+        110,
+        80
+      ],
+      "vertices": 25020,
+      "indices": 74142,
+      "triangles": 24714,
+      "bytes": 396660
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E110.gvb",
+      "bounds": [
+        110,
+        -80,
+        120,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E110.gvb",
+      "bounds": [
+        110,
+        -70,
+        120,
+        -60
+      ],
+      "vertices": 4263,
+      "indices": 12771,
+      "triangles": 4257,
+      "bytes": 68148
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E110.gvb",
+      "bounds": [
+        110,
+        -40,
+        120,
+        -30
+      ],
+      "vertices": 13523,
+      "indices": 38475,
+      "triangles": 12825,
+      "bytes": 208004
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E110.gvb",
+      "bounds": [
+        110,
+        -30,
+        120,
+        -20
+      ],
+      "vertices": 35815,
+      "indices": 103875,
+      "triangles": 34625,
+      "bytes": 558772
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E110.gvb",
+      "bounds": [
+        110,
+        -20,
+        120,
+        -10
+      ],
+      "vertices": 729,
+      "indices": 2091,
+      "triangles": 697,
+      "bytes": 11292
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E110.gvb",
+      "bounds": [
+        110,
+        -10,
+        120,
+        0
+      ],
+      "vertices": 76839,
+      "indices": 225168,
+      "triangles": 75056,
+      "bytes": 1208040
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E110.gvb",
+      "bounds": [
+        110,
+        0,
+        120,
+        10
+      ],
+      "vertices": 60056,
+      "indices": 175413,
+      "triangles": 58471,
+      "bytes": 941888
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E110.gvb",
+      "bounds": [
+        110,
+        10,
+        120,
+        20
+      ],
+      "vertices": 23150,
+      "indices": 66354,
+      "triangles": 22118,
+      "bytes": 358028
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E110.gvb",
+      "bounds": [
+        110,
+        20,
+        120,
+        30
+      ],
+      "vertices": 83951,
+      "indices": 240534,
+      "triangles": 80178,
+      "bytes": 1297952
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N30_E110.gvb",
+      "bounds": [
+        110,
+        30,
+        120,
+        40
+      ],
+      "vertices": 19841,
+      "indices": 58941,
+      "triangles": 19647,
+      "bytes": 315140
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E110.gvb",
+      "bounds": [
+        110,
+        40,
+        120,
+        50
+      ],
+      "vertices": 2213,
+      "indices": 6678,
+      "triangles": 2226,
+      "bytes": 35576
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E110.gvb",
+      "bounds": [
+        110,
+        50,
+        120,
+        60
+      ],
+      "vertices": 1518,
+      "indices": 4605,
+      "triangles": 1535,
+      "bytes": 24504
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E110.gvb",
+      "bounds": [
+        110,
+        60,
+        120,
+        70
+      ],
+      "vertices": 993,
+      "indices": 2961,
+      "triangles": 987,
+      "bytes": 15828
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E110.gvb",
+      "bounds": [
+        110,
+        70,
+        120,
+        80
+      ],
+      "vertices": 15765,
+      "indices": 46962,
+      "triangles": 15654,
+      "bytes": 250920
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E120.gvb",
+      "bounds": [
+        120,
+        -80,
+        130,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E120.gvb",
+      "bounds": [
+        120,
+        -70,
+        130,
+        -60
+      ],
+      "vertices": 4289,
+      "indices": 12861,
+      "triangles": 4287,
+      "bytes": 68612
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E120.gvb",
+      "bounds": [
+        120,
+        -40,
+        130,
+        -30
+      ],
+      "vertices": 10774,
+      "indices": 30540,
+      "triangles": 10180,
+      "bytes": 165268
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E120.gvb",
+      "bounds": [
+        120,
+        -30,
+        130,
+        -20
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E120.gvb",
+      "bounds": [
+        120,
+        -20,
+        130,
+        -10
+      ],
+      "vertices": 86506,
+      "indices": 250014,
+      "triangles": 83338,
+      "bytes": 1346092
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E120.gvb",
+      "bounds": [
+        120,
+        -10,
+        130,
+        0
+      ],
+      "vertices": 115170,
+      "indices": 337716,
+      "triangles": 112572,
+      "bytes": 1811556
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E120.gvb",
+      "bounds": [
+        120,
+        0,
+        130,
+        10
+      ],
+      "vertices": 94432,
+      "indices": 273486,
+      "triangles": 91162,
+      "bytes": 1471684
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E120.gvb",
+      "bounds": [
+        120,
+        10,
+        130,
+        20
+      ],
+      "vertices": 101859,
+      "indices": 296436,
+      "triangles": 98812,
+      "bytes": 1593192
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
       "path": "lod4/N20_E120.gvb",
       "bounds": [
         120,
@@ -127,6 +5827,171 @@
       "indices": 27234,
       "triangles": 9078,
       "bytes": 145468
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E120.gvb",
+      "bounds": [
+        120,
+        50,
+        130,
+        60
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E120.gvb",
+      "bounds": [
+        120,
+        60,
+        130,
+        70
+      ],
+      "vertices": 6550,
+      "indices": 19476,
+      "triangles": 6492,
+      "bytes": 104116
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E120.gvb",
+      "bounds": [
+        120,
+        70,
+        130,
+        80
+      ],
+      "vertices": 35392,
+      "indices": 103002,
+      "triangles": 34334,
+      "bytes": 553588
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E130.gvb",
+      "bounds": [
+        130,
+        -80,
+        140,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E130.gvb",
+      "bounds": [
+        130,
+        -70,
+        140,
+        -60
+      ],
+      "vertices": 4342,
+      "indices": 13020,
+      "triangles": 4340,
+      "bytes": 69460
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E130.gvb",
+      "bounds": [
+        130,
+        -40,
+        140,
+        -30
+      ],
+      "vertices": 32119,
+      "indices": 94329,
+      "triangles": 31443,
+      "bytes": 505804
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E130.gvb",
+      "bounds": [
+        130,
+        -30,
+        140,
+        -20
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E130.gvb",
+      "bounds": [
+        130,
+        -20,
+        140,
+        -10
+      ],
+      "vertices": 59229,
+      "indices": 174054,
+      "triangles": 58018,
+      "bytes": 933144
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E130.gvb",
+      "bounds": [
+        130,
+        -10,
+        140,
+        0
+      ],
+      "vertices": 118202,
+      "indices": 344916,
+      "triangles": 114972,
+      "bytes": 1852484
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E130.gvb",
+      "bounds": [
+        130,
+        0,
+        140,
+        10
+      ],
+      "vertices": 6050,
+      "indices": 16938,
+      "triangles": 5646,
+      "bytes": 91964
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E130.gvb",
+      "bounds": [
+        130,
+        10,
+        140,
+        20
+      ],
+      "vertices": 164,
+      "indices": 414,
+      "triangles": 138,
+      "bytes": 2324
     },
     {
       "lod": 4,
@@ -176,6 +6041,186 @@
     {
       "lod": 4,
       "gshhgResolution": "f",
+      "path": "lod4/N50_E130.gvb",
+      "bounds": [
+        130,
+        50,
+        140,
+        60
+      ],
+      "vertices": 15104,
+      "indices": 45096,
+      "triangles": 15032,
+      "bytes": 240812
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E130.gvb",
+      "bounds": [
+        130,
+        60,
+        140,
+        70
+      ],
+      "vertices": 2046,
+      "indices": 6120,
+      "triangles": 2040,
+      "bytes": 32676
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E130.gvb",
+      "bounds": [
+        130,
+        70,
+        140,
+        80
+      ],
+      "vertices": 17439,
+      "indices": 52200,
+      "triangles": 17400,
+      "bytes": 278568
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E140.gvb",
+      "bounds": [
+        140,
+        -80,
+        150,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E140.gvb",
+      "bounds": [
+        140,
+        -70,
+        150,
+        -60
+      ],
+      "vertices": 6068,
+      "indices": 18198,
+      "triangles": 6066,
+      "bytes": 97076
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_E140.gvb",
+      "bounds": [
+        140,
+        -50,
+        150,
+        -40
+      ],
+      "vertices": 33740,
+      "indices": 99294,
+      "triangles": 33098,
+      "bytes": 532148
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E140.gvb",
+      "bounds": [
+        140,
+        -40,
+        150,
+        -30
+      ],
+      "vertices": 24235,
+      "indices": 71184,
+      "triangles": 23728,
+      "bytes": 381688
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E140.gvb",
+      "bounds": [
+        140,
+        -30,
+        150,
+        -20
+      ],
+      "vertices": 14876,
+      "indices": 42432,
+      "triangles": 14144,
+      "bytes": 229244
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E140.gvb",
+      "bounds": [
+        140,
+        -20,
+        150,
+        -10
+      ],
+      "vertices": 35309,
+      "indices": 102441,
+      "triangles": 34147,
+      "bytes": 551012
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E140.gvb",
+      "bounds": [
+        140,
+        -10,
+        150,
+        0
+      ],
+      "vertices": 59623,
+      "indices": 174660,
+      "triangles": 58220,
+      "bytes": 937144
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E140.gvb",
+      "bounds": [
+        140,
+        0,
+        150,
+        10
+      ],
+      "vertices": 998,
+      "indices": 2604,
+      "triangles": 868,
+      "bytes": 14420
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E140.gvb",
+      "bounds": [
+        140,
+        10,
+        150,
+        20
+      ],
+      "vertices": 1870,
+      "indices": 5412,
+      "triangles": 1804,
+      "bytes": 29140
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
       "path": "lod4/N20_E140.gvb",
       "bounds": [
         140,
@@ -217,23 +6262,610 @@
       "indices": 140262,
       "triangles": 46754,
       "bytes": 749212
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E140.gvb",
+      "bounds": [
+        140,
+        50,
+        150,
+        60
+      ],
+      "vertices": 25083,
+      "indices": 74436,
+      "triangles": 24812,
+      "bytes": 398088
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E140.gvb",
+      "bounds": [
+        140,
+        60,
+        150,
+        70
+      ],
+      "vertices": 1689,
+      "indices": 5430,
+      "triangles": 1810,
+      "bytes": 28488
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E140.gvb",
+      "bounds": [
+        140,
+        70,
+        150,
+        80
+      ],
+      "vertices": 24883,
+      "indices": 75009,
+      "triangles": 25003,
+      "bytes": 399580
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E150.gvb",
+      "bounds": [
+        150,
+        -80,
+        160,
+        -70
+      ],
+      "vertices": 4,
+      "indices": 6,
+      "triangles": 2,
+      "bytes": 52
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E150.gvb",
+      "bounds": [
+        150,
+        -70,
+        160,
+        -60
+      ],
+      "vertices": 5079,
+      "indices": 15231,
+      "triangles": 5077,
+      "bytes": 81252
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_E150.gvb",
+      "bounds": [
+        150,
+        -60,
+        160,
+        -50
+      ],
+      "vertices": 635,
+      "indices": 1845,
+      "triangles": 615,
+      "bytes": 9932
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E150.gvb",
+      "bounds": [
+        150,
+        -40,
+        160,
+        -30
+      ],
+      "vertices": 17250,
+      "indices": 50931,
+      "triangles": 16977,
+      "bytes": 272736
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E150.gvb",
+      "bounds": [
+        150,
+        -30,
+        160,
+        -20
+      ],
+      "vertices": 29745,
+      "indices": 86217,
+      "triangles": 28739,
+      "bytes": 463860
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E150.gvb",
+      "bounds": [
+        150,
+        -20,
+        160,
+        -10
+      ],
+      "vertices": 13626,
+      "indices": 38784,
+      "triangles": 12928,
+      "bytes": 209652
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E150.gvb",
+      "bounds": [
+        150,
+        -10,
+        160,
+        0
+      ],
+      "vertices": 74446,
+      "indices": 213078,
+      "triangles": 71026,
+      "bytes": 1150108
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E150.gvb",
+      "bounds": [
+        150,
+        0,
+        160,
+        10
+      ],
+      "vertices": 5535,
+      "indices": 14601,
+      "triangles": 4867,
+      "bytes": 80556
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N20_E150.gvb",
+      "bounds": [
+        150,
+        20,
+        160,
+        30
+      ],
+      "vertices": 26,
+      "indices": 72,
+      "triangles": 24,
+      "bytes": 404
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N40_E150.gvb",
+      "bounds": [
+        150,
+        40,
+        160,
+        50
+      ],
+      "vertices": 5723,
+      "indices": 16791,
+      "triangles": 5597,
+      "bytes": 90068
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E150.gvb",
+      "bounds": [
+        150,
+        50,
+        160,
+        60
+      ],
+      "vertices": 19808,
+      "indices": 58371,
+      "triangles": 19457,
+      "bytes": 312728
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E150.gvb",
+      "bounds": [
+        150,
+        60,
+        160,
+        70
+      ],
+      "vertices": 12824,
+      "indices": 40239,
+      "triangles": 13413,
+      "bytes": 212264
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E150.gvb",
+      "bounds": [
+        150,
+        70,
+        160,
+        80
+      ],
+      "vertices": 9985,
+      "indices": 29271,
+      "triangles": 9757,
+      "bytes": 157036
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E160.gvb",
+      "bounds": [
+        160,
+        -80,
+        170,
+        -70
+      ],
+      "vertices": 15922,
+      "indices": 47685,
+      "triangles": 15895,
+      "bytes": 254440
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S70_E160.gvb",
+      "bounds": [
+        160,
+        -70,
+        170,
+        -60
+      ],
+      "vertices": 2043,
+      "indices": 6099,
+      "triangles": 2033,
+      "bytes": 32580
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S60_E160.gvb",
+      "bounds": [
+        160,
+        -60,
+        170,
+        -50
+      ],
+      "vertices": 2651,
+      "indices": 7749,
+      "triangles": 2583,
+      "bytes": 41612
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_E160.gvb",
+      "bounds": [
+        160,
+        -50,
+        170,
+        -40
+      ],
+      "vertices": 25693,
+      "indices": 75432,
+      "triangles": 25144,
+      "bytes": 404512
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E160.gvb",
+      "bounds": [
+        160,
+        -30,
+        170,
+        -20
+      ],
+      "vertices": 20892,
+      "indices": 60456,
+      "triangles": 20152,
+      "bytes": 325404
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E160.gvb",
+      "bounds": [
+        160,
+        -20,
+        170,
+        -10
+      ],
+      "vertices": 24985,
+      "indices": 73449,
+      "triangles": 24483,
+      "bytes": 393748
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E160.gvb",
+      "bounds": [
+        160,
+        -10,
+        170,
+        0
+      ],
+      "vertices": 10218,
+      "indices": 29748,
+      "triangles": 9916,
+      "bytes": 159876
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E160.gvb",
+      "bounds": [
+        160,
+        0,
+        170,
+        10
+      ],
+      "vertices": 6004,
+      "indices": 15690,
+      "triangles": 5230,
+      "bytes": 86788
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E160.gvb",
+      "bounds": [
+        160,
+        10,
+        170,
+        20
+      ],
+      "vertices": 3211,
+      "indices": 8265,
+      "triangles": 2755,
+      "bytes": 45916
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E160.gvb",
+      "bounds": [
+        160,
+        50,
+        170,
+        60
+      ],
+      "vertices": 14411,
+      "indices": 42951,
+      "triangles": 14317,
+      "bytes": 229460
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E160.gvb",
+      "bounds": [
+        160,
+        60,
+        170,
+        70
+      ],
+      "vertices": 25236,
+      "indices": 74652,
+      "triangles": 24884,
+      "bytes": 399564
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E160.gvb",
+      "bounds": [
+        160,
+        70,
+        170,
+        80
+      ],
+      "vertices": 987,
+      "indices": 2901,
+      "triangles": 967,
+      "bytes": 15564
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S80_E170.gvb",
+      "bounds": [
+        170,
+        -80,
+        180,
+        -70
+      ],
+      "vertices": 2106,
+      "indices": 6300,
+      "triangles": 2100,
+      "bytes": 33636
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S50_E170.gvb",
+      "bounds": [
+        170,
+        -50,
+        180,
+        -40
+      ],
+      "vertices": 33803,
+      "indices": 100401,
+      "triangles": 33467,
+      "bytes": 536828
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S40_E170.gvb",
+      "bounds": [
+        170,
+        -40,
+        180,
+        -30
+      ],
+      "vertices": 44566,
+      "indices": 131190,
+      "triangles": 43730,
+      "bytes": 703036
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S30_E170.gvb",
+      "bounds": [
+        170,
+        -30,
+        180,
+        -20
+      ],
+      "vertices": 44,
+      "indices": 120,
+      "triangles": 40,
+      "bytes": 668
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S20_E170.gvb",
+      "bounds": [
+        170,
+        -20,
+        180,
+        -10
+      ],
+      "vertices": 21937,
+      "indices": 63921,
+      "triangles": 21307,
+      "bytes": 343444
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/S10_E170.gvb",
+      "bounds": [
+        170,
+        -10,
+        180,
+        0
+      ],
+      "vertices": 3711,
+      "indices": 10431,
+      "triangles": 3477,
+      "bytes": 56580
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N00_E170.gvb",
+      "bounds": [
+        170,
+        0,
+        180,
+        10
+      ],
+      "vertices": 8796,
+      "indices": 23814,
+      "triangles": 7938,
+      "bytes": 130452
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N10_E170.gvb",
+      "bounds": [
+        170,
+        10,
+        180,
+        20
+      ],
+      "vertices": 108,
+      "indices": 288,
+      "triangles": 96,
+      "bytes": 1596
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N50_E170.gvb",
+      "bounds": [
+        170,
+        50,
+        180,
+        60
+      ],
+      "vertices": 6462,
+      "indices": 18444,
+      "triangles": 6148,
+      "bytes": 99636
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N60_E170.gvb",
+      "bounds": [
+        170,
+        60,
+        180,
+        70
+      ],
+      "vertices": 22394,
+      "indices": 66906,
+      "triangles": 22302,
+      "bytes": 357212
+    },
+    {
+      "lod": 4,
+      "gshhgResolution": "f",
+      "path": "lod4/N70_E170.gvb",
+      "bounds": [
+        170,
+        70,
+        180,
+        80
+      ],
+      "vertices": 1926,
+      "indices": 5736,
+      "triangles": 1912,
+      "bytes": 30660
     }
   ],
   "preview": {
-    "status": "work-in-progress",
+    "status": "complete-for-1000-percent-goal",
     "globalLods": [
       0,
       1,
       2,
-      3
+      3,
+      4
     ],
     "fullLod4BBox": [
-      120,
-      20,
-      150,
-      50
+      -180,
+      -90,
+      180,
+      90
     ],
-    "pagesPath": "/2rwa-public/tests/vector-globe/"
+    "pagesPath": "/2rwa-public/tests/vector-globe/",
+    "goal": "global full-resolution display comparable to the validated Japan 1000% view"
   },
   "delivery": {
     "version": 1,

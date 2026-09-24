@@ -1,0 +1,9 @@
+{
+  "asset": "gshhg-shp-2.3.7.zip",
+  "assetUrl": "https://github.com/GenericMappingTools/gshhg-gmt/releases/download/2.3.7/gshhg-shp-2.3.7.zip",
+  "releaseUrl": "https://github.com/GenericMappingTools/gshhg-gmt/releases/tag/2.3.7",
+  "repository": "GenericMappingTools/gshhg-gmt",
+  "sha256": "8dbbe7e071e77e9e75f2d639239099ebca8d5c16d6a07df8169729d49f15cf41",
+  "sizeBytes": 149157845,
+  "tag": "2.3.7"
+}
