@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cinderella Atlas — 伝承と改変の地球儀（Mobile tuned）</title>
+<style>
+:root{
+  --night:#050c18;--deep:#09172d;--panel:rgba(11,28,52,.62);--line:rgba(194,226,255,.24);
+  --text:#edf6ff;--muted:#a8bdd2;--gold:#f2d78d;--aqua:#9fe7ff;--violet:#cabaff;--rose:#ffb6d0;--mint:#a9f0d1;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--night);color:var(--text);font-family:ui-serif,"Hiragino Mincho ProN","Yu Mincho",serif;overflow:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:
+ radial-gradient(circle at 46% 0%,rgba(177,216,255,.18),transparent 28%),
+ radial-gradient(circle at 12% 32%,rgba(125,93,205,.11),transparent 26%),
+ radial-gradient(circle at 90% 78%,rgba(72,174,196,.07),transparent 28%),
+ linear-gradient(180deg,#09172e 0%,#06101f 48%,#030811 100%)}
+#stars{position:fixed;inset:0;pointer-events:none;opacity:.66;background-image:
+ radial-gradient(circle,rgba(255,255,255,.92) 0 1px,transparent 1.2px),
+ radial-gradient(circle,rgba(155,211,255,.62) 0 1px,transparent 1.2px),
+ radial-gradient(circle,rgba(255,227,176,.38) 0 .8px,transparent 1px);
+ background-size:67px 67px,101px 101px,149px 149px;background-position:11px 19px,43px 7px,89px 31px;mask-image:linear-gradient(to bottom,#000,transparent 88%)}
+.app{position:relative;z-index:1;height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:10px;padding:18px 20px 16px}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+h1{margin:0;font-size:clamp(24px,3vw,42px);letter-spacing:.045em;font-weight:500;text-shadow:0 0 26px rgba(185,221,255,.16)}
+.subtitle{margin-top:5px;color:var(--muted);font-size:13px;letter-spacing:.06em}
+.legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px;max-width:540px}
+.chip{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.035);backdrop-filter:blur(9px)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;box-shadow:0 0 12px currentColor}
+main{min-height:0;display:grid;grid-template-columns:minmax(0,1.62fr) minmax(300px,.76fr);gap:12px}
+.panel{border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,rgba(213,238,255,.07),rgba(125,155,190,.025));box-shadow:inset 0 1px rgba(255,255,255,.08),0 18px 70px rgba(0,0,0,.27);backdrop-filter:blur(16px)}
+.globePanel{position:relative;min-height:0;overflow:hidden;background:
+ radial-gradient(circle at 48% 47%,rgba(66,122,172,.07),transparent 45%),linear-gradient(180deg,rgba(2,9,20,.10),rgba(2,8,17,.32))}
+#globeGL,#globeOverlay{position:absolute;inset:0;width:100%;height:100%;display:block}
+#globeGL{pointer-events:none}
+#globeOverlay{cursor:grab;touch-action:none}
+#globeOverlay:active{cursor:grabbing}
+.globeHint{position:absolute;left:17px;top:16px;font-family:ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-size:10px;line-height:1.55;background:rgba(3,12,25,.48);border:1px solid rgba(194,226,255,.13);border-radius:12px;padding:7px 9px;pointer-events:none}
+.globeStatus{position:absolute;right:16px;top:16px;display:flex;gap:6px;align-items:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:9px;letter-spacing:.08em;color:rgba(210,230,245,.65);pointer-events:none}
+.globeStatus i{width:6px;height:6px;border-radius:50%;background:#a9f0d1;box-shadow:0 0 12px #a9f0d1}
+.globeError{display:none;position:absolute;inset:0;place-items:center;padding:32px;text-align:center;background:rgba(3,9,18,.88);font-family:ui-sans-serif,system-ui,sans-serif;color:#dcecff;z-index:4}
+.globeError.show{display:grid}
+.footnote{position:absolute;left:17px;bottom:14px;max-width:70%;font-family:ui-sans-serif,system-ui,sans-serif;font-size:9px;line-height:1.45;color:rgba(190,213,233,.56);pointer-events:none}
+.ornament{position:absolute;right:18px;bottom:14px;font-size:28px;color:rgba(223,239,255,.18);filter:drop-shadow(0 0 14px rgba(160,215,255,.14));pointer-events:none;transform:rotate(-7deg)}
+.info{padding:22px 22px 18px;display:flex;flex-direction:column;min-height:0;overflow:auto}
+.kicker{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.17em;color:var(--aqua);text-transform:uppercase}
+#eventYear{margin-top:7px;font-size:clamp(28px,4vw,48px);font-variant-numeric:tabular-nums;line-height:1}
+#eventTitle{margin:10px 0 3px;font-size:clamp(20px,2.4vw,30px);font-weight:500;line-height:1.25}
+#eventPlace{font-family:ui-sans-serif,system-ui,sans-serif;color:var(--gold);font-size:12px;letter-spacing:.04em}
+#eventText{margin:18px 0 0;font-size:14px;line-height:1.85;color:#d9e8f5}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:17px}
+.fact{padding:10px 11px;border:1px solid rgba(194,226,255,.13);border-radius:13px;background:rgba(2,11,25,.22);font-family:ui-sans-serif,system-ui,sans-serif}
+.fact b{display:block;color:var(--muted);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.fact span{font-size:12px}
+.source{margin-top:auto;padding-top:16px;color:#8fa8be;font-family:ui-sans-serif,system-ui,sans-serif;font-size:10px;line-height:1.55}
+.researchNote{margin-top:12px;border:1px solid rgba(191,199,255,.16);border-radius:13px;background:rgba(93,91,160,.08);font-family:ui-sans-serif,system-ui,sans-serif}
+.researchNote summary{cursor:pointer;padding:9px 11px;color:#cfd5ff;font-size:10px;letter-spacing:.08em;list-style:none}
+.researchNote summary::-webkit-details-marker{display:none}.researchNote summary:before{content:"＋";display:inline-block;width:18px;color:#9ca9e9}.researchNote[open] summary:before{content:"−"}
+.researchNote p{margin:0;padding:0 11px 11px;color:#aebed0;font-size:11px;line-height:1.62}
+.source{display:flex;flex-wrap:wrap;gap:6px 10px}
+.source:before{content:"SOURCES";flex-basis:100%;color:#728ca4;font-size:9px;letter-spacing:.12em}
+.source a{display:inline-block}
+.source a{color:#b6d9f3;text-decoration:none;border-bottom:1px dotted rgba(182,217,243,.5)}
+footer{padding:13px 15px 12px;border:1px solid var(--line);border-radius:20px;background:rgba(7,19,38,.68);backdrop-filter:blur(18px)}
+.timelineTop{display:flex;align-items:center;gap:10px}
+button{appearance:none;border:1px solid rgba(200,229,255,.3);background:linear-gradient(180deg,rgba(210,236,255,.13),rgba(82,114,150,.07));color:var(--text);border-radius:999px;height:34px;padding:0 15px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.08em;cursor:pointer}
+button:hover{background:rgba(210,236,255,.15)}button.active{border-color:rgba(242,215,141,.6);box-shadow:0 0 18px rgba(242,215,141,.12);color:#ffe9a8}
+.yearReadout{min-width:108px;font-size:20px;font-variant-numeric:tabular-nums;color:var(--gold)}
+input[type=range]{flex:1;accent-color:#bde8ff;cursor:pointer}
+.timelineLabels{position:relative;height:31px;margin:5px 4px 0 120px;font-family:ui-sans-serif,system-ui,sans-serif}
+.tick{position:absolute;top:0;transform:translateX(-50%);text-align:center;color:#829bb2;font-size:9px;white-space:nowrap;cursor:pointer}
+.tick:before{content:"";display:block;width:1px;height:7px;background:rgba(190,220,245,.24);margin:0 auto 3px}.tick.strong{color:#d6eafb}
+@media(max-width:850px){
+  html,body{height:100%;min-height:100%;overflow:hidden;overscroll-behavior:none}
+  body{padding-bottom:0}
+  .app{height:100svh;height:100dvh;min-height:0;overflow:hidden;padding:10px 10px calc(6px + env(safe-area-inset-bottom));display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:0}
+  header{display:block;margin-bottom:8px}
+  h1{font-size:clamp(25px,8vw,34px);line-height:1.05;letter-spacing:.035em}
+  .subtitle{font-size:11px;line-height:1.5;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .legend{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin-top:8px;padding:0 1px 3px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .legend::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;font-size:10px;padding:5px 8px;white-space:nowrap}
+  main{display:block;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:0 0 8px}
+  .panel{border-radius:19px}
+  .globePanel{height:min(54svh,520px);min-height:330px;max-height:520px}
+  .globeHint{left:10px;top:10px;font-size:9px;line-height:1.35;padding:6px 8px;max-width:54%;border-radius:10px}
+  .globeHint br{display:none}
+  .globeStatus{display:none}
+  .footnote{left:11px;right:11px;bottom:9px;max-width:none;font-size:8px;line-height:1.35;padding:5px 7px;border-radius:9px;background:rgba(3,12,25,.42);backdrop-filter:blur(6px)}
+  .ornament{right:12px;bottom:36px;font-size:20px}
+  .info{margin-top:8px;min-height:0;padding:16px 16px 15px;overflow:visible}
+  .kicker{font-size:10px;letter-spacing:.13em}
+  #eventYear{font-size:30px;margin-top:6px}
+  #eventTitle{font-size:21px;line-height:1.28;margin:8px 0 3px}
+  #eventPlace{font-size:11px;line-height:1.5}
+  #eventText{font-size:13px;line-height:1.72;margin-top:13px}
+  .facts{grid-template-columns:1fr;gap:6px;margin-top:12px}
+  .fact{padding:9px 10px}
+  .fact b{font-size:8px;margin-bottom:3px}
+  .fact span{font-size:11px;line-height:1.45}
+  .researchNote{margin-top:8px}.researchNote summary{padding:8px 10px}.researchNote p{font-size:10.5px;line-height:1.55;padding:0 10px 9px}
+  .source{margin-top:12px;padding-top:9px;font-size:9px;line-height:1.45;border-top:1px solid rgba(194,226,255,.10)}
+  footer{position:relative;z-index:20;left:auto;right:auto;bottom:auto;margin-top:0;padding:9px 10px 8px;border-radius:18px;background:rgba(6,17,34,.94);box-shadow:0 -8px 28px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.07);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+  .timelineTop{display:grid;grid-template-columns:auto 44px 44px minmax(66px,auto) 1fr;gap:6px;align-items:center}
+  button{height:44px;min-width:44px;padding:0 12px;font-size:11px;touch-action:manipulation}
+  #autoBtn{padding:0 13px}
+  .yearReadout{min-width:0;font-size:16px;text-align:center;white-space:nowrap}
+  input[type=range]{width:100%;min-width:0;height:44px;margin:0;touch-action:pan-x;accent-color:#bde8ff}
+  input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:999px;background:rgba(177,221,247,.28)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-8.5px;border-radius:50%;background:#d7f1ff;border:2px solid rgba(255,255,255,.8);box-shadow:0 0 0 5px rgba(159,231,255,.12),0 2px 8px rgba(0,0,0,.35)}
+  .timelineLabels{display:none}
+}
+@media(max-width:430px){
+  .globePanel{height:min(51svh,455px);min-height:320px}
+  .globeHint{max-width:62%;font-size:8.5px}
+  .timelineTop{grid-template-columns:auto 42px 42px minmax(61px,auto) 1fr;gap:4px}
+  button{height:42px;min-width:42px;padding:0 10px}
+  #autoBtn{padding:0 11px}
+  .yearReadout{font-size:15px}
+}
+@media(max-width:360px){
+  .app{padding-left:7px;padding-right:7px}
+  h1{font-size:24px}
+  .subtitle{font-size:10px}
+  .globePanel{height:47svh;min-height:286px}
+  footer{left:auto;right:auto;padding-left:7px;padding-right:7px}
+  .timelineTop{grid-template-columns:auto 39px 39px 58px 1fr;gap:3px}
+  button{height:40px;min-width:39px;padding:0 8px;font-size:10px}
+  #autoBtn{padding:0 9px}
+  .yearReadout{font-size:14px}
+}
+@media(max-width:850px) and (orientation:landscape){
+  body{padding-bottom:0}
+  .app{padding-top:7px}
+  header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  header>div:first-child{min-width:0;flex:1}
+  h1{font-size:23px}
+  .subtitle{font-size:9px;-webkit-line-clamp:1}
+  .legend{max-width:44%;margin-top:0}
+  main{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(270px,.8fr);gap:7px;overflow:hidden;padding-bottom:0}
+  .globePanel{height:auto;min-height:0;max-height:none}
+  .info{margin-top:0;height:auto;min-height:0;overflow:auto;padding:13px}
+  #eventYear{font-size:25px}
+  #eventTitle{font-size:18px}
+  #eventText{font-size:11px;line-height:1.55;margin-top:8px}
+  .facts{margin-top:8px}
+  .source{margin-top:8px}
+  footer{padding-top:7px;padding-bottom:6px}
+  .timelineTop{grid-template-columns:auto 40px 40px 70px 1fr}
+  button{height:40px;min-width:40px}
+}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="app">
+<header>
+  <div><h1>Cinderella Atlas</h1><div class="subtitle">灰かぶり娘の類話・記録・文学的固定化・世界的再固定化を、一本の「起源」にしない時空間ビュー</div></div>
+  <div class="legend">
+    <span class="chip"><i class="dot" style="background:#cabaff;color:#cabaff"></i>類似モチーフ</span>
+    <span class="chip"><i class="dot" style="background:#a9f0d1;color:#a9f0d1"></i>文献記録</span>
+    <span class="chip"><i class="dot" style="background:#8fd8ff;color:#8fd8ff"></i>地域異本・比較</span>
+    <span class="chip"><i class="dot" style="background:#f2d78d;color:#f2d78d"></i>文学的固定化</span>
+    <span class="chip"><i class="dot" style="background:#78e2d5;color:#78e2d5"></i>翻訳・伝播</span>
+    <span class="chip"><i class="dot" style="background:#bfc7ff;color:#bfc7ff"></i>研究史</span>
+    <span class="chip"><i class="dot" style="background:#ffb6d0;color:#ffb6d0"></i>大衆文化</span>
+  </div>
+</header>
+<main>
+<section class="panel globePanel" id="globePanel">
+  <canvas id="globeGL"></canvas><canvas id="globeOverlay"></canvas>
+  <div class="globeHint">ドラッグ：回転　ピンチ：拡大縮小<br>点をタップ：出来事へ　ダブルタップ：全体表示</div>
+  <div class="globeStatus"><i></i><span>NATURAL EARTH · WEBGL2</span></div>
+  <div class="globeError" id="globeError"></div>
+  <div class="footnote">※ 点は発祥地の断定ではなく、現存資料の記録地・出版地・採録地・研究刊行地。採録年 ≠ 成立年。日本は翻訳・教科書・漫画・アニメ・在地民話研究を別イベントで表示。国境線は現代の参照用です。</div>
+  <div class="ornament">♕ ✧</div>
+</section>
+<aside class="panel info">
+  <div class="kicker" id="eventType"></div><div id="eventYear"></div><h2 id="eventTitle"></h2><div id="eventPlace"></div><p id="eventText"></p>
+  <div class="facts"><div class="fact"><b>status</b><span id="eventStatus"></span></div><div class="fact"><b>motif / change</b><span id="eventMotif"></span></div></div>
+  <details class="researchNote" open><summary>研究上の注意</summary><p id="eventResearch"></p></details>
+  <div class="source" id="eventSource"></div>
+</aside>
+</main>
+<footer>
+  <div class="timelineTop"><button id="autoBtn">AUTO ▶</button><button id="prevBtn" aria-label="前へ">‹</button><button id="nextBtn" aria-label="次へ">›</button><div class="yearReadout" id="timelineYear"></div><input id="timeline" type="range" min="0" max="2026" step="1" value="850" aria-label="年代"></div>
+  <div class="timelineLabels" id="timelineLabels"></div>
+</footer>
+</div>
+<script>
+(()=>{
+'use strict';
+const EVENTS = [{"year":20,"yearLabel":"1世紀ごろ","lat":30.9,"lon":29.8,"major":true,"title":"ロドピス：履物による本人探索の古代類例","place":"ナウクラティス／エジプト（ギリシャ語文献）","type":"類似モチーフ","kind":"motif","status":"ATU 510A 全体ではなく、履物認証モチーフの古い類例","motif":"履物の移動 → 所有者探索 → 王との結婚","text":"ストラボン『地理誌』17.1.33では、鷲がロドピスの履物を運び、王がその持ち主を探して結婚する話が記されます。ただし、継母による迫害、灰、魔法の援助、舞踏会などはありません。したがって「古代エジプトのシンデレラ」ではなく、後代のシンデレラ群と比較できる一部モチーフの早い文献例として扱います。","research":"古いモチーフが存在することと、後代の物語全体がそこから直系に派生したことは別問題です。類似要素だけで起源を確定しないことが重要です。","sources":[["一次史料：Strabo, Geography 17.1.33","https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.0198:book=17:chapter=1:section=33"],["研究：Folklore 127 (2016), Greek Cinderella traditions","https://www.tandfonline.com/doi/full/10.1080/0015587X.2016.1175741"]]},{"year":850,"yearLabel":"9世紀中葉","lat":22.82,"lon":108.32,"major":true,"title":"葉限（叶限 / Yexian）：現存する非常に早い完成形","place":"唐代中国語資料／邕州系の南方伝承として記録","type":"文献記録","kind":"record","status":"中国語文献に残る、早期かつ構造の整ったシンデレラ型資料","motif":"継母・神魚・魚骨・洞節・翠の衣・金履・履物による探索","text":"段成式『酉陽雑俎』続集に収められた葉限譚。葉限は継母に酷使され、可愛がった魚を殺されますが、魚の骨から衣食を得て「洞節」に出かけ、金の履を失います。履は陀汗国の王に渡り、王が履の持ち主を探して葉限を見いだします。本文末では、段成式が邕州の洞の出身者・李士元から南方の異聞として聞いたことも記されています。","research":"「現存最古級の完成した灰姑娘型テキスト」とする評価は強い一方、発祥地は確定していません。中国語圏研究では広西・壮族・駱越など地域文化を重視する傾向があり、英語圏では歴史地理的な広域伝播や西方要素まで検討する研究があります。丁乃通は南部広西／北部ベトナム方面を可能性として論じましたが、断定はしていません。","sources":[["一次史料：中国哲学書電子化計画『酉陽雜俎續集』","https://ctext.org/wiki.pl?chapter=539485&if=gb&remap=gb"],["中国語研究史：郭倩倩・李扬 2025","https://clajc.ouc.edu.cn/ctwhyjzx/2025/0426/c16717a499073/pagem.htm"],["研究：丁乃通を含む研究史の再検討（北京大学PDF）","https://fh.pku.edu.cn/docs/2023-03/20230321085031526374.pdf"]]},{"year":980,"yearLabel":"10世紀後半","lat":35.01,"lon":135.77,"major":false,"title":"『落窪物語』：日本の「迫害される継娘」文学","place":"平安京／日本","type":"並行類話・比較対象","kind":"parallel","status":"厳密な同一物語ではなく、東アジア比較で重要な近縁構造","motif":"継母による迫害・低い居所・援助者・婚姻による逆転","text":"10世紀後半成立とされる『落窪物語』は、継母に虐げられる娘が婚姻を通じて境遇を逆転させる物語で、しばしば「日本のシンデレラ」と比較されます。ただし魔法の履物や祭りでの本人探索を中心とするATU 510Aそのものと同一視するより、東アジアの「迫害される継娘」物語群との比較対象として置くのが適切です。","research":"Frits Vos は『落窪物語』を葉限、ベトナム Tấm Cám、朝鮮・日本の類話と比較しました。比較可能性は高いものの、「葉限から直接伝播した」とまでは史料上証明されません。","sources":[["Frits Vos 1986, The Ochikubo monogatari as a novel","https://cir.nii.ac.jp/crid/1390290699799900800"]]},{"year":1634,"yearLabel":"1634–36","lat":40.85,"lon":14.27,"major":true,"title":"バジーレ『灰かぶり猫』 La Gatta Cenerentola","place":"ナポリ","type":"文学的固定化","kind":"literary","status":"ペロー以前のヨーロッパで確認できる重要な文学化","motif":"継母・宴・超自然的援助・履物・王との結婚","text":"ジャンバッティスタ・バジーレ『ペンタメローネ』に収められたナポリ語の物語。主人公ゼゾッラは、現代の受動的な灰かぶり姫像とは異なり、最初の継母を殺す計画にも関わる複雑な人物です。宴と履物による探索はありますが、ペロー型の妖精の代母・カボチャの馬車・真夜中の期限はありません。","research":"「バジーレ→ペロー→グリム→Disney」という単純な一本線は資料史を平板化します。各作品は既存の口承・文学・編集文化の中で再構成され、後代には出版物が再び口承へ逆流します。","sources":[["比較研究：Basile / d’Aulnoy / Perrault / Grimm / Disney","https://www.nature.com/articles/s41599-023-02375-6"]]},{"year":1697,"yearLabel":"1697","lat":48.86,"lon":2.35,"major":true,"title":"ペロー『Cendrillon』：0時・ガラスの靴の強い固定化","place":"パリ／フランス","type":"文学的固定化","kind":"literary","status":"現代の「シンデレラUI」を形成した最重要の文学的節点","motif":"妖精の代母・カボチャの馬車・ガラスの靴・真夜中","text":"Charles Perrault の Cendrillon ou la petite pantoufle de verre。妖精の代母、カボチャからの馬車、ガラスの靴、真夜中という期限が一つの印象的な構成にまとめられました。前夜は23時45分に自主的に帰り、第二夜は真夜中の鐘で逃げますが、本文上その後も舞踏会は続いています。","research":"「0時＝舞踏会の終了時刻」という意味ではありません。ペロー版の0時は、物語上の魔法の期限であり、17世紀フランス宮廷の夜会が0時より後まで続く例とも整合します。","sources":[["一次史料：Perrault 1697 Cendrillon","https://fr.wikisource.org/wiki/Histoires_ou_Contes_du_temps_pass%C3%A9_%281697%29/Original/Cendrillon"],["BnF：Perrault と妖精物語","https://essentiels.bnf.fr/fr/litterature/xviie-siecle/06d95b93-659d-43e1-a80f-9c846ec77f95-contes-fees/article/40f62614-23b8-437a-8bd9-886b63b0fd15-charles-perrault-et-contes-fees"]]},{"year":1697,"yearLabel":"1697","lat":48.86,"lon":2.35,"major":false,"title":"d’Aulnoy『Finette Cendron』：同時代フランスの別枝","place":"パリ／フランス","type":"文学的固定化","kind":"literary","status":"ペローとほぼ同時期の salon fairy tale。ATU 327 + 510A の複合","motif":"姉妹・捨て子要素・灰／炉辺・華麗な装い・履物","text":"Marie-Catherine d’Aulnoy の Finette Cendron は、1697年前後のフランスで成立した別の「灰かぶり」文学作品です。ペローだけが突然シンデレラを発明したのではなく、17世紀末フランスでは女性作家を含む conte de fées の隆盛の中で、近縁モチーフが複数作品に再編されていました。","research":"d’Aulnoy と Perrault のどちらが先に構想したかを確定するのは困難です。出版特許・刊行時期は近接しており、同時代のサロン文化という共有文脈を見る必要があります。","sources":[["BnF：17世紀末フランスの妖精物語文化","https://essentiels.bnf.fr/fr/litterature/xviie-siecle/06d95b93-659d-43e1-a80f-9c846ec77f95-contes-fees/article/40f62614-23b8-437a-8bd9-886b63b0fd15-charles-perrault-et-contes-fees"],["Finette Cendron 本文","https://fr.wikisource.org/wiki/Finette_Cendron"]]},{"year":1729,"yearLabel":"1729","lat":51.51,"lon":-0.13,"major":false,"title":"Robert Samber 英訳：Cinderilla が英語圏へ","place":"ロンドン／イングランド","type":"翻訳・伝播","kind":"transmission","status":"ペロー版の最初期英訳として英語圏の印刷文化へ接続","motif":"Cendrillon → Cinderilla / Little Glass Slipper","text":"Robert Samber による Histories, or Tales of Past Times がロンドンで刊行され、ペローの Cendrillon は Cinderilla; or, The Little Glass Slipper として英語圏へ入ります。現在の英語 Cinderella の系譜を考える上で、翻訳による名称と標準像の固定化は重要な節点です。","research":"「民話が自然に国境を越えた」だけでなく、書籍・翻訳・再版が近代以降の伝播を大きく加速します。","sources":[["University of Rochester：first English translation","https://d.lib.rochester.edu/cinderella/text/modern-childrens-editions-and-adaptations.html"],["Grub Street Project：1729書誌","https://www.grubstreetproject.net/publications/N1854/"]]},{"year":1812,"yearLabel":"1812","lat":51.31,"lon":9.49,"major":true,"title":"グリム『Aschenputtel』初版","place":"カッセル／ドイツ語圏","type":"文学的固定化","kind":"literary","status":"ペローとは異なる援助体系を持つドイツ語圏の強い枝","motif":"母の墓・木・鳥・宴・履物・姉たちの身体損傷","text":"グリム兄弟『子どもと家庭のための童話』初版。母の墓に植えた木と鳥が援助する構成を持ち、ペローの妖精の代母やカボチャの馬車とは大きく異なります。初版の Aschenputtel 自体も、後の有名な最終形と同一ではありません。","research":"グリム版は「昔から完全な形で保存されていた一つのドイツ民話」をそのまま筆記したものではなく、複数の語りと編集を通して版ごとに変化します。","sources":[["一次史料：Aschenputtel 1812","https://de.wikisource.org/wiki/Aschenputtel_%281812%29"]]},{"year":1819,"yearLabel":"1819","lat":51.31,"lon":9.49,"major":false,"title":"グリム第2版：複数のヘッセン系語りで再編集","place":"ドイツ語圏","type":"改稿・再固定化","kind":"literary","status":"同一「グリム版」の内部でも系統が動く重要な改稿点","motif":"複数異文の合成・追加・再配置","text":"1819年の第2版では Aschenputtel が大きく拡張・再編集されました。Bolte–Polívka の注釈は、三つのヘッセン系の語りを用いた改稿を記録しています。つまり1812年と1857年の差は単なる文章校正ではなく、異文を取り込む編集過程です。","research":"「グリム童話＝口承資料」「ペロー＝文学」という二分法も単純すぎます。採集・筆記・比較・編集・出版が往復する過程として見る方が実態に近いです。","sources":[["Bolte–Polívka 注釈（Wikisource）","https://de.wikisource.org/wiki/Anmerkungen_zu_den_Kinder-_und_Hausm%C3%A4rchen_Br%C3%BCder_Grimms/Band_1/Aschenputtel"]]},{"year":1857,"yearLabel":"1857","lat":51.31,"lon":9.49,"major":false,"title":"グリム第7版：現在知られる Aschenputtel の定着","place":"ドイツ語圏","type":"文学的固定化","kind":"literary","status":"長期改稿を経た最終版","motif":"母の墓・木・鳥・三度の宴・金の履・苛烈な罰","text":"グリム兄弟の生前最終第7版。現在「グリム版シンデレラ」として流通する像の基準になりました。ペロー型の真夜中の魔法切れではなく、主人公は宴から自分の意思で逃れます。姉たちが足を切る場面や鳥による最終的な処罰も特徴的です。","research":"1812→1819→1857を並べることで、「国別の固定伝承」というより、同一編集者のもとでも物語が動き続けたことが見えます。","sources":[["一次史料：Aschenputtel 1857","https://de.wikisource.org/wiki/Aschenputtel_%281857%29"]]},{"year":1864,"yearLabel":"1864刊行","lat":39.67,"lon":20.85,"major":true,"title":"ギリシャ異本：『Little Saddleslut』系と母食いモチーフ","place":"エピロスほか／ギリシャ語圏（J. G. von Hahn 採録）","type":"地域異本の採録","kind":"parallel","status":"ATU 510A。ペロー／グリムから大きく外れるが、履物認証まで備える強い地域枝","motif":"母娘の糸紡ぎ競争・母殺し／食人・母の骨・魔法衣装・三度の出現・失われた靴・試し履き","text":"J. G. von Hahn が1864年に刊行したギリシャ／アルバニア民話集には、後に『Little Saddleslut』などとして英訳された強烈な Cinderella 型が含まれます。母と三姉妹が糸紡ぎをし、糸や紡錘を落とした者を食べるという約束から母が殺され、末娘だけが食人を拒否します。末娘は母の骨を集めて弔い、そこから衣装などの超自然的援助を得て晴れの場へ三度現れ、最終的には失われた靴の試し履きで認証されます。","research":"これは『フランス版がギリシャ化しただけ』とは説明しにくいほど独自の導入部を持ちます。現代の『ギリシャ魔法民話カタログ』では ATU 510A のギリシャ異本が254例記録され、糸紡ぎ・母娘関係・母殺し／食人の明示または暗示が、この地域群の重要な特徴として研究されています。1864は刊行年であり、物語の成立年ではありません。","sources":[["Cox 1893：von Hahn 1864『Aschenputtel』異本の抄録","https://www.surlalunefairytales.com/oldsite/cinderella/marianroalfecox/variants/50.html"],["Kaplanoglou 2016, Folklore 127(1)：Greek Cinderella 254 variants","https://www.tandfonline.com/doi/abs/10.1080/0015587X.2015.1093821"],["ギリシャ魔法民話カタログ：AT 510A Σταχτοπούτα","https://helios-eie.ekt.gr/EIE/bitstream/10442/8894/1/41_Angelopoulou_Kaplanoglou_Katrinaki.pdf"]]},{"year":1876,"yearLabel":"1876","lat":56.49,"lon":-4.2,"major":false,"title":"Rashin-Coatie：スコットランドの採録例","place":"スコットランド","type":"地域異本の採録","kind":"parallel","status":"19世紀に記録された英語圏の地域異本","motif":"継母・赤い仔牛・宴／教会・履物試験","text":"スコットランドの Rashin-Coatie は、魔法の援助者として仔牛が現れるなど、ペローともグリムとも異なる組合せを持ちます。ここでの1876年は「物語の誕生年」ではなく、近代の採録・出版で確認できる年です。","research":"民話地図では「採録年」と「成立年」を混同しない必要があります。口承がいつ始まったかは、最初の印刷年より古い可能性があります。","sources":[["University of Rochester Cinderella bibliography","https://d.lib.rochester.edu/cinderella/text/cinderella-tales.html"]]},{"year":1886,"yearLabel":"1886採録","lat":10.82,"lon":106.63,"major":false,"title":"Tấm Cám：ベトナムの強い近縁異本","place":"サイゴン刊行／ベトナム","type":"地域異本の採録","kind":"parallel","status":"ベトナムで記録された、葉限との比較が多い近縁物語","motif":"魚・魚骨・衣装・金の履・王子／王・再生と復讐","text":"A. Landes が1886年に刊行した Tấm Cám 系の記録では、魚の援助、骨、華麗な衣装、金の履と本人探索など葉限と強く似る要素が見られます。一方、後半には殺害と動植物への再生、激しい姉妹間復讐など独自の長い展開があります。","research":"葉限→Tấm Cám の直系関係を強く見る研究もありますが、広域の相互交流・共通素材・地域的再構成を含めて考える必要があります。1886は採録・刊行の年で、物語の成立年ではありません。","sources":[["A. Landes 1886 の書誌と英訳概要","https://d.lib.rochester.edu/cinderella/text/modern-childrens-editions-and-adaptations.html"],["中国語研究史：中越比較研究を含むレビュー","https://clajc.ouc.edu.cn/ctwhyjzx/2025/0426/c16717a499073/pagem.htm"]]},{"year":1886,"yearLabel":"1886","lat":35.68,"lon":139.76,"major":false,"title":"日本語シンデレラの紙媒体初期例：『新貞羅』","place":"東京／『郵便報知新聞』","type":"日本受容史・新聞","kind":"transmission","status":"現在の研究・児童文学資料では、紙媒体で紹介された最初の日本語シンデレラとされる","motif":"神女・夜会・絹の踊番・12時・住所を聞く公子・靴合わせ","text":"1886（明治19）年12月、『郵便報知新聞』の「倫敦の年始芝居」で矢野龍渓が『新貞羅』を紹介しました。野口芳子の精査では、神女が流行の衣装を与え、目を閉じると宮殿の夜会へ移動し、12時前に退出して「絹の踊番」を落とします。公子は事前に聞いた住所「寿町一番地」を訪ね、履物を合わせて新貞羅を見いだします。カボチャの馬車や魔法の杖はなく、王妃ではなく「貴妃」となるなど、初期からかなり日本語圏向けに再構成されています。","research":"大阪府立中央図書館は『図説児童文学翻訳大事典』に基づき「紙媒体で紹介された最初の日本語のシンデレラと言われる」と慎重に表現しています。したがって「絶対的な最初の口頭紹介」ではなく、現在確認される紙媒体の最初期例として表示します。野口（2023）は明治期の日本語版を12話確認しています。","sources":[["大阪府立中央図書館：日本のシンデレラ","https://www.library.pref.osaka.jp/site/jibunkan/shinderera2.html"],["野口芳子 2023：明治期の受容","https://kpu.repo.nii.ac.jp/records/2000019"]]},{"year":1887,"yearLabel":"1887","lat":35.69,"lon":139.76,"major":false,"title":"『シンデレラの奇縁』：グリム童話初期邦訳の中へ","place":"東京／菅了法『西洋故事神仙叢話』","type":"日本受容史・翻訳","kind":"transmission","status":"グリム童話最初期の日本語訳集。英訳本からの重訳と考えられる","motif":"Aschenputtel → 英訳 → 日本語という多段階翻訳","text":"1887（明治20）年4月、菅了法（桐南居士）『西洋故事神仙叢話』に「シンデレラの奇縁（灰かぶり）」が収録されました。レファレンス協同データベースが紹介する研究では、この本はグリム童話の最初の日本語訳集とされ、11話を収録。扉に “FAIRY TALES TRANSLATED BY SUGE” とあることなどから、ドイツ語原典ではなく英訳を介した重訳とみられています。","research":"野口（2023）は明治期のシンデレラ邦訳12話はいずれもフランス語・ドイツ語原典からの直接訳ではなく、英訳からの重訳だったと整理しています。ここでは「グリム版が直接ドイツから入った」とは表示しません。","sources":[["レファレンス協同DB：グリム童話日本語翻訳史","https://crd.ndl.go.jp/reference/detail?page=ref_view&id=1000265400"],["国会図書館レファレンス：『西洋故事神仙叢話』","https://crd.ndl.go.jp/reference/detail?page=ref_view&id=1000014205"],["野口芳子 2023","https://kpu.repo.nii.ac.jp/records/2000019"]]},{"year":1888,"yearLabel":"1888刊行","lat":34.08,"lon":74.8,"major":true,"title":"カシミール『The Wicked Stepmother』：母＝山羊と鼻輪による認証","place":"シュリーナガル周辺／カシミール（当時英領インド）","type":"地域異本の採録","kind":"parallel","status":"インド亜大陸で採録された Cinderella cycle の一例。古典的な舞踏会型ではない","motif":"継母迫害・実母の動物化・母＝山羊の援助・殺された援助動物・鼻輪の漂流・王による所有者探索・婚姻","text":"J. Hinton Knowles が1888年に刊行した『Folk-tales of Kashmir』の『The Wicked Stepmother』では、実母が山羊へ変身し、継母に冷遇される子どもたちを食物で助けます。のちに鼻輪が川から魚へ、さらに王の厨房へ渡り、王が持ち主を探して娘を見いだし結婚します。『履物そのもの』ではありませんが、失われた小さな装身具が権力者のもとへ偶然移動し、全国的な持ち主探索から婚姻へ至る点は Rhodopis や履物認証と比較しやすい構造です。","research":"Knowles 自身が注でこの話を Cinderella cycle に属すると述べています。インドについては Thompson–Balys / Thompson–Roberts の索引にも AT 510 系や H36.1『slipper test』が記録されており、南アジアに『迫害＋動物援助』だけでなく履物認証そのものを持つ異本も存在します。ただし1888年という採録時点は植民地期で、欧州印刷物との接触可能性を無視して『古代インド起源』とはできません。","sources":[["一次資料：Knowles, Folk-tales of Kashmir (1888)","https://en.wikisource.org/wiki/Folk-tales_of_Kashmir"],["一次資料PDF：The Wicked Stepmother pp.127–129","https://www.rarebooksocietyofindia.org/book_archive/196174216674_10152327594576675.pdf"],["Thompson motif H36.1：Slipper test（India: Thompson-Balys）","https://www.mythologydatabase.com/db_thompson.php?motif=H36.1"],["Thompson & Roberts 1960, Types of Indic Oral Tales","https://books.google.com/books/about/Types_of_Indic_Oral_Tales.html?hl=en&id=WxnXAAAAMAAJ&output=html_text"]]},{"year":1890,"yearLabel":"1890採録","lat":53.35,"lon":-6.26,"major":false,"title":"Fair, Brown and Trembling：アイルランド異本","place":"アイルランド","type":"地域異本の採録","kind":"parallel","status":"ケルト語圏の採録例。標準版から大きく伸びる物語","motif":"三姉妹・教会・三度の衣装・履物・足の切断・後日譚","text":"Jeremiah Curtin が1890年に記録したアイルランドの異本。舞踏会ではなく教会へ行き、三度異なる衣装で現れ、靴の一致で結婚に至ります。その後さらに姉妹の嫉妬と海・鯨を含む長い後日譚へ発展します。","research":"ATUの同じ型に分類されても、地域異本は「同じ筋書きの衣替え」ではありません。エピソードの追加・脱落・別型との混合が頻繁に起きます。","sources":[["University of Rochester：Fair, Brown and Trembling","https://d.lib.rochester.edu/cinderella/text/curtin.html"]]},{"year":1893,"yearLabel":"1893","lat":51.51,"lon":-0.13,"major":true,"title":"Marian Roalfe Cox：345異本を比較","place":"ロンドン／英国","type":"研究史","kind":"research","status":"シンデレラ研究を「一作品」から多数異本の比較へ拡張","motif":"Cinderella / Catskin / Cap o’ Rushes / indeterminate の整理","text":"Marian Roalfe Cox は Cinderella: Three Hundred and Forty-Five Variants... を刊行し、345の異本を抄録・表形式で比較しました。現在のATU分類とはカテゴリーが異なりますが、「ペローかグリムか」だけでは捉えられない巨大な異本群を可視化した研究史上の節目です。","research":"Cox は「原郷」を探す歴史地理学的関心も持っていましたが、膨大な比較をしても唯一の発祥地は確定しませんでした。異本の分布と起源の証明は同じではありません。","sources":[["Cox 1893 書誌・デジタル版","https://onlinebooks.library.upenn.edu/webbin/book/lookupid?key=olbp36084"],["Public-domain scan","https://commons.wikimedia.org/wiki/File:Cinderella;_three_hundred_and_forty-five_variants_of_Cinderella,_Catskin,_and_Cap_o%27Rushes,_abstracted_and_tabulated,_with_a_discussion_of_mediaeval_analogues,_and_notes_(IA_cinderellathreeh00coxmuoft).pdf"]]},{"year":1896,"yearLabel":"1891–1909","lat":35.7,"lon":139.75,"major":false,"title":"明治の再命名：『清き貴女』『燻娘』『踊靴』『出世の靴』","place":"東京の児童雑誌・書籍・教材","type":"日本受容史・翻案の拡大","kind":"transmission","status":"シンデレラが単一の訳名ではなく、多数の題名・人物名へ日本化されながら流通","motif":"題名・人物名の日本化／雑誌と書籍では比較的原文に近い訳も出現","text":"『幼年雑誌』「清き貴女」（1891）、井上寛一訳『西洋仙郷奇談』の「燻娘（ふすぼり）」（1896）、『少年世界』「英国お伽噺 踊靴」（1899）など、明治期には題名そのものが揺れ続けます。野口（2023）は1909年までに12話を確認し、ペロー系9話・グリム系3話と整理しています。1909年には『出世の靴』『シンダレラと硝子の上靴』など、現代の「シンデレラ」に近い名称も並び始めます。","research":"明治期を「西洋名作がそのまま翻訳された時代」と見ると実態を落とします。新聞・教科書は改変が大きく、雑誌・書籍では比較的忠実な訳が現れるという媒体差が野口の研究で指摘されています。","sources":[["大阪府立中央図書館：1891・1896・1899年の資料","https://www.library.pref.osaka.jp/site/jibunkan/shinderera2.html"],["野口芳子 2023：明治期12話の比較","https://kpu.repo.nii.ac.jp/records/2000019"]]},{"year":1900,"yearLabel":"1900–01","lat":35.69,"lon":139.72,"major":false,"title":"坪内逍遥『おしん物語』：教科書で徹底的に日本化","place":"東京／冨山房『国語読本』","type":"日本受容史・学校教材","kind":"popular","status":"高等小学校用国語読本に収録。1901年の高等科女子用読本にも収録が確認される","motif":"舞踏会→園遊会／妖精→弁天様／ガラスの靴→扇／真夜中→午後6時","text":"坪内逍遥はシンデレラを「おしん」とし、継姉を「おこま」、舞踏会を華族の別邸の園遊会へ置換しました。援助者は一尺ほどの弁天様となり、炭取りが車、鼠が馬、猫が御者へ変わり、着物と帯も変身します。最大の変更は期限が真夜中ではなく午後6時であること。落とすのも靴ではなく扇で、絵柄を言い当てることで本人確認します。1900年『国語読本 高等小学校用 巻一』第21・22課、1901年『国語読本高等科女子用』で採録が確認されています。","research":"これは1904年以後の「国定教科書」と同一視しない方が正確です。国立教育政策研究所の照会でも国定教科書索引には見つからず、1900–01年の読本での採録が確認されています。野口（2023）は明治期12話のうち最も改変が大きい例と位置づけます。","sources":[["CiNii：野口芳子 2023 抄録（扇・午後6時）","https://cir.nii.ac.jp/crid/1050580682416200064"],["レファレンス協同DB：おしん物語 pp.324–327","https://crd.ndl.go.jp/reference/detail?page=ref_view&id=1000311396"],["国立教育政策研究所レファレンス：1900/1901採録","https://crd.ndl.go.jp/reference/detail?page=ref_view&id=1000057406"]]},{"year":1901,"yearLabel":"1901採録","lat":35.07,"lon":-108.85,"major":false,"title":"The Poor Turkey Girl：ズニの「シンデレラ」類話","place":"ニューメキシコ／ズニ","type":"地域異本の採録","kind":"parallel","status":"北米先住民社会で記録された近縁物語。ただし伝播史に注意","motif":"貧しい娘・七面鳥の援助・祭り・装い・約束違反","text":"Frank Hamilton Cushing の Zuni Folk Tales に収録。七面鳥が貧しい娘を美しく装わせ祭りへ送り出しますが、彼女が約束を破るため、典型的な王子との幸福な結婚には向かいません。シンデレラ型比較で有名な例ですが、記録時点はスペイン語圏との長い接触後です。","research":"「世界各地に似た話がある＝すべて独立発生」の証拠にはなりません。Pueblo の Turkey Girl 群については、スペイン系物語を先住民の文化環境に再構成した可能性も論じられています。","sources":[["Cushing, Zuni Folk Tales (1901)","https://www.gutenberg.org/ebooks/54682"]]},{"year":1911,"yearLabel":"1911","lat":33.73,"lon":135.38,"major":false,"title":"南方熊楠：9世紀中国の葉限を「シンダレラ」と比較","place":"田辺／和歌山（『東京人類學會雜誌』掲載）","type":"日本受容史・比較民話研究","kind":"research","status":"日本語圏で早期に葉限と欧州シンデレラの類似を明示した比較研究","motif":"葉限・魚の援助・履物と、民族を越える類似説話の比較","text":"1911年3月20日、南方熊楠は「西暦九世紀の支那書に載たる『シンダレラ』物語―異れる民族間に存する類似古話の比較研究」を発表しました。『酉陽雑俎』の葉限をヨーロッパのシンデレラと比較し、遠く離れた民族間で似た説話が存在すること自体を研究対象にしています。日本でのシンデレラ史は、翻訳・児童文学だけでなく、かなり早くから比較民俗学・東アジア文献研究にも枝を伸ばしていました。","research":"熊楠自身は伝播方向について大胆な推測も行いましたが、現代のアトラスではその推測を確定した伝播線としては描きません。重要なのは、1911年の日本語研究ですでに葉限が比較対象になっていたことです。","sources":[["J-STAGE：南方熊楠 1911","https://www.jstage.jst.go.jp/article/ase1887/26/300/26_300_215/_article/-char/ja"],["南方熊楠顕彰館：同論文の草稿資料","https://www.minakata.org/documentslist/manuscriptnotes/"]]},{"year":1913,"yearLabel":"1913","lat":31.23,"lon":121.47,"major":false,"title":"中国語圏：孫毓修『玻璃鞋』と近代翻案","place":"上海／中国","type":"翻訳・伝播","kind":"transmission","status":"ペロー系シンデレラが中国の近代出版文化へ再流入","motif":"Perrault 系の翻訳・白話化・中国的翻案","text":"孫毓修は1913年前後に『玻璃鞋』などを通じて西洋の Cinderella を中国語読者へ紹介しました。同年には d’Aulnoy 系の『辛度利拉』も文言で翻案しています。つまり中国には9世紀の葉限がある一方、20世紀にはヨーロッパで固定化された「シンデレラ」が翻訳文化として再輸入されます。","research":"孫訳は逐語的な翻訳ではなく大胆な翻案で、周作人は1913年に因果関係を削ったため筋が崩れたと批判しました。「中国の古い類話」と「近代の西洋シンデレラ受容」は別の層として扱う必要があります。","sources":[["華東師範大学：灰姑娘故事是否起源于中国","https://www.ecnu.edu.cn/info/1095/3292.htm"],["文匯報：佩罗版灰姑娘的翻译","https://wenhui.whb.cn/third/jinri/201905/31/267147.html"]]},{"year":1914,"yearLabel":"1914–26","lat":35.68,"lon":139.74,"major":false,"title":"大正期：14の邦訳、グリム系がペロー系を上回る","place":"日本／児童書・雑誌・学校劇","type":"日本受容史・大正期","kind":"transmission","status":"野口（2024/25）の調査：大正期14話＝グリム系9・ペロー系5","motif":"『灰かぶりさん』『消炭さん』『かまど姫』『サンドリヨン』／学校劇への改変","text":"大正期には田中楳吉『グリムンの童話 灰かぶりさん』（1914）、中島孤島『グリム御伽噺 消炭さん』（1915）、楠山正雄『驢馬の皮 サンドリヨン』（1920）、『金の船』童話劇「かまど姫」（1922）、柏木治子『グリム童話 シンドレラ』（1924）などが続きます。野口の集計では14話のうちグリム系9・ペロー系5で、ペロー優勢だった明治期から比率が逆転します。","research":"大正期14話のうち12話では登場人物名が日本化され、特に学校で演じる児童劇は教育的意図により改変が大きかったと野口は分析します。一方、田中楳吉・利岡長亭・金田鬼一のグリム系、楠山正雄のペロー系には原文に忠実な訳も確認されています。","sources":[["京都府立大学：野口芳子『大正期を中心に』","https://kpu.repo.nii.ac.jp/records/2000229"],["大阪府立中央図書館：1922『かまど姫』","https://www.library.pref.osaka.jp/site/jibunkan/shinderera2.html"],["J-STAGE：舛屋仁奈 2003（翻訳年表を含む）","https://www.jstage.jst.go.jp/article/genderstudies1998/2003/6/2003_6_41/_article/-char/ja/"]]},{"year":1922,"yearLabel":"1922–23","lat":37.57,"lon":126.98,"major":false,"title":"朝鮮語圏：ペロー系とグリム系が相次いで翻訳","place":"京城／朝鮮","type":"翻訳・伝播","kind":"transmission","status":"二つの欧州標準版が近代出版でほぼ同時に導入","motif":"1922 ペロー系「산드룡의 유리구두」／1923 グリム系「재투성이王妃」","text":"1922年、方定煥（방정환）がペロー系「산드룡의 유리구두」を翻訳し、1923年には崔南善（최남선）がグリム系「재투성이王妃」を紹介しました。同じ「シンデレラ」でも、近代朝鮮語圏にはフランス枝とドイツ枝が異なる作品として接続されます。","research":"各国の「シンデレラ」は一つの原典の直訳史ではありません。どの版がいつ翻訳され、児童文学・教科書・映画で優勢になったかという受容史も別途必要です。","sources":[["KCI 2005：韓国近代翻訳童話の正典形成","https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART000992475"]]},{"year":1928,"yearLabel":"1928","lat":31.23,"lon":121.47,"major":false,"title":"戴望舒『鵝媽媽的故事』：ペロー全訳","place":"上海／中国","type":"翻訳・伝播","kind":"transmission","status":"ペロー童話集をまとまった形で中国語へ導入","motif":"Cendrillon → 「灰姑娘或小玻璃鞋」","text":"戴望舒は1928年、開明書店から『鵝媽媽的故事』を刊行し、ペローの8篇を中国語で紹介しました。序文ではフランス語原本からの忠実な翻訳を掲げつつ、物語末の韻文教訓は意図的に省いています。現在の中国語「灰姑娘」の標準像形成を見る上で重要です。","research":"翻訳は透明な複製ではありません。題名・語彙・対象読者・省略箇所の選択によって、同じペロー版でも新しい文化的作品になります。","sources":[["一次資料：戴望舒訳『鵝媽媽的故事』1928","https://zh.wikisource.org/zh-hans/%E9%B5%9D%E5%AA%BD%E5%AA%BD%E7%9A%84%E6%95%85%E4%BA%8B_%28%E6%88%B4%E6%9C%9B%E8%88%92%E8%AD%AF%29"]]},{"year":1935,"yearLabel":"1926–45","lat":35.68,"lon":139.75,"major":false,"title":"昭和前期：26翻訳と学校劇、戦時下の「勤労」シンデレラ","place":"日本／出版・学校劇","type":"日本受容史・昭和前期","kind":"transmission","status":"最新研究では1926–45年に26話＝グリム系13・ペロー系13","motif":"翻訳の多様化／学校児童劇／勤労倫理への大幅改変","text":"野口芳子の2026年公開研究は、昭和前期1926–45年に26の日本語シンデレラを確認し、グリム系13・ペロー系13と整理しています。最も大きな改変は学校で上演する児童劇に見られ、1943年の金田鬼一の脚本では、シンデレラが勤勉だから王子と結ばれ、王子自身も早朝から薪を割る勤労者として描かれるなど、原話から大きく教育劇化されました。","research":"同一訳者の金田鬼一が、忠実な完訳と強く改変した学校劇の両方を作っている点が重要です。「訳者の能力」ではなく、媒体・読者・教育政策によって同じ物語の改変度が大きく動くことを示す資料です。野口は1938年の児童読物改善方針との関連可能性を論じています。","sources":[["京都府立大学：野口芳子 2026『昭和Ⅰ期（1926-1945）』","https://kpu.repo.nii.ac.jp/records/2000458"]]},{"year":1950,"yearLabel":"1950","lat":34.18,"lon":-118.31,"major":true,"title":"Disney『Cinderella』：映像による世界的再標準化","place":"バーバンク／米国","type":"大衆文化で再固定化","kind":"popular","status":"ペロー系の視覚記号を20世紀の世界標準へ押し上げる","motif":"妖精の代母・カボチャの馬車・ガラスの靴・0時・ミュージカル","text":"1950年のDisney長編アニメーションは、ペロー系の要素を核に、音楽・キャラクター・映像デザインを通じて世界的な「Cinderella像」を再固定化しました。その結果、各地域に別の異本が存在していても、現代人が「シンデレラ」と聞いて最初に想起する仕様が大きく収斂します。","research":"これは「最終形」ではなく、強力なメディア標準化の一層です。古い地域異本をDisneyとの差分としてだけ評価すると、伝承史を逆向きに読んでしまいます。","sources":[["Disney：Cinderella (1950)","https://movies.disney.com/cinderella-1950"],["比較研究：物語の再形成","https://www.nature.com/articles/s41599-023-02375-6"]]},{"year":1950,"yearLabel":"1948–57","lat":35.68,"lon":139.76,"major":false,"title":"戦後児童出版：『世界名作』として大量に再流通","place":"東京ほか／絵本・童話全集・学年向け出版","type":"日本受容史・戦後児童書","kind":"popular","status":"映画公開前後に、出版社ごとの再話・絵本・児童劇が連続刊行","motif":"『シンデレラ姫』という題名の定着／絵で見る「お姫さま」像の拡大","text":"戦後すぐから『シンデレラ姫』は児童書市場へ急速に戻ります。1948年『昔の名作 シンデレラ姫』、1949年『シンデレラ姫』（講談社の絵本）、1950年浜田広介編著『世界名作童話全集7 シンデレラ姫』、1952年カバヤ児童文庫、1954年壺井栄による『幼年世界名作全集9』、1957年『小学館の幼年絵本』ディズニー版など、文字中心の翻訳から絵・全集・付録へ媒体が広がります。","research":"この時期をDisneyだけで説明しないことが重要です。Disney映画の日本公開は1952年ですが、それ以前の戦後児童出版にもシンデレラはすでに存在します。その後Disney図像が強い一枝として加わります。","sources":[["J-STAGE：舛屋仁奈 2003 翻訳・出版年表","https://www.jstage.jst.go.jp/article/genderstudies1998/2003/6/2003_6_41/_article/-char/ja/"],["大阪府立中央図書館：戦後の日本版絵本群","https://www.library.pref.osaka.jp/site/jibunkan/shinderera2.html"],["NDL：1954 壺井栄『シンデレラ姫』","https://ndlsearch.ndl.go.jp/books/R100000002-I000000828136"]]},{"year":1952,"yearLabel":"1952 日本公開","lat":35.66,"lon":139.74,"major":false,"title":"Disney『シンデレラ』日本公開：映像版が日本の標準像に合流","place":"日本／劇場公開","type":"日本受容史・映画","kind":"popular","status":"1950年米国公開作品が1952年に日本公開","motif":"青い舞踏会ドレス・動物キャラクター・音楽・映像による再標準化","text":"国立映画アーカイブの映画史資料ではDisney『シンデレラ』（1950）は日本で1952年公開。日本にはすでに明治以来の翻訳・教科書翻案・戦後絵本が存在していたため、これは「シンデレラ初上陸」ではなく、映像版が既存の受容史へ大きく合流した出来事です。1950年代以降の日本の絵本・少女文化では、Disney系の図像と非Disney系の再話が並存します。","research":"江良智美（2017）は1952年公開時の服飾流行や若い女性への影響を検討しています。ただし、映画公開と同時代のファッション変化を単純な一方向の因果に還元せず、戦後の米国文化、繊維産業、雑誌・広告など複数の媒体環境と合わせて読む必要があります。","sources":[["国立映画アーカイブ：『シンデレラ』1950／日本公開1952","https://www.nfaj.go.jp/exhibition/animatedfilms2025/"],["亜細亜大学：江良智美 2017","https://asia-u.repo.nii.ac.jp/records/24611"]]},{"year":1953,"yearLabel":"1953","lat":35.68,"lon":139.75,"major":false,"title":"Disney絵本と「日本シンデレラ姫コンテスト」：物語名が社会語彙へ","place":"日本／出版・映画宣伝文化","type":"日本受容史・メディアミックス","kind":"popular","status":"映画の翌年、Disney系絵本が刊行され「シンデレラ姫」の語が人物選抜にも使われる","motif":"絵本化・スター発掘・「普通の少女が選ばれる」というシンデレラ語彙","text":"舛屋の資料では1953年に『ウォルト・ディズニーのシンデレラ姫』（国際出版社）と、村岡花子文・Disney Studio絵『シンデレラ姫（世界の絵本・大型版19）』（新潮社）が刊行されています。同年3月には「日本シンデレラ姫コンテスト」が行われ、のちの俳優・丘さとみ（菱田美恵子）がミス・シンデレラに選ばれました。物語名が絵本のタイトルを越え、「選ばれて境遇が変わる女性」を表す大衆語彙として使われる段階です。","research":"コンテストは物語の翻訳ではありませんが、日本で「シンデレラ」という固有名が比喩・商品・スターシステムへ拡張したことを示す文化史資料として置きます。","sources":[["J-STAGE：舛屋仁奈 2003","https://www.jstage.jst.go.jp/article/genderstudies1998/2003/6/2003_6_41/_article/-char/ja/"],["東映70周年資料：1953 日本シンデレラ姫コンテスト","https://note.com/toei70th/n/n4b3be1275146"]]},{"year":1959,"yearLabel":"1959","lat":35.68,"lon":139.76,"major":false,"title":"少女漫画へ：木村しげる『シンデレラ姫』","place":"東京／集英社少女漫画文庫","type":"日本受容史・漫画","kind":"popular","status":"国立国会図書館で確認できる早い単行本級の少女漫画化の一例","motif":"世界名作 → 少女漫画文庫という日本独自の読書メディアへ","text":"1959（昭和34）年、集英社「少女漫画文庫」第6巻として木村しげる著『シンデレラ姫』が刊行されました。同シリーズには『若草物語』『小公女』『白雪姫』『かぐや姫』なども並び、世界名作や古典を「少女漫画」の棚へ組み込む出版設計の中にシンデレラが置かれています。","research":"現時点では「日本最初の漫画版」とは断定しません。雑誌の短編・付録・絵物語など、単行本以前の境界的形式があり得るためです。ここではNDL書誌で確実に確認できる1959年の少女漫画単行本を節点にします。","sources":[["国立国会図書館：集英社少女漫画文庫『シンデレラ姫』","https://ndlsearch.ndl.go.jp/search?cs=bib&from=0&q-title=%22%E9%9B%86%E8%8B%B1%E7%A4%BE%E5%B0%91%E5%A5%B3%E6%BC%AB%E7%94%BB%E6%96%87%E5%BA%AB%22&size=20"]]},{"year":1964,"yearLabel":"1964","lat":37.45,"lon":138.85,"major":false,"title":"水沢謙一『越後のシンデレラ』：日本の口承類話を大量採集","place":"新潟／越後","type":"日本受容史・民話採集","kind":"research","status":"『ぬかふく、こめふく』など日本の在地類話をまとめた民俗学的節点","motif":"糠福・米福／継母・姉妹／芝居・婚姻／下駄・足袋など日本の履物文化","text":"民俗学者・水沢謙一は1964年に『越後のシンデレラ―ぬかふく、こめふく』を刊行しました。比較研究では同書に多数の越後のシンデレラ型類話が集められ、日本の履物文化では「特定の一人にだけ合う靴」が成立しにくいため、欧州型の靴合わせとは異なる展開が多いことも論じられています。これは「翻訳された西洋シンデレラ」だけでは日本のシンデレラ史を説明できないことを示します。","research":"近代翻訳のモチーフが在地口承へ混入した可能性と、翻訳以前からの継子譚・糠福米福型の存在を分けて考える必要があります。採集年代が新しいからといって物語自体が近代に成立したとは限らず、逆に採集された形をそのまま古代まで遡らせることもできません。","sources":[["CiNii Books：水沢謙一『越後のシンデレラ』1964","https://ci.nii.ac.jp/author/DA00953008?l=ja"],["比較研究『シンデレラ三態』","https://n-seiryo.repo.nii.ac.jp/record/1831/files/09_02_0001.pdf"]]},{"year":1972,"yearLabel":"1972","lat":35.68,"lon":139.75,"major":false,"title":"学年誌付録「名作きせかえ シンデレラひめ」：読む物語から遊ぶ物語へ","place":"東京／小学館『小学一年生』","type":"日本受容史・児童雑誌","kind":"popular","status":"学年誌付録として着せ替え遊びに組み込まれた例","motif":"名作童話 × 着せ替え × ドレス／変身の視覚遊戯化","text":"小学館『小学一年生』の1972年付録一覧には「名作きせかえ シンデレラひめ」が記録されています。シンデレラの中心モチーフである衣装変身・ドレスが、読む／聞く物語から、子どもが手で組み替える「着せ替え」へ移植された例です。戦後日本で物語が絵本・漫画だけでなく、学年誌の付録文化にまで浸透していたことが見えます。","research":"これは物語本文の翻案史というより、キャラクターと変身モチーフのメディア展開史です。そのため翻訳イベントとは別に大衆文化として表示します。","sources":[["小学館『小学一年生』100周年：1972年付録","https://sho1-100th.shogakukan.co.jp/contents/cover-collection/detail/48"]]},{"year":1974,"yearLabel":"1974","lat":60.17,"lon":24.94,"major":false,"title":"丁乃通：China / Indo-China のAT 510Aを体系比較","place":"ヘルシンキ刊行／対象：中国・ベトナム","type":"研究史","kind":"research","status":"東アジア・東南アジアの異本を歴史地理的に比較した基礎研究","motif":"21篇の中国異本を含む地域比較・伝播仮説の検討","text":"Nai-tung Ting（丁乃通）の The Cinderella Cycle in China and Indo-China（FFC 213）は、中国とベトナムを中心にAT 510Aの異本を整理し、葉限を地域伝承群の中へ置き直しました。葉限の「中国発祥」を単純に宣言する研究ではなく、各民族・地域の異文関係を比較する仕事です。","research":"2025年の中国語研究史レビューによれば、丁乃通はベトナムまたは当時の南部広西に住む越系集団を可能性として推測し、壮族との強い関連も論じました。一方で民族複合・漢族民俗要素も考慮しており、単一民族起源の断定とは異なります。","sources":[["NDL：The Cinderella Cycle in China and Indo-China","https://ndlsearch.ndl.go.jp/books/R100000136-I1971993809712466694"],["中国語研究史レビュー 2025","https://clajc.ouc.edu.cn/ctwhyjzx/2025/0426/c16717a499073/pagem.htm"]]},{"year":1993,"yearLabel":"1993研究刊行","lat":15.37,"lon":44.19,"major":false,"title":"イエメン系ユダヤ伝承『Ḥaninat-Allah』：510A＋480などの複合","place":"イエメン系ユダヤ人の口承／研究刊行：イスラエル","type":"地域異本・研究","kind":"research","status":"イエメン系口承として記録された Cinderella 複合型。1993年にTamar Alexanderが詳細比較","motif":"迫害される娘・死んだ母の援助・善悪姉妹の対比・複数の国際民話型の混合","text":"Tamar Alexander は、イエメン系ユダヤ人の語り手から記録した『Ḥaninat-Allah』を Cinderella 型として詳細に分析しました。この異本は基本的な AT 510 系の流れを保ちながら、『善い娘／悪い娘』AT 480 など別の型を組み込む複合形になっています。口演の状況や聞き手の反応まで記録されており、『同じ筋を別文化の衣装に着替えただけ』ではなく、民族・家庭・宗教的文脈の中で物語が再構成される例として重要です。","research":"1993は物語の起源年代ではなく研究刊行年です。Alexander はイエメンの複数異本、モロッコやセファルディ系の類話とも比較しており、中東・北アフリカの Cinderella を一つの『アラブ版』へまとめることの危険も見えます。","sources":[["Ben-Gurion University：Tamar Alexander 1993 書誌","https://cris.bgu.ac.il/en/publications/%D7%97%D7%A0%D7%99%D7%A0%D7%AA-%D7%90%D7%9C%D7%9C%D7%94-%D7%A0%D7%95%D7%A1%D7%97-%D7%99%D7%94%D7%95%D7%93%D7%99-%D7%AA%D7%99%D7%9E%D7%A0%D7%99-%D7%A9%D7%9C-%D7%A1%D7%99%D7%A4%D7%95%D7%A8-%D7%A1%D7%99%D7%A0%D7%93%D7%A8%D7%9C%D7%94-%D7%95%D7%9E%D7%A7%D7%91%D7%99%D7%9C%D7%95%D7%AA%D7%99%D7%95/"],["論文PDF：Pe'amim 53","https://files.ybz.org.il/periodicals/peamim/53/Article_53.6.pdf"]]},{"year":1996,"yearLabel":"1996","lat":35.7,"lon":139.6,"major":false,"title":"TVアニメ『シンデレラ物語』：26話へ長編化","place":"日本／タツノコプロ","type":"日本受容史・テレビアニメ","kind":"popular","status":"1996年4–10月、30分×全26話","motif":"短い昔話 → 連続テレビシリーズ／恋愛と日常エピソードの拡張","text":"タツノコプロ『シンデレラ物語』は1996年4月から10月まで全26話で放映されました。短い昔話を半年のテレビシリーズへ拡張し、魔女パレットなどを加えながら、継母・義姉妹との生活や恋愛過程を連続ドラマとして描きます。日本でシンデレラが「世界名作の一話」から、独自に膨らませられるアニメシリーズ素材にもなった節点です。","research":"Disney映画の単純なテレビ化ではなく、タツノコプロによる別の長編再話として区別します。","sources":[["タツノコプロ公式：『シンデレラ物語』","https://tatsunoko.co.jp/works/cinderella/"]]},{"year":2002,"yearLabel":"2002研究刊行","lat":31.9,"lon":35.2,"major":false,"title":"Arabic Cinderella：アラビア語圏には510Aだけでなく510Bも存在","place":"アラビア語圏／Ibrahim Muhawi の比較研究","type":"研究史・地域比較","kind":"research","status":"アラビア語伝承を AaTh 510A / 510B として欧州異本と比較した研究","motif":"継娘迫害・父娘葛藤／近親婚回避・変装・身体と婚姻の管理・認証","text":"Ibrahim Muhawi は2002年、アラビア語圏とヨーロッパの Cinderella を AaTh 510A と510Bの双方から比較しました。ここで重要なのは、中東に『ペローと同じ靴の話』が一つあるというより、迫害される娘・父からの逃走・変装・婚姻認証などを組み替えた複数の Cinderella 系統が存在することです。特に510Bでは父の娘への婚姻欲求が逃走の契機となり、変装が物語構造の中心になります。","research":"Muhawi の論文はジェンダー表象を主題とする解釈研究です。したがって、アラビア語版の年代や発祥地を確定する資料としてではなく、『アラビア語口承にも国際分類上の510A/510B群が十分に存在し、文化的に独自の変形をする』ことを示す研究として置きます。","sources":[["Ibrahim Muhawi 2002, Gender and Disguise in the Arabic Cinderella, Fabula 42(3–4)","https://www.researchgate.net/publication/249927509_Gender_and_Disguise_in_the_Arabic_Cinderella_A_Study_in_the_Cultural_Dynamics_of_Representation"]]},{"year":2004,"yearLabel":"2004","lat":60.17,"lon":24.94,"major":false,"title":"ATU分類：Uther が国際民話型索引を改訂","place":"ヘルシンキ刊行／国際分類","type":"研究史","kind":"research","status":"Aarne–Thompson をATUへ改訂。Cinderella 群の比較座標を提供","motif":"ATU 510A Cinderella / 510B / 511 などの型分類","text":"Hans-Jörg Uther の The Types of International Folktales が刊行され、Aarne–Thompson 系の分類がATUとして改訂されました。ATU 510A は、迫害されるヒロイン、超自然的援助、晴れの場への出現、履物などによる認証と婚姻という「物語型」を比較するための道具です。","research":"ATU番号は「起源証明書」でも「遺伝子系統樹」でもありません。同じ510Aでも細部は大きく違い、別型との混合もあります。分類は比較の入口です。","sources":[["NDL：Uther, The Types of International Folktales (2004)","https://ndlsearch.ndl.go.jp/books/R100000002-I000009278252"]]},{"year":2007,"yearLabel":"2007研究刊行","lat":32.43,"lon":53.69,"major":true,"title":"イランの Cinderella 群：Mah Pishani・Fateme Khanom・片靴の物語","place":"イラン各地の口承／比較研究","type":"地域異本・研究","kind":"research","status":"イラン口承の Cinderella 型を複数異本から比較した研究","motif":"実母殺し・母の牛／魚への変身・額の月・片方の靴・認証・婚姻","text":"2007年の比較研究は、イランの Cinderella 型として Fateme Khanom、Mah Pishani（月の額／ماه پیشونی）、『魚売りの娘と片方の靴』という三系統を分析しています。共通構造を『不在 → 難題 → 解決 → 認証 → 婚姻』と整理しつつ、実母殺し、母の牛への変身、額に現れる月、片靴など、ペローやグリムとは違う独自モチーフを指摘します。母が魚として戻り娘を助ける異本も研究されています。","research":"この研究はイランの異本をAT 510Aとの比較で扱いますが、各物語の『成立年』を2007年とするものではありません。2007は研究刊行年です。ペルシア語圏では Mah Pishani 自体に複数の再話があり、ATU 480『善い娘／悪い娘』との混合も指摘されるため、一つの固定的な『イラン版シンデレラ』へまとめない方がよいです。","sources":[["Kim Young-Youn 2007, A Special Character of Cinderella Type in Iranian Folk Tales","https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001040803"],["Persian tales on the couch：母が魚として戻る Iranian Cinderella の分析","https://www.researchgate.net/publication/323988105_Persian_tales_on_the_couch_Notes_on_folktales_as_the_mirror_of_the_contemporary_cultural_struggles_with_gender_and_sexuality"],["ペルシア語圏資料検索：ماه پیشونی と『灰かぶり』比較研究の書誌","https://elmnet.ir/author/%D8%B9%D9%81%D8%AA-%D9%86%D8%AC%D8%A7%D8%B1%D9%86%D9%88%D8%A8%D8%B1%DB%8C"]]},{"year":2016,"yearLabel":"2016研究","lat":37.98,"lon":23.73,"major":false,"title":"ギリシャ Cinderella 254異本：『周辺』ではなく巨大な独自コーパス","place":"ギリシャ全域／Greek Magic Folktale Catalogue","type":"研究史・地域コーパス","kind":"research","status":"ギリシャ ATU 510A は254異本がカタログ化される大規模伝承群","motif":"糸紡ぎ・母娘の競争・母殺し／食人・母の骨・墓／炉辺の援助・履物試験","text":"Marianthi Kaplanoglou は2016年、Greek Cinderella の254異本を基礎に、糸紡ぎと母娘関係、母殺し・食人の明示／暗示を分析しました。ギリシャの510Aは、ペローやグリムから派生した珍しい一異本ではなく、非常に厚い地域コーパスです。『Σταχτοπούτα』のほか『Αθωκουτάλα』『Σταχτιερού』など複数の地域名・構成が記録されています。","research":"ギリシャ群の主部には安定した構造があり、その一部モチーフは古代資料とも比較できます。しかし、古代のRhodopisから近代ギリシャ510Aへ一直線の連続性が証明されているわけではありません。『古代ギリシャに靴モチーフがある』ことと『近代ギリシャの254異本がその直系』であることは分けて表示します。","sources":[["Kaplanoglou 2016, Spinning and Cannibalism in the Greek ‘Cinderella’","https://www.tandfonline.com/doi/abs/10.1080/0015587X.2015.1093821"],["University of Athens repository","https://pergamos.lib.uoa.gr/item/uoadl%3A2994034"],["Greek Folktale Catalogue AT/ATU 510A","https://pergamos.lib.uoa.gr/uoa/dl/object/2957805/file.pdf"]]},{"year":2023,"yearLabel":"2023","lat":54.77,"lon":-1.58,"major":false,"title":"計算民俗学：266異本・237変異点を系統解析","place":"国際共同研究／Fabula","type":"研究史","kind":"research","status":"「一本の家系図」をデータで検証する現代的研究","motif":"266 versions × 237 plot variation sites → phylomemetic analysis","text":"Sakamoto Martini・Kendal・Tehrani は、Cinderella Cycle（ATU 510–511）の266異本について237のプロット変異点を符号化し、系統解析的手法を適用しました。結果は、いくつかの物語型にまとまりが見える一方、その支持の強さは分析法により異なるというものです。","research":"この研究は「世界のシンデレラは一本の木で完全に復元できる」とは結論していません。継承・革新・混合・地理言語的拡散を扱うには有力ですが、民話の水平伝播は生物の系統以上に複雑です。","sources":[["Fabula 2023：Cinderella’s Family Tree","https://www.degruyter.com/document/doi/10.1515/fabula-2023-0002/html"]]},{"year":2025,"yearLabel":"2025","lat":36.07,"lon":120.38,"major":true,"title":"中国語圏研究史：葉限研究を「起源論」から「語境」へ","place":"青島／中国海洋大学","type":"研究史","kind":"research","status":"英語圏と中国語圏の研究パラダイム差を明示的に整理","motif":"歴史地理的溯源 ↔ 叙事比較・地域文化 ↔ 文脈／象徴・計算民俗学","text":"郭倩倩・李扬（2025）は葉限研究史を整理し、英語圏では世界のCinderella体系に置いた歴史地理的な起源・伝播研究、中国語圏では異文比較と地域・民族文化の解釈が強かったと論じます。21世紀には双方で、物語を固定テキストではなく語られた文脈・象徴・学術交流の中で扱う方向が強まっています。","research":"「葉限＝中国起源」「葉限＝西方起源」のどちらかを地図上の一本線で確定するより、誰がどの資料・方法・文化的枠組みからその仮説を立てたのかを可視化する方が研究史に忠実です。このアトラスも伝播線を断定表示しません。","sources":[["郭倩倩・李扬 2025「英汉互鉴中的叶限故事研究范式转向与方法新径」","https://clajc.ouc.edu.cn/ctwhyjzx/2025/0426/c16717a499073/pagem.htm"]]},{"year":2026,"yearLabel":"2023–26研究","lat":35.02,"lon":135.76,"major":false,"title":"日本受容史の数量化：明治12・大正14・昭和前期26話を再整理","place":"京都／京都府立大学","type":"研究史・日本受容","kind":"research","status":"野口芳子の連続研究により、時代別・原典別・媒体別の変化が詳細に比較可能に","motif":"明治：ペロー優勢 → 大正：グリム優勢 → 昭和前期：13対13／媒体で改変度が変動","text":"2023–2026年の野口芳子による連続研究は、日本のシンデレラ受容を「有名な数冊」ではなく、確認できる翻訳群として比較します。明治期12話（ペロー9・グリム3）、大正期14話（グリム9・ペロー5）、昭和前期1926–45年26話（グリム13・ペロー13）。名称の日本化、直接訳／重訳、雑誌・書籍・教科書・学校劇といった媒体差まで追うことで、日本で何が「シンデレラらしさ」として残され、何が置き換えられたかを年代別に観察できます。","research":"この数は現在確認された資料群に基づく研究上の集計で、今後新資料が見つかれば増減し得ます。アトラスでは、この研究を日本枝の主要な二次資料インデックスとして使います。","sources":[["明治期研究（2023）","https://kpu.repo.nii.ac.jp/records/2000019"],["大正期研究（2024/25）","https://kpu.repo.nii.ac.jp/records/2000229"],["昭和Ⅰ期研究（2025/26）","https://kpu.repo.nii.ac.jp/records/2000458"]]}];
+const TIMELINE_MAX=2026;
+const KIND_COLOR={motif:'#cabaff',record:'#a9f0d1',parallel:'#8fd8ff',literary:'#f2d78d',transmission:'#78e2d5',research:'#bfc7ff',popular:'#ffb6d0'};
+const WORLD_MASK='https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-dark.jpg';
+
+const glCanvas=document.getElementById('globeGL');
+const overlay=document.getElementById('globeOverlay');
+const overlayCtx=overlay.getContext('2d');
+const panel=document.getElementById('globePanel');
+const errorBox=document.getElementById('globeError');
+const timeline=document.getElementById('timeline');
+const autoBtn=document.getElementById('autoBtn');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const labels=document.getElementById('timelineLabels');
+const eventTypeEl=document.getElementById('eventType'),eventYearEl=document.getElementById('eventYear'),eventTitleEl=document.getElementById('eventTitle'),eventPlaceEl=document.getElementById('eventPlace'),eventTextEl=document.getElementById('eventText'),eventStatusEl=document.getElementById('eventStatus'),eventMotifEl=document.getElementById('eventMotif'),eventResearchEl=document.getElementById('eventResearch'),eventSourceEl=document.getElementById('eventSource'),timelineYearEl=document.getElementById('timelineYear');
+const gl=glCanvas.getContext('webgl2',{alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:false});
+let glReady=false;
+let dpr=Math.min(devicePixelRatio||1,2);
+let viewLon=108.32, viewLat=10.0, zoom=1.0;
+let targetLon=viewLon,targetLat=viewLat,targetZoom=zoom;
+let dragging=false,lastX=0,lastY=0,dragMoved=0;
+let velocityLon=0,velocityLat=0,lastMoveTime=0;
+let selectedIndex=1,hoverIndex=-1,auto=false,autoSegment=1,autoStartTime=0,lastTs=0,lastUserAction=performance.now();
+let markerScreen=[];
+let pinchDistance=0,pinchZoom=1;
+const activePointers=new Map();
+
+function showGlobeError(msg){errorBox.textContent='地球儀を初期化できませんでした。\n'+msg;errorBox.classList.add('show');}
+function compileShader(type,source){const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader)||'shader compile error');return shader;}
+function createProgram(vsSource,fsSource){const p=gl.createProgram();gl.attachShader(p,compileShader(gl.VERTEX_SHADER,vsSource));gl.attachShader(p,compileShader(gl.FRAGMENT_SHADER,fsSource));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p)||'program link error');return p;}
+
+let program=null,vao=null,tex=null,loc={};
+if(!gl){showGlobeError('このブラウザでは WebGL2 が利用できません。')}else{
+try{
+const vs=`#version 300 es
+precision highp float;
+layout(location=0) in vec2 a_pos;
+out vec2 v_uv;
+void main(){v_uv=a_pos*0.5+0.5;gl_Position=vec4(a_pos,0.0,1.0);}`;
+const fs=`#version 300 es
+precision highp float;
+uniform vec2 u_resolution;
+uniform vec2 u_center;
+uniform float u_radius;
+uniform float u_lon;
+uniform float u_lat;
+uniform sampler2D u_world;
+out vec4 outColor;
+const float PI=3.141592653589793;
+float gridLine(float value,float stepSize,float halfWidth){
+  float d=abs(mod(value+0.5*stepSize,stepSize)-0.5*stepSize);
+  return 1.0-smoothstep(halfWidth,halfWidth*1.65,d);
+}
+void main(){
+  vec2 q=(gl_FragCoord.xy-u_center)/u_radius;
+  float rr=dot(q,q);
+  if(rr>1.18) discard;
+  if(rr>1.0){
+    float halo=(1.0-smoothstep(1.0,1.18,rr))*0.23;
+    outColor=vec4(0.43,0.77,1.0,halo);return;
+  }
+  float z=sqrt(max(0.0,1.0-rr));
+  vec3 nView=vec3(q.x,q.y,z);
+  float cp=cos(u_lat),sp=sin(u_lat),cl=cos(u_lon),sl=sin(u_lon);
+  vec3 p1=vec3(nView.x,cp*nView.y+sp*nView.z,-sp*nView.y+cp*nView.z);
+  vec3 nWorld=vec3(cl*p1.x+sl*p1.z,p1.y,-sl*p1.x+cl*p1.z);
+  float lon=atan(nWorld.x,nWorld.z);
+  float lat=asin(clamp(nWorld.y,-1.0,1.0));
+  vec2 uv=vec2(lon/(2.0*PI)+0.5,lat/PI+0.5);
+  vec3 mapColor=texture(u_world,uv).rgb;
+  float mapLuma=dot(mapColor,vec3(0.2126,0.7152,0.0722));
+  float land=smoothstep(0.055,0.24,mapLuma);
+  vec3 ocean=vec3(0.018,0.070,0.145);
+  vec3 landCol=mix(vec3(0.105,0.205,0.245),vec3(0.245,0.355,0.385),clamp(mapLuma*2.2,0.0,1.0));
+  vec3 base=mix(ocean,landCol,land);
+  vec3 lightDir=normalize(vec3(-0.48,0.62,0.76));
+  float diffuse=0.52+0.48*max(dot(nView,lightDir),0.0);
+  float twilight=0.80+0.20*z;
+  base*=diffuse*twilight;
+  float spec=pow(max(dot(reflect(-lightDir,nView),vec3(0.0,0.0,1.0)),0.0),54.0)*(1.0-land)*0.36;
+  float fresnel=pow(1.0-z,2.65);
+  float cosLat=max(cos(lat),0.20);
+  float gMinor=max(gridLine(lat,PI/12.0,0.0022),gridLine(lon,PI/12.0,0.0022/cosLat));
+  float gMajor=max(gridLine(lat,PI/6.0,0.0031),gridLine(lon,PI/6.0,0.0031/cosLat));
+  vec3 gridCol=vec3(0.46,0.70,0.86);
+  base=mix(base,gridCol,0.055*gMinor+0.085*gMajor);
+  base+=vec3(0.50,0.80,1.0)*fresnel*0.18+vec3(spec);
+  float edge=1.0-smoothstep(0.992,1.0,rr);
+  outColor=vec4(base,edge);
+}`;
+program=createProgram(vs,fs);
+vao=gl.createVertexArray();gl.bindVertexArray(vao);
+const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+loc.resolution=gl.getUniformLocation(program,'u_resolution');loc.center=gl.getUniformLocation(program,'u_center');loc.radius=gl.getUniformLocation(program,'u_radius');loc.lon=gl.getUniformLocation(program,'u_lon');loc.lat=gl.getUniformLocation(program,'u_lat');loc.world=gl.getUniformLocation(program,'u_world');
+tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+const img=new Image();img.crossOrigin='anonymous';img.onload=()=>{gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,img);gl.generateMipmap(gl.TEXTURE_2D);glReady=true;};img.onerror=()=>showGlobeError('地理テクスチャの読み込みに失敗しました。');img.src=WORLD_MASK;
+}catch(err){showGlobeError(String(err.message||err));}
+}
+
+function deg(v){return v*Math.PI/180;}
+function wrapLon(v){return ((v+540)%360)-180;}
+function shortestLonDelta(a,b){return ((b-a+540)%360)-180;}
+function lerpAngle(a,b,t){return wrapLon(a+shortestLonDelta(a,b)*t);}
+function easeInOut(t){return t*t*(3-2*t);}
+function isCompactView(){return window.matchMedia('(max-width:850px)').matches;}
+function currentGeometry(){const r=panel.getBoundingClientRect();const compact=isCompactView();const base=Math.min(r.width*(compact?0.47:0.44),r.height*(compact?0.445:0.43));return {w:r.width,h:r.height,cx:r.width*(compact?0.50:0.485),cy:r.height*(compact?0.485:0.49),radius:Math.max(compact?86:92,base)*zoom};}
+function viewPoint(latDeg,lonDeg){
+  const lat=deg(latDeg),lon=deg(lonDeg),cLat=Math.cos(lat),sLat=Math.sin(lat),cLon=Math.cos(lon),sLon=Math.sin(lon);
+  const x=cLat*sLon,y=sLat,z=cLat*cLon;
+  const a=deg(-viewLon),ca=Math.cos(a),sa=Math.sin(a);const x1=ca*x+sa*z,z1=-sa*x+ca*z;
+  const b=deg(viewLat),cb=Math.cos(b),sb=Math.sin(b);return {x:x1,y:cb*y-sb*z1,z:sb*y+cb*z1};
+}
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,2);const r=panel.getBoundingClientRect();
+  for(const c of [glCanvas,overlay]){const W=Math.max(1,Math.round(r.width*dpr)),H=Math.max(1,Math.round(r.height*dpr));if(c.width!==W||c.height!==H){c.width=W;c.height=H;}}
+  overlayCtx.setTransform(dpr,0,0,dpr,0,0);if(gl)gl.viewport(0,0,glCanvas.width,glCanvas.height);
+}
+new ResizeObserver(resize).observe(panel);resize();
+function renderGlobe(){if(!glReady)return;const g=currentGeometry();gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(program);gl.bindVertexArray(vao);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(loc.world,0);gl.uniform2f(loc.resolution,glCanvas.width,glCanvas.height);gl.uniform2f(loc.center,g.cx*dpr,(g.h-g.cy)*dpr);gl.uniform1f(loc.radius,g.radius*dpr);gl.uniform1f(loc.lon,deg(viewLon));gl.uniform1f(loc.lat,deg(viewLat));gl.drawArrays(gl.TRIANGLES,0,3);}
+function rgba(hex,a){const n=parseInt(hex.slice(1),16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;}
+function renderOverlay(ts){
+  const g=currentGeometry();const c=overlayCtx;c.clearRect(0,0,g.w,g.h);markerScreen=[];const currentYear=Number(timeline.value);
+  EVENTS.forEach((ev,i)=>{const p=viewPoint(ev.lat,ev.lon);const sx=g.cx+p.x*g.radius,sy=g.cy-p.y*g.radius;const visible=p.z>0.015;markerScreen[i]={x:sx,y:sy,z:p.z,visible};if(!visible)return;
+    const active=ev.year<=currentYear,selected=i===selectedIndex,hover=i===hoverIndex,col=KIND_COLOR[ev.kind],pulse=(Math.sin(ts*.004+i*.8)+1)*.5;
+    c.save();c.globalAlpha=active?1:.18;
+    if(selected||hover){c.fillStyle=rgba(col,.08+.06*pulse);c.beginPath();c.arc(sx,sy,13+7*pulse,0,Math.PI*2);c.fill();c.strokeStyle=rgba(col,.45);c.lineWidth=1;c.beginPath();c.arc(sx,sy,9+2*pulse,0,Math.PI*2);c.stroke();}
+    const compact=isCompactView();const markerR=selected?(compact?7.2:5.8):(compact?5.4:4.2);c.shadowColor=col;c.shadowBlur=active?(compact?18:16):0;c.fillStyle=col;c.beginPath();c.arc(sx,sy,markerR,0,Math.PI*2);c.fill();c.shadowBlur=0;
+    c.fillStyle='rgba(247,251,255,.92)';c.beginPath();c.arc(sx-1.2,sy-1.3,selected?(compact?2.1:1.8):(compact?1.4:1.1),0,Math.PI*2);c.fill();c.restore();
+    if(selected&&(!compact||g.w>520)){const side=sx<g.cx?1:-1;const tx=sx+side*(compact?18:16),ty=sy-13;c.font=`600 ${compact?11:10}px ui-sans-serif,system-ui,sans-serif`;c.textAlign=side>0?'left':'right';c.textBaseline='middle';const label=ev.yearLabel+' · '+ev.title;c.lineWidth=4;c.strokeStyle='rgba(3,11,23,.82)';c.strokeText(label,tx,ty);c.fillStyle='rgba(238,248,255,.95)';c.fillText(label,tx,ty);}
+  });
+}
+function updateCamera(dt){
+  if(!dragging&&!auto){
+    if(Math.abs(velocityLon)>0.001||Math.abs(velocityLat)>0.001){viewLon=wrapLon(viewLon+velocityLon*dt);viewLat=Math.max(-80,Math.min(80,viewLat+velocityLat*dt));const decay=Math.pow(.003,dt/1000);velocityLon*=decay;velocityLat*=decay;targetLon=viewLon;targetLat=viewLat;}
+    else{const dLon=shortestLonDelta(viewLon,targetLon);viewLon=wrapLon(viewLon+dLon*Math.min(1,dt*.006));viewLat+=(targetLat-viewLat)*Math.min(1,dt*.006);zoom+=(targetZoom-zoom)*Math.min(1,dt*.007);if(performance.now()-lastUserAction>5000&&Math.abs(dLon)<.05&&Math.abs(viewLat-targetLat)<.05){viewLon=wrapLon(viewLon+dt*.0016);targetLon=viewLon;}}
+  }
+}
+function draw(ts){const dt=Math.min(40,lastTs?ts-lastTs:16);lastTs=ts;updateAuto(ts);updateCamera(dt);renderGlobe();renderOverlay(ts);requestAnimationFrame(draw);}
+function showEvent(index,setYear=true,focus=true){selectedIndex=Math.max(0,Math.min(EVENTS.length-1,index));const ev=EVENTS[selectedIndex];if(setYear)timeline.value=String(ev.year);eventTypeEl.textContent=ev.type;eventTypeEl.style.color=KIND_COLOR[ev.kind]||'#d6eafb';eventYearEl.textContent=ev.yearLabel;eventTitleEl.textContent=ev.title;eventPlaceEl.textContent=ev.place;eventTextEl.textContent=ev.text;eventStatusEl.textContent=ev.status;eventMotifEl.textContent=ev.motif;eventResearchEl.textContent=ev.research||'';eventSourceEl.replaceChildren();for(const src of (ev.sources||[])){const a=document.createElement('a');a.href=src[1];a.target='_blank';a.rel='noopener';a.textContent=src[0];eventSourceEl.appendChild(a);}if(setYear)timelineYearEl.textContent=ev.yearLabel;if(focus){targetLon=ev.lon;targetLat=Math.max(-52,Math.min(52,ev.lat*.60));targetZoom=1.06;velocityLon=velocityLat=0;}}
+function nearestEventByYear(year){let best=0,dist=Infinity;EVENTS.forEach((ev,i)=>{const d=Math.abs(ev.year-year);if(d<dist){dist=d;best=i;}});return best;}
+function stopAuto(){auto=false;autoBtn.classList.remove('active');autoBtn.textContent='AUTO ▶';lastUserAction=performance.now();}
+timeline.addEventListener('input',()=>{stopAuto();const y=Number(timeline.value);timelineYearEl.textContent=y<100?`${y}年ごろ`:String(y);const i=nearestEventByYear(y);if(i!==selectedIndex)showEvent(i,false,false);});
+prevBtn.addEventListener('click',()=>{stopAuto();showEvent(selectedIndex-1,true,true);});nextBtn.addEventListener('click',()=>{stopAuto();showEvent(selectedIndex+1,true,true);});
+autoBtn.addEventListener('click',()=>{if(auto){stopAuto();return;}auto=true;autoBtn.classList.add('active');autoBtn.textContent='AUTO ❚❚';autoSegment=selectedIndex>=EVENTS.length-1?0:selectedIndex;showEvent(autoSegment,true,false);autoStartTime=performance.now();velocityLon=velocityLat=0;});
+function updateAuto(ts){if(!auto)return;const from=EVENTS[autoSegment],to=EVENTS[Math.min(EVENTS.length-1,autoSegment+1)],duration=3600;let t=(ts-autoStartTime)/duration;if(t>=1){if(autoSegment>=EVENTS.length-2){stopAuto();showEvent(EVENTS.length-1,true,true);return;}autoSegment++;showEvent(autoSegment,true,false);autoStartTime=ts;return;}const e=easeInOut(Math.max(0,Math.min(1,t)));const y=Math.round(from.year+(to.year-from.year)*e);timeline.value=String(y);timelineYearEl.textContent=String(y);viewLon=lerpAngle(from.lon,to.lon,e);viewLat=(from.lat*.60)+((to.lat*.60)-(from.lat*.60))*e;zoom=1.02+Math.sin(Math.PI*e)*.08;if(t>.72&&selectedIndex!==autoSegment+1)showEvent(autoSegment+1,false,false);targetLon=viewLon;targetLat=viewLat;targetZoom=zoom;}
+function pointerPos(e){const r=overlay.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+overlay.addEventListener('pointerdown',e=>{stopAuto();overlay.setPointerCapture(e.pointerId);activePointers.set(e.pointerId,pointerPos(e));const p=pointerPos(e);lastX=p.x;lastY=p.y;dragMoved=0;dragging=true;velocityLon=velocityLat=0;lastMoveTime=performance.now();lastUserAction=performance.now();if(activePointers.size===2){const pts=[...activePointers.values()];pinchDistance=Math.hypot(pts[1].x-pts[0].x,pts[1].y-pts[0].y);pinchZoom=zoom;}});
+overlay.addEventListener('pointermove',e=>{const pos=pointerPos(e);if(activePointers.has(e.pointerId))activePointers.set(e.pointerId,pos);if(dragging){if(activePointers.size>=2){const pts=[...activePointers.values()];const d=Math.hypot(pts[1].x-pts[0].x,pts[1].y-pts[0].y);if(pinchDistance>0)zoom=Math.max(.72,Math.min(1.46,pinchZoom*d/pinchDistance));targetZoom=zoom;return;}const now=performance.now(),dt=Math.max(8,now-lastMoveTime),dx=pos.x-lastX,dy=pos.y-lastY;viewLon=wrapLon(viewLon-dx*.28/zoom);viewLat=Math.max(-82,Math.min(82,viewLat+dy*.24/zoom));targetLon=viewLon;targetLat=viewLat;velocityLon=(-dx*.28/zoom)/dt;velocityLat=(dy*.24/zoom)/dt;lastX=pos.x;lastY=pos.y;lastMoveTime=now;dragMoved+=Math.hypot(dx,dy);return;}hoverIndex=-1;markerScreen.forEach((p,i)=>{if(p&&p.visible&&Math.hypot(pos.x-p.x,pos.y-p.y)<(isCompactView()?24:13))hoverIndex=i;});overlay.style.cursor=hoverIndex>=0?'pointer':'grab';});
+function pointerEnd(e){const pos=pointerPos(e);activePointers.delete(e.pointerId);if(activePointers.size===0){dragging=false;if(dragMoved<7){let hit=-1,best=Infinity;markerScreen.forEach((p,i)=>{if(!p||!p.visible)return;const d=Math.hypot(pos.x-p.x,pos.y-p.y);if(d<best&&d<(isCompactView()?28:15)){best=d;hit=i;}});if(hit>=0)showEvent(hit,true,true);}}}
+overlay.addEventListener('pointerup',pointerEnd);overlay.addEventListener('pointercancel',pointerEnd);
+overlay.addEventListener('wheel',e=>{e.preventDefault();stopAuto();lastUserAction=performance.now();zoom=Math.max(.72,Math.min(1.46,zoom*Math.exp(-e.deltaY*.0011)));targetZoom=zoom;},{passive:false});
+overlay.addEventListener('dblclick',()=>{stopAuto();targetZoom=1;zoom=Math.min(zoom,1.25);targetLon=20;targetLat=10;});
+function buildTicks(){labels.innerHTML='';EVENTS.forEach((ev,i)=>{if(!ev.major)return;const el=document.createElement('span');el.className='tick strong';el.style.left=`${ev.year/TIMELINE_MAX*100}%`;el.textContent=ev.yearLabel;el.title=ev.title;el.addEventListener('click',()=>{stopAuto();showEvent(i,true,true);});labels.appendChild(el);});}
+buildTicks();showEvent(1,true,true);requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
