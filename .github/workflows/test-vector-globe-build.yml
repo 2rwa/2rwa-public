@@ -1,0 +1,170 @@
+name: Build test vector globe Pages preview
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tests/vector-globe/build/**'
+      - 'tests/vector-globe/index.html'
+      - 'tests/vector-globe/app.js'
+      - 'tests/vector-globe/favicon.svg'
+      - 'tests/vector-globe/PREVIEW_REQUEST.json'
+      - '.github/workflows/test-vector-globe-build.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: test-vector-globe-build
+  cancel-in-progress: false
+
+jobs:
+  build-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GSHHG_VERSION: '2.3.7'
+      GSHHG_ASSET: 'gshhg-shp-2.3.7.zip'
+      SOURCE_ARCHIVE: '.cache/gshhg/source/gshhg-shp-2.3.7.zip'
+      OUT_DIR: 'tests/vector-globe/data'
+      GLOBAL_TMP: '.cache/vector-globe-global'
+      JAPAN_TMP: '.cache/vector-globe-japan'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install vector toolchain
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests fiona shapely pyproj numpy mapbox-earcut
+
+      - name: Restore GSHHG source cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/gshhg/source
+          key: test-vector-globe-gshhg-${{ env.GSHHG_VERSION }}
+
+      - name: Download pinned GSHHG release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .cache/gshhg/source
+          python tests/vector-globe/build/download_gshhg.py \
+            --repository GenericMappingTools/gshhg-gmt \
+            --tag "$GSHHG_VERSION" \
+            --asset "$GSHHG_ASSET" \
+            --output "$SOURCE_ARCHIVE"
+
+      - name: Build global LOD0-LOD3
+        run: |
+          rm -rf "$GLOBAL_TMP" .cache/gshhg/extracted-global
+          python tests/vector-globe/build/build_gshhg_tiles.py \
+            --archive "$SOURCE_ARCHIVE" \
+            --output "$GLOBAL_TMP" \
+            --bbox=-180,-90,180,90 \
+            --tile-deg 10 \
+            --resolutions c,l,i,h \
+            --extract-dir .cache/gshhg/extracted-global
+
+      - name: Build Japan full LOD4
+        run: |
+          rm -rf "$JAPAN_TMP" .cache/gshhg/extracted-japan
+          python tests/vector-globe/build/build_gshhg_tiles.py \
+            --archive "$SOURCE_ARCHIVE" \
+            --output "$JAPAN_TMP" \
+            --bbox=120,20,150,50 \
+            --tile-deg 10 \
+            --resolutions f \
+            --extract-dir .cache/gshhg/extracted-japan
+
+      - name: Assemble preview manifest
+        run: |
+          rm -rf "$OUT_DIR"
+          mkdir -p "$OUT_DIR"
+          cp -a "$GLOBAL_TMP"/. "$OUT_DIR"/
+          mkdir -p "$OUT_DIR/lod4"
+          cp -a "$JAPAN_TMP/lod0"/. "$OUT_DIR/lod4"/
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          out = Path("tests/vector-globe/data")
+          japan = Path(".cache/vector-globe-japan")
+          manifest = json.loads((out / "manifest.json").read_text())
+          jm = json.loads((japan / "manifest.json").read_text())
+
+          full_lod = dict(jm["lods"][0])
+          full_lod["id"] = 4
+          full_lod["gshhgResolution"] = "f"
+          full_lod["name"] = "full"
+          manifest["lods"].append(full_lod)
+
+          for tile in jm["tiles"]:
+              tile = dict(tile)
+              tile["lod"] = 4
+              tile["gshhgResolution"] = "f"
+              tile["path"] = tile["path"].replace("lod0/", "lod4/", 1)
+              manifest["tiles"].append(tile)
+
+          manifest["preview"] = {
+              "status": "work-in-progress",
+              "globalLods": [0, 1, 2, 3],
+              "fullLod4BBox": [120, 20, 150, 50],
+              "pagesPath": "/2rwa-public/tests/vector-globe/"
+          }
+          (out / "manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
+          )
+          PY
+
+      - name: Build low-LOD delivery bundles
+        run: |
+          python tests/vector-globe/build/bundle_delivery.py \
+            --data "$OUT_DIR" \
+            --schemes 0:360x180,1:90x90,2:30x30,3:20x20
+
+      - name: Remove low-LOD canonical files from public preview
+        run: |
+          rm -rf "$OUT_DIR/lod0" "$OUT_DIR/lod1" "$OUT_DIR/lod2" "$OUT_DIR/lod3"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("tests/vector-globe/data/manifest.json")
+          m = json.loads(p.read_text())
+          m["tiles"] = [tile for tile in m["tiles"] if int(tile["lod"]) == 4]
+          p.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
+          PY
+
+      - name: Validate published preview
+        run: |
+          python tests/vector-globe/build/validate_tiles.py --data "$OUT_DIR" \
+            | tee "$OUT_DIR/build-report.json"
+          node --check tests/vector-globe/app.js
+          du -sh "$OUT_DIR"
+
+      - name: Commit generated preview data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add -A tests/vector-globe/data
+          if git diff --cached --quiet; then
+            echo 'No preview data changes.'
+          else
+            git commit -m 'Build vector globe Pages preview data'
+            git push
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-vector-globe-preview-report
+          path: |
+            tests/vector-globe/data/manifest.json
+            tests/vector-globe/data/build-report.json
+          if-no-files-found: error
