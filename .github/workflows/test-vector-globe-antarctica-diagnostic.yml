@@ -1,0 +1,77 @@
+name: Diagnose GSHHG Antarctica polygons
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/test-vector-globe-antarctica-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GSHHG_VERSION: '2.3.7'
+      GSHHG_ASSET: 'gshhg-shp-2.3.7.zip'
+      SOURCE_ARCHIVE: '.cache/gshhg/source/gshhg-shp-2.3.7.zip'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install diagnostics dependencies
+        run: python -m pip install requests fiona shapely
+      - name: Restore GSHHG source cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/gshhg/source
+          key: test-vector-globe-gshhg-${{ env.GSHHG_VERSION }}
+      - name: Download source if needed
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .cache/gshhg/source
+          python tests/vector-globe/build/download_gshhg.py \
+            --repository GenericMappingTools/gshhg-gmt \
+            --tag "$GSHHG_VERSION" \
+            --asset "$GSHHG_ASSET" \
+            --output "$SOURCE_ARCHIVE"
+      - name: Inspect full-resolution Antarctica L5 and L6
+        run: |
+          rm -rf .cache/gshhg/diag
+          mkdir -p .cache/gshhg/diag
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile, json
+          import fiona
+          from shapely.geometry import shape
+
+          archive=Path('.cache/gshhg/source/gshhg-shp-2.3.7.zip')
+          root=Path('.cache/gshhg/diag')
+          with zipfile.ZipFile(archive) as z:
+              z.extractall(root)
+
+          for level in (5,6):
+              shp=next(root.rglob(f'GSHHS_f_L{level}.shp'))
+              print(f'=== L{level} {shp} ===')
+              with fiona.open(shp) as c:
+                  print('collection bounds', c.bounds, 'count', len(c), 'crs', c.crs)
+                  for i,feat in enumerate(c):
+                      g=shape(feat['geometry'])
+                      print(json.dumps({
+                          'i':i,
+                          'geom_type':g.geom_type,
+                          'bounds':g.bounds,
+                          'area_deg2':g.area,
+                          'valid':g.is_valid,
+                          'properties':dict(feat['properties'])
+                      }, default=str))
+                      if g.geom_type == 'Polygon':
+                          coords=list(g.exterior.coords)
+                          print('  exterior_n',len(coords),'first',coords[:3],'last',coords[-3:])
+                      elif g.geom_type == 'MultiPolygon':
+                          print('  parts',len(g.geoms),[p.bounds for p in g.geoms])
+          PY
