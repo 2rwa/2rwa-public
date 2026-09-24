@@ -23,8 +23,8 @@ jobs:
       GSHHG_VERSION: '2.3.7'
       GSHHG_ASSET: 'gshhg-shp-2.3.7.zip'
       SOURCE_ARCHIVE: '.cache/gshhg/source/gshhg-shp-2.3.7.zip'
+      CACHE_DIR: '.cache/vector-globe-world-final'
       OUT_DIR: 'tests/vector-globe/data'
-      FULL_TMP: '.cache/vector-globe-full-global'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,10 +34,15 @@ jobs:
         with:
           python-version: '3.12'
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
       - name: Install vector toolchain
         run: |
           python -m pip install --upgrade pip
           python -m pip install requests fiona shapely pyproj numpy mapbox-earcut
+          npm install --no-save playwright-core@1.55.0
 
       - name: Restore GSHHG source cache
         uses: actions/cache@v4
@@ -56,73 +61,55 @@ jobs:
             --asset "$GSHHG_ASSET" \
             --output "$SOURCE_ARCHIVE"
 
-      - name: Restore global full-LOD cache
-        id: full-cache
+      - name: Restore final global tile cache
+        id: world-cache
         uses: actions/cache@v4
         with:
-          path: .cache/vector-globe-full-global
-          key: test-vector-globe-full-v1-${{ env.GSHHG_VERSION }}-${{ hashFiles('tests/vector-globe/build/build_gshhg_tiles.py', 'tests/vector-globe/build/build_tiles.py') }}
+          path: .cache/vector-globe-world-final
+          key: test-vector-globe-world-v3-${{ env.GSHHG_VERSION }}-${{ hashFiles('tests/vector-globe/build/build_gshhg_tiles.py', 'tests/vector-globe/build/build_tiles.py', 'tests/vector-globe/build/bundle_delivery.py', 'tests/vector-globe/build/validate_tiles.py') }}
 
-      - name: Build global full LOD on cache miss
-        if: steps.full-cache.outputs.cache-hit != 'true'
+      - name: Build all five global LODs on cache miss
+        if: steps.world-cache.outputs.cache-hit != 'true'
         run: |
-          rm -rf "$FULL_TMP" .cache/gshhg/extracted-full-global
+          rm -rf "$CACHE_DIR" .cache/gshhg/extracted-world-final
           python tests/vector-globe/build/build_gshhg_tiles.py \
             --archive "$SOURCE_ARCHIVE" \
-            --output "$FULL_TMP" \
+            --output "$CACHE_DIR" \
             --bbox=-180,-90,180,90 \
             --tile-deg 10 \
-            --resolutions f \
-            --extract-dir .cache/gshhg/extracted-full-global
+            --resolutions c,l,i,h,f \
+            --extract-dir .cache/gshhg/extracted-world-final
+          cp "$SOURCE_ARCHIVE.json" "$CACHE_DIR/source.json"
+          python tests/vector-globe/build/bundle_delivery.py \
+            --data "$CACHE_DIR" \
+            --schemes 0:360x180,1:90x90,2:30x30,3:20x20
+          python tests/vector-globe/build/validate_tiles.py --data "$CACHE_DIR" \
+            > "$CACHE_DIR/build-report-full-cache.json"
 
-      - name: Replace preview LOD4 with global full data
+      - name: Assemble published data
         run: |
-          test -d "$OUT_DIR/delivery"
-          rm -rf "$OUT_DIR/lod4"
-          mkdir -p "$OUT_DIR/lod4"
-          cp -a "$FULL_TMP/lod0"/. "$OUT_DIR/lod4"/
-          cp "$SOURCE_ARCHIVE.json" "$OUT_DIR/source.json"
+          rm -rf "$OUT_DIR"
+          mkdir -p "$OUT_DIR"
+          cp -a "$CACHE_DIR"/. "$OUT_DIR"/
+          rm -rf "$OUT_DIR/lod0" "$OUT_DIR/lod1" "$OUT_DIR/lod2" "$OUT_DIR/lod3"
           python - <<'PY'
           import json
           from pathlib import Path
-
-          out = Path("tests/vector-globe/data")
-          full = Path(".cache/vector-globe-full-global")
-          manifest = json.loads((out / "manifest.json").read_text())
-          fm = json.loads((full / "manifest.json").read_text())
-
-          full_lod = dict(fm["lods"][0])
-          full_lod["id"] = 4
-          full_lod["gshhgResolution"] = "f"
-          full_lod["name"] = "full"
-
-          lods = [lod for lod in manifest["lods"] if int(lod["id"]) != 4]
-          lods.append(full_lod)
-          lods.sort(key=lambda lod: int(lod["id"]))
-          manifest["lods"] = lods
-
-          tiles = []
-          for tile in fm["tiles"]:
-              tile = dict(tile)
-              tile["lod"] = 4
-              tile["gshhgResolution"] = "f"
-              tile["path"] = tile["path"].replace("lod0/", "lod4/", 1)
-              tiles.append(tile)
-          manifest["tiles"] = tiles
-
-          manifest["preview"] = {
+          p = Path("tests/vector-globe/data/manifest.json")
+          m = json.loads(p.read_text())
+          m["tiles"] = [tile for tile in m["tiles"] if int(tile["lod"]) == 4]
+          m["preview"] = {
               "status": "complete-for-1000-percent-goal",
               "globalLods": [0, 1, 2, 3, 4],
               "fullLod4BBox": [-180, -90, 180, 90],
               "pagesPath": "/2rwa-public/tests/vector-globe/",
-              "goal": "global full-resolution display comparable to the validated Japan 1000% view"
+              "goal": "global full-resolution display comparable to the validated Japan 1000% view",
+              "antarcticaRepair": "EPSG:3031 polar union before tile clipping"
           }
-          (out / "manifest.json").write_text(
-              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
-          )
+          p.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
           PY
 
-      - name: Validate published global preview
+      - name: Validate published global data
         run: |
           python tests/vector-globe/build/validate_tiles.py --data "$OUT_DIR" \
             | tee "$OUT_DIR/build-report.json"
@@ -130,35 +117,48 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          report = json.loads(Path("tests/vector-globe/data/build-report.json").read_text())
-          manifest = json.loads(Path("tests/vector-globe/data/manifest.json").read_text())
-          full_tiles = [t for t in manifest["tiles"] if int(t["lod"]) == 4]
-          if len(full_tiles) < 400:
-              raise SystemExit(f"expected global LOD4 coverage, got only {len(full_tiles)} tiles")
-          if report["repositoryBytes"] > 300 * 1024 * 1024:
-              raise SystemExit(f"published dataset unexpectedly large: {report['repositoryBytes']}")
-          print(f"global LOD4 tiles: {len(full_tiles)}")
-          print(f"published data: {report['repositoryMiB']} MiB")
+          m = json.loads(Path("tests/vector-globe/data/manifest.json").read_text())
+          r = json.loads(Path("tests/vector-globe/data/build-report.json").read_text())
+          full = [t for t in m["tiles"] if int(t["lod"]) == 4]
+          polar = [t for t in full if float(t["bounds"][1]) == -90.0]
+          if len(full) < 400:
+              raise SystemExit(f"expected global LOD4 coverage, got {len(full)} tiles")
+          if len(polar) != 36:
+              raise SystemExit(f"expected 36 south-pole LOD4 tiles, got {len(polar)}")
+          if r["repositoryBytes"] > 300 * 1024 * 1024:
+              raise SystemExit(f"published dataset unexpectedly large: {r['repositoryBytes']}")
+          print(f"global LOD4 tiles: {len(full)}")
+          print(f"south-pole LOD4 tiles: {len(polar)}")
+          print(f"published data: {r['repositoryMiB']} MiB")
           PY
-          du -sh "$OUT_DIR"
 
-      - name: Commit generated global preview data
+      - name: Browser QA before commit
+        run: |
+          python3 -m http.server 8125 --bind 127.0.0.1 >/tmp/vector-globe-final-http.log 2>&1 &
+          mkdir -p /tmp/vector-globe-final-qa
+          node tests/vector-globe/final_qa.mjs \
+            http://127.0.0.1:8125/tests/vector-globe/ \
+            /tmp/vector-globe-final-qa
+
+      - name: Commit generated global data
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A tests/vector-globe/data
           if git diff --cached --quiet; then
-            echo 'No preview data changes.'
+            echo 'No generated data changes.'
           else
-            git commit -m 'Build global full-resolution vector globe data'
+            git commit -m 'Repair Antarctica and rebuild global vector globe'
             git push
           fi
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: test-vector-globe-global-report
+          name: vector-globe-final-build-qa
           path: |
             tests/vector-globe/data/manifest.json
             tests/vector-globe/data/build-report.json
-            tests/vector-globe/data/source.json
-          if-no-files-found: error
+            /tmp/vector-globe-final-qa/*.png
+            /tmp/vector-globe-final-http.log
+          if-no-files-found: warn

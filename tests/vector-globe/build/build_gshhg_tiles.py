@@ -21,8 +21,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import fiona
-from shapely.geometry import box, shape
-from shapely.ops import unary_union
+from pyproj import Transformer
+from shapely import make_valid
+from shapely.geometry import Polygon, box, shape
+from shapely.ops import transform as geometry_transform, unary_union
 from shapely.strtree import STRtree
 
 from build_tiles import encode_tile, polygon_parts, tile_name, tile_origins
@@ -37,6 +39,9 @@ RESOLUTION_NAMES = {
     "f": "full",
 }
 SHAPE_RE = re.compile(r"^GSHHS_([clihf])_L([1-6])\.shp$", re.IGNORECASE)
+
+WGS84_TO_ANTARCTIC = Transformer.from_crs("EPSG:4326", "EPSG:3031", always_xy=True)
+ANTARCTIC_TO_WGS84 = Transformer.from_crs("EPSG:3031", "EPSG:4326", always_xy=True)
 
 
 def safe_extract_zip(archive_path: Path, output_dir: Path) -> None:
@@ -89,6 +94,108 @@ def read_level_polygons(path: Path, bounds: tuple[float, float, float, float]):
             if not clipped.is_empty:
                 geometries.append(clipped)
     return geometries
+
+
+def read_antarctica_polar(path: Path):
+    """Read Antarctica in EPSG:3031 before repairing its dateline-split polygons.
+
+    GSHHG's shapefile distribution splits the polar mainland into east/west
+    Cartesian polygons.  Repairing those directly in lon/lat can discard one
+    side of the polar cap.  In a polar projection the two pieces share the
+    South Pole normally and can be made valid and unioned safely.
+    """
+    projected = []
+    with fiona.open(path) as collection:
+        for feature in collection:
+            raw_geometry = feature.get("geometry")
+            if not raw_geometry:
+                continue
+            geometry = shape(raw_geometry)
+            geometry = geometry_transform(WGS84_TO_ANTARCTIC.transform, geometry)
+            geometry = make_valid(geometry)
+            if not geometry.is_empty:
+                projected.append(geometry)
+    if not projected:
+        return None
+    return make_valid(unary_union(projected))
+
+
+def dense_tile_polygon(bounds: tuple[float, float, float, float], step: float = 0.5):
+    lon0, lat0, lon1, lat1 = bounds
+
+    def samples(start: float, stop: float):
+        distance = abs(stop - start)
+        count = max(1, int(round(distance / step)))
+        return [start + (stop - start) * i / count for i in range(count + 1)]
+
+    west = [(lon0, lat) for lat in samples(lat0, lat1)]
+    north = [(lon, lat1) for lon in samples(lon0, lon1)[1:]]
+    east = [(lon1, lat) for lat in samples(lat1, lat0)[1:]]
+    south = [(lon, lat0) for lon in samples(lon1, lon0)[1:]]
+    return Polygon(west + north + east + south)
+
+
+def normalize_polar_tile_longitudes(geometry, bounds):
+    lon0, _, lon1, _ = bounds
+    center = (lon0 + lon1) * 0.5
+
+    def normalize_one(lon: float, lat: float) -> float:
+        if lat <= -89.999999:
+            return center
+        while lon - center > 180:
+            lon -= 360
+        while lon - center < -180:
+            lon += 360
+        # pyproj may return the opposite representation exactly at the
+        # antimeridian.  Pick the equivalent longitude inside this tile.
+        candidates = (lon - 360, lon, lon + 360)
+        lon = min(candidates, key=lambda value: abs(value - center))
+        if lon < lon0 and lon0 == -180:
+            lon += 360
+        if lon > lon1 and lon1 == 180:
+            lon -= 360
+        return min(lon1, max(lon0, lon))
+
+    def transform_xy(x, y, z=None):
+        try:
+            xx = [normalize_one(float(lon), float(lat)) for lon, lat in zip(x, y)]
+            if z is None:
+                return xx, y
+            return xx, y, z
+        except TypeError:
+            xx = normalize_one(float(x), float(y))
+            if z is None:
+                return xx, y
+            return xx, y, z
+
+    return geometry_transform(transform_xy, geometry)
+
+
+@dataclass
+class PolarAntarcticaLevel:
+    geometry: object | None
+
+    @classmethod
+    def from_path(cls, path: Path):
+        return cls(read_antarctica_polar(path))
+
+    def clipped(self, bounds: tuple[float, float, float, float]):
+        if self.geometry is None or bounds[1] >= -55:
+            return []
+
+        tile_wgs84 = dense_tile_polygon(bounds)
+        tile_polar = geometry_transform(WGS84_TO_ANTARCTIC.transform, tile_wgs84)
+        tile_polar = make_valid(tile_polar)
+        clipped = make_valid(self.geometry.intersection(tile_polar))
+        if clipped.is_empty:
+            return []
+
+        clipped_wgs84 = geometry_transform(ANTARCTIC_TO_WGS84.transform, clipped)
+        clipped_wgs84 = normalize_polar_tile_longitudes(clipped_wgs84, bounds)
+        clipped_wgs84 = make_valid(clipped_wgs84)
+        if clipped_wgs84.is_empty:
+            return []
+        return [clipped_wgs84]
 
 
 @dataclass
@@ -221,9 +328,14 @@ def main() -> int:
         })
         print(f"LOD{lod_id}: {resolution_code} ({RESOLUTION_NAMES[resolution_code]})")
 
-        indexed_levels: dict[int, SpatialLevel] = {}
+        indexed_levels: dict[int, object] = {}
         for hierarchy_level, level_path in sorted(levels.items()):
             if hierarchy_level not in {1, 2, 3, 4, antarctica_level}:
+                continue
+            if hierarchy_level == antarctica_level:
+                if min_lat < -55:
+                    indexed_levels[hierarchy_level] = PolarAntarcticaLevel.from_path(level_path)
+                    print(f"  indexed L{hierarchy_level}: polar EPSG:3031 Antarctica geometry")
                 continue
             geometries = read_level_polygons(level_path, bbox_values)
             indexed_levels[hierarchy_level] = SpatialLevel.from_geometries(geometries)
