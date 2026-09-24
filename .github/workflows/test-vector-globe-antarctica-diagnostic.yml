@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install diagnostics dependencies
-        run: python -m pip install requests fiona shapely
+        run: python -m pip install requests fiona shapely pyproj
       - name: Restore GSHHG source cache
         uses: actions/cache@v4
         with:
@@ -49,19 +49,27 @@ jobs:
           import fiona
           from shapely.geometry import shape, Point
           from shapely import make_valid
+          from shapely.ops import transform, unary_union
+          from pyproj import Transformer
 
           archive=Path('.cache/gshhg/source/gshhg-shp-2.3.7.zip')
           root=Path('.cache/gshhg/diag')
           with zipfile.ZipFile(archive) as z:
               z.extractall(root)
 
+          fwd = Transformer.from_crs("EPSG:4326", "EPSG:3031", always_xy=True).transform
+          inv = Transformer.from_crs("EPSG:3031", "EPSG:4326", always_xy=True).transform
+
           for level in (5,6):
               shp=next(root.rglob(f'GSHHS_f_L{level}.shp'))
               print(f'=== L{level} {shp} ===')
               with fiona.open(shp) as c:
                   print('collection bounds', c.bounds, 'count', len(c), 'crs', c.crs)
+                  mainland_raw = []
                   for i,feat in enumerate(c):
                       g=shape(feat['geometry'])
+                      if str(feat['properties'].get('id','')).startswith('4-'):
+                          mainland_raw.append(g)
                       print(json.dumps({
                           'i':i,
                           'geom_type':g.geom_type,
@@ -93,4 +101,21 @@ jobs:
                           print('  exterior_n',len(coords),'first',coords[:3],'last',coords[-3:])
                       elif g.geom_type == 'MultiPolygon':
                           print('  parts',len(g.geoms),[p.bounds for p in g.geoms])
+
+                  projected = [make_valid(transform(fwd, g)) for g in mainland_raw]
+                  polar = make_valid(unary_union(projected))
+                  print('POLAR UNION', {
+                      'type': polar.geom_type,
+                      'valid': polar.is_valid,
+                      'area_m2': polar.area,
+                      'bounds': polar.bounds,
+                      'contains_85': {
+                          str(lon): polar.covers(transform(fwd, Point(lon,-85)))
+                          for lon in (-135,-90,-45,0,45,90,135,179)
+                      },
+                      'contains_80': {
+                          str(lon): polar.covers(transform(fwd, Point(lon,-80)))
+                          for lon in (-135,-90,-45,0,45,90,135,179)
+                      }
+                  })
           PY
