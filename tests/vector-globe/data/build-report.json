@@ -16,16 +16,16 @@
     "antarctica": "ice-front"
   },
   "tiles": 469,
-  "vertices": 10408487,
-  "triangles": 10044208,
-  "bytes": 162170072,
-  "mib": 154.657,
+  "vertices": 10418714,
+  "triangles": 10053997,
+  "bytes": 162328448,
+  "mib": 154.808,
   "byLod": {
     "lod4-f": {
       "tiles": 469,
-      "vertices": 10408487,
-      "triangles": 10044208,
-      "bytes": 162170072
+      "vertices": 10418714,
+      "triangles": 10053997,
+      "bytes": 162328448
     }
   },
   "largestTiles": [
@@ -385,6 +385,6 @@
       }
     ]
   },
-  "repositoryBytes": 194914200,
-  "repositoryMiB": 185.885
+  "repositoryBytes": 195072576,
+  "repositoryMiB": 186.036
 }
