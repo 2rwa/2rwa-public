@@ -1,0 +1,156 @@
+name: Patch Antarctica full LOD seams
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tests/vector-globe/build/build_gshhg_tiles.py'
+      - '.github/workflows/test-vector-globe-antarctica-patch.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: test-vector-globe-build
+  cancel-in-progress: false
+
+jobs:
+  patch-antarctica:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GSHHG_VERSION: '2.3.7'
+      GSHHG_ASSET: 'gshhg-shp-2.3.7.zip'
+      SOURCE_ARCHIVE: '.cache/gshhg/source/gshhg-shp-2.3.7.zip'
+      PATCH_DIR: '.cache/vector-globe-antarctica-full'
+      OUT_DIR: 'tests/vector-globe/data'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install toolchain
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests fiona shapely pyproj numpy mapbox-earcut
+          npm install --no-save playwright-core@1.55.0
+
+      - name: Restore GSHHG source cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/gshhg/source
+          key: test-vector-globe-gshhg-${{ env.GSHHG_VERSION }}
+
+      - name: Download source if needed
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .cache/gshhg/source
+          python tests/vector-globe/build/download_gshhg.py \
+            --repository GenericMappingTools/gshhg-gmt \
+            --tag "$GSHHG_VERSION" \
+            --asset "$GSHHG_ASSET" \
+            --output "$SOURCE_ARCHIVE"
+
+      - name: Build Antarctica full LOD only
+        run: |
+          rm -rf "$PATCH_DIR" .cache/gshhg/extracted-antarctica-patch
+          python tests/vector-globe/build/build_gshhg_tiles.py \
+            --archive "$SOURCE_ARCHIVE" \
+            --output "$PATCH_DIR" \
+            --bbox=-180,-90,180,-50 \
+            --tile-deg 10 \
+            --resolutions f \
+            --extract-dir .cache/gshhg/extracted-antarctica-patch
+
+      - name: Replace southern full-LOD tiles and manifest entries
+        run: |
+          python - <<'PY'
+          import json, shutil
+          from pathlib import Path
+
+          out = Path("tests/vector-globe/data")
+          patch = Path(".cache/vector-globe-antarctica-full")
+          manifest_path = out / "manifest.json"
+          m = json.loads(manifest_path.read_text())
+          pm = json.loads((patch / "manifest.json").read_text())
+
+          southern_old = [t for t in m["tiles"] if int(t["lod"]) == 4 and float(t["bounds"][1]) < -50]
+          for tile in southern_old:
+              p = out / tile["path"]
+              if p.exists():
+                  p.unlink()
+
+          replacements = []
+          for tile in pm["tiles"]:
+              tile = dict(tile)
+              tile["lod"] = 4
+              tile["gshhgResolution"] = "f"
+              tile["path"] = tile["path"].replace("lod0/", "lod4/", 1)
+              src = patch / tile["path"].replace("lod4/", "lod0/", 1)
+              dst = out / tile["path"]
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(src, dst)
+              replacements.append(tile)
+
+          m["tiles"] = [
+              t for t in m["tiles"]
+              if not (int(t["lod"]) == 4 and float(t["bounds"][1]) < -50)
+          ] + replacements
+          m["tiles"].sort(key=lambda t: (int(t["lod"]), t["path"]))
+          m.setdefault("preview", {})["antarcticaSeamRepair"] = "0.05 degree polar tile overlap before quantization"
+          manifest_path.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n")
+          PY
+
+      - name: Validate patched dataset
+        run: |
+          python tests/vector-globe/build/validate_tiles.py --data "$OUT_DIR" \
+            | tee "$OUT_DIR/build-report.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path("tests/vector-globe/data/manifest.json").read_text())
+          full=[t for t in m["tiles"] if int(t["lod"])==4]
+          pole=[t for t in full if float(t["bounds"][1])==-90.0]
+          if len(pole)!=36:
+              raise SystemExit(f"expected 36 south-pole tiles, got {len(pole)}")
+          print("LOD4",len(full),"south-pole",len(pole))
+          PY
+
+      - name: Browser QA before commit
+        run: |
+          python3 -m http.server 8125 --bind 127.0.0.1 >/tmp/vector-globe-patch-http.log 2>&1 &
+          mkdir -p /tmp/vector-globe-patch-qa
+          node tests/vector-globe/final_qa.mjs \
+            http://127.0.0.1:8125/tests/vector-globe/ \
+            /tmp/vector-globe-patch-qa
+
+      - name: Commit Antarctica patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A tests/vector-globe/data
+          if git diff --cached --quiet; then
+            echo 'No Antarctica patch changes.'
+          else
+            git commit -m 'Remove Antarctica full-LOD tile seams'
+            git push
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vector-globe-antarctica-seam-qa
+          path: |
+            /tmp/vector-globe-patch-qa/*.png
+            tests/vector-globe/data/manifest.json
+            tests/vector-globe/data/build-report.json
+          if-no-files-found: warn

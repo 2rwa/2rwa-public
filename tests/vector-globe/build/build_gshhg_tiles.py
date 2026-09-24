@@ -183,7 +183,22 @@ class PolarAntarcticaLevel:
         if self.geometry is None or bounds[1] >= -55:
             return []
 
-        tile_wgs84 = dense_tile_polygon(bounds)
+        # Adjacent polar tiles are clipped in EPSG:3031 and then transformed
+        # back to lon/lat.  Floating-point reprojection can otherwise leave a
+        # sub-pixel gap along a shared meridian that becomes visible at 1000%.
+        # Clip with a tiny overlap, then quantization clamps both tiles back to
+        # their nominal GVB1 bounds.  Overlap is harmless because land is
+        # rendered opaquely, while gaps are visible as ocean slivers.
+        overlap = 0.05
+        lon0, lat0, lon1, lat1 = bounds
+        expanded_bounds = (
+            lon0 if lon0 <= -180 else lon0 - overlap,
+            lat0 if lat0 <= -90 else lat0 - overlap,
+            lon1 if lon1 >= 180 else lon1 + overlap,
+            lat1 if lat1 >= 90 else lat1 + overlap,
+        )
+
+        tile_wgs84 = dense_tile_polygon(expanded_bounds, step=0.25)
         tile_polar = geometry_transform(WGS84_TO_ANTARCTIC.transform, tile_wgs84)
         tile_polar = make_valid(tile_polar)
         clipped = make_valid(self.geometry.intersection(tile_polar))
