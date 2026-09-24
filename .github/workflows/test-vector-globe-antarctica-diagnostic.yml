@@ -47,7 +47,8 @@ jobs:
           from pathlib import Path
           import zipfile, json
           import fiona
-          from shapely.geometry import shape
+          from shapely.geometry import shape, Point
+          from shapely import make_valid
 
           archive=Path('.cache/gshhg/source/gshhg-shp-2.3.7.zip')
           root=Path('.cache/gshhg/diag')
@@ -69,6 +70,24 @@ jobs:
                           'valid':g.is_valid,
                           'properties':dict(feat['properties'])
                       }, default=str))
+                      if i < 2:
+                          for label,r in [('buffer0', g.buffer(0)), ('make_valid', make_valid(g))]:
+                              parts = list(r.geoms) if hasattr(r, 'geoms') else [r]
+                              print('  repair', label, {
+                                  'type': r.geom_type,
+                                  'valid': r.is_valid,
+                                  'area': r.area,
+                                  'bounds': r.bounds,
+                                  'parts': len(parts),
+                                  'contains_85': {
+                                      '-135': r.covers(Point(-135,-85)),
+                                      '-90': r.covers(Point(-90,-85)),
+                                      '-45': r.covers(Point(-45,-85)),
+                                      '45': r.covers(Point(45,-85)),
+                                      '90': r.covers(Point(90,-85)),
+                                      '135': r.covers(Point(135,-85))
+                                  }
+                              })
                       if g.geom_type == 'Polygon':
                           coords=list(g.exterior.coords)
                           print('  exterior_n',len(coords),'first',coords[:3],'last',coords[-3:])
