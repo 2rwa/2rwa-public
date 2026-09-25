@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>笙 物理音源 v0.1 — free-reed + pipe resonator</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark;background:#111;color:#eee}
+*{box-sizing:border-box} body{margin:0;padding:18px;max-width:1100px;margin:auto;background:#111}
+h1{font-size:1.45rem;margin:.2rem 0}.sub{color:#aaa;line-height:1.55;margin:.4rem 0 1rem}
+.panel{background:#191919;border:1px solid #333;border-radius:14px;padding:14px;margin:12px 0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.grow{flex:1 1 260px}
+button,select,input{font:inherit}button{border:1px solid #555;background:#252525;color:#eee;border-radius:10px;padding:9px 12px;cursor:pointer}button:hover{background:#303030}button.on{background:#eee;color:#111;border-color:#eee}
+button.primary{font-weight:700}label{display:grid;grid-template-columns:minmax(145px,1fr) minmax(140px,2fr) 68px;gap:8px;align-items:center;margin:8px 0;font-size:.92rem}
+input[type=range]{width:100%}.value{text-align:right;color:#bbb;font-variant-numeric:tabular-nums}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px}.grid button{padding:9px 5px}.tiny{font-size:.78rem;color:#aaa;line-height:1.55}.status{font-variant-numeric:tabular-nums;color:#b9e0c2}.warn{color:#f0c98a}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:.82rem}th,td{padding:6px 8px;border-bottom:1px solid #333;text-align:right}th:first-child,td:first-child{text-align:left}details{margin-top:10px}summary{cursor:pointer;font-weight:650}code{color:#d7e7ff}.meter{height:8px;background:#222;border-radius:99px;overflow:hidden;border:1px solid #333}.meter>div{height:100%;width:0%;background:currentColor;transition:width .06s linear}
+@media(max-width:650px){body{padding:10px}label{grid-template-columns:120px 1fr 58px;font-size:.84rem}.panel{padding:11px}.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<h1>笙 物理音源 v0.1</h1>
+<p class="sub">Hikichi–Osaka–Itakura (2003) の笙モデルを核にした、自由簧の非線形流量 + 簧の運動方程式 + 円筒管デジタル波導のリアルタイム音源です。サンプル再生・加算合成ではありません。15管と11種の合竹を鳴らせます。</p>
+
+<div class="panel">
+  <div class="row">
+    <button id="startBtn" class="primary">音源を開始</button>
+    <button id="stopBtn">全停止</button>
+    <button id="dirBtn">吹く →</button>
+    <button id="paperBtn">論文検証: 一管</button>
+    <span id="status" class="status">未初期化</span>
+  </div>
+  <div class="meter" style="margin-top:10px"><div id="meterFill"></div></div>
+</div>
+
+<div class="panel">
+  <b>合竹</b>
+  <div id="chordGrid" class="grid" style="margin-top:9px"></div>
+  <div style="height:10px"></div>
+  <b>一竹（単管）</b>
+  <div id="noteGrid" class="grid" style="margin-top:9px"></div>
+</div>
+
+<div class="panel">
+  <div class="row"><b>物理パラメータ</b><span class="tiny">初期値は2003年論文の範囲を優先。高低15管への展開は周波数スケーリング + 個別調律補正。</span></div>
+  <label><span>差圧 |p|</span><input id="pressure" type="range" min="0" max="1000" step="5" value="600"><span id="pressureV" class="value"></span></label>
+  <label><span>簧 Q</span><input id="reedQ" type="range" min="8" max="35" step="0.5" value="20"><span id="reedQV" class="value"></span></label>
+  <label><span>付加質量率 αm</span><input id="massRate" type="range" min="0" max="0.30" step="0.01" value="0.15"><span id="massRateV" class="value"></span></label>
+  <label><span>管反射</span><input id="reflection" type="range" min="0.88" max="0.995" step="0.001" value="0.985"><span id="reflectionV" class="value"></span></label>
+  <label><span>管長倍率</span><input id="pipeScale" type="range" min="0.90" max="1.10" step="0.001" value="1"><span id="pipeScaleV" class="value"></span></label>
+  <label><span>簧調律</span><input id="reedCents" type="range" min="-35" max="35" step="0.5" value="0"><span id="reedCentsV" class="value"></span></label>
+  <label><span>手移り時間</span><input id="transitionMs" type="range" min="15" max="500" step="5" value="120"><span id="transitionMsV" class="value"></span></label>
+  <label><span>出力</span><input id="master" type="range" min="0" max="1" step="0.01" value="0.28"><span id="masterV" class="value"></span></label>
+</div>
+
+<div class="panel">
+  <b>現在の管</b>
+  <div class="tablewrap"><table><thead><tr><th>管</th><th>基準音高</th><th>f (Hz)</th><th>簧自然周波数</th><th>モデル管長</th></tr></thead><tbody id="activeTable"></tbody></table></div>
+  <p class="tiny">音高は長内忠雄 (1962) の調律手順を A4=430 Hz に固定して比率から再計算。管長は「一」B4=24.1 cm を基準に相似スケールした<strong>モデル上の有効長</strong>で、15本の実測寸法を偽装していません。</p>
+</div>
+
+<div class="panel">
+<details open><summary>この実装で物理的に計算しているもの</summary>
+<p class="tiny">各管ごとに、(1) 簧を片持ち梁の1自由度モードとして積分、(2) 簧周囲の開口面積から Bernoulli 流量を計算、(3) 簧自身のポンピング流量を加算、(4) 円筒管を往復遅延 + 開口端反射として帰還させています。簧開口面積は2003年論文の <code>F(x)=W√(x²+b²)+2L√((0.4|x|)²+b²)</code> を採用。流路慣性項は同論文の線形解析で通常範囲では無視できるとされたため v0.1 では省略しています。</p>
+</details>
+<details><summary>既知の未実装部分</summary>
+<p class="tiny">最重要なのは共通の匏（かしら）内部の音響結合です。2002年測定では匏側圧力に高周波振動があり、形状・容積が音色へ大きく影響する可能性が示されています。一方2003年モデルは匏内圧 p(t) を外部入力として、流量から匏へ戻る結合を意図的に無視しています。したがって、この版は「論文モデルの再構成 + 15管化」であり、複数管間の共通風箱結合まで再現した最終版ではありません。</p>
+</details>
+<details><summary>数値安定性</summary>
+<p class="tiny">非線形流量と管入口圧の代数ループは各サンプルで Newton 反復。AudioWorklet が使えない file:// 環境では ScriptProcessor にフォールバックします。最終段にDCカット、12 kHzローパス、ソフトクリップを置き、スピーカー保護用に出力を抑えています。</p>
+</details>
+</div>
+
+<script>
+'use strict';
+
+const NOTE_DEFS = [
+  {name:'乞', note:'A4',  freq:430.0,        reedRatio:0.990},
+  {name:'一', note:'B4',  freq:483.75,       reedRatio:0.980},
+  {name:'工', note:'C♯5', freq:544.21875,    reedRatio:0.980},
+  {name:'凢', note:'D5',  freq:573.3333333,  reedRatio:0.985},
+  {name:'乙', note:'E5',  freq:645.0,        reedRatio:0.980},
+  {name:'下', note:'F♯5', freq:725.625,      reedRatio:0.980},
+  {name:'十', note:'G5',  freq:765.3076172,  reedRatio:0.975},
+  {name:'美', note:'G♯5', freq:816.328125,   reedRatio:0.975},
+  {name:'行', note:'A5',  freq:860.0,        reedRatio:0.975},
+  {name:'七', note:'B5',  freq:967.5,        reedRatio:0.975},
+  {name:'比', note:'C6',  freq:1020.4101563, reedRatio:0.970},
+  {name:'言', note:'C♯6', freq:1088.4375,    reedRatio:0.970},
+  {name:'上', note:'D6',  freq:1147.9614258, reedRatio:0.965},
+  {name:'八', note:'E6',  freq:1290.0,       reedRatio:0.965},
+  {name:'千', note:'F♯6', freq:1451.25,      reedRatio:0.960}
+];
+
+const CHORDS = {
+  '乞':['乞','乙','行','七','八','千'],
+  '一':['一','凢','乙','行','七','千'],
+  '工':['工','凢','乙','美','行','七'],
+  '凢':['凢','乙','行','七','八','千'],
+  '乙':['乙','行','七','上','八','千'],
+  '下':['下','美','行','七','上','千'],
+  '十':['下','十','行','七','上','八'],
+  '十(双調)':['十','行','七','上','八'],
+  '美':['美','行','七','比','上','千'],
+  '行':['行','七','上','八','千'],
+  '比':['行','七','比','上','八','千']
+};
+
+const ENGINE_CORE = String.raw`
+class ShoPipeModel {
+  constructor(sampleRateValue, noteDef, pipeIndex) {
+    this.fs = sampleRateValue;
+    this.note = noteDef;
+    this.pipeIndex = pipeIndex;
+    this.airDensity = 1.2;
+    this.soundSpeed = 340.0;
+    this.reedWidth = 0.002;
+    this.reedLength = 0.010;
+    this.reedThickness = 0.0003;
+    this.reedDensity = 8000.0;
+    this.clearance = 0.00001;
+    this.flowContraction = 0.61;
+    this.pipeRadius = 0.0035;
+    this.characteristicImpedance = this.airDensity * this.soundSpeed / (Math.PI * this.pipeRadius * this.pipeRadius);
+    this.referencePitch = 483.75;
+    this.referencePipeLength = 0.241;
+    this.tipDisplacement = 0.0;
+    this.tipVelocity = 0.0;
+    this.returnState = 0.0;
+    this.previousWave = 0.0;
+    this.dcBlockState = 0.0;
+    this.gate = 0.0;
+    this.gateTarget = 0.0;
+    this.delayBuffer = new Float64Array(512);
+    this.writeIndex = 0;
+    this.lastPipeLength = 0.241;
+  }
+
+  reset() {
+    this.tipDisplacement = 0.0;
+    this.tipVelocity = 0.0;
+    this.returnState = 0.0;
+    this.previousWave = 0.0;
+    this.dcBlockState = 0.0;
+    this.gate = 0.0;
+    this.gateTarget = 0.0;
+    this.delayBuffer.fill(0.0);
+    this.writeIndex = 0;
+  }
+
+  renderOne(sourcePressure, params) {
+    const dt = 1.0 / this.fs;
+    const transitionSeconds = Math.max(0.015, params.transitionMs * 0.001);
+    const gateCoefficient = 1.0 - Math.exp(-dt / transitionSeconds);
+    this.gate += (this.gateTarget - this.gate) * gateCoefficient;
+
+    const centsScale = Math.pow(2.0, params.reedCents / 1200.0);
+    const reedFrequency = this.note.freq * this.note.reedRatio * centsScale;
+    const reedOmega = 2.0 * Math.PI * reedFrequency;
+
+    // The reference mass follows Table II. For the 15-pipe extension we scale
+    // effective modal mass ~1/f^2 to preserve a comparable pressure response
+    // while each reed is tuned to a different natural frequency.
+    const baseMass = this.reedDensity * this.reedWidth * this.reedLength * this.reedThickness * (1.0 + params.massRate);
+    const effectiveMass = baseMass * Math.pow(470.0 / reedFrequency, 2.0);
+
+    const pipeLength = this.referencePipeLength * (this.referencePitch / this.note.freq) * params.pipeScale;
+    this.lastPipeLength = pipeLength;
+    const delaySamples = Math.max(2.0, 2.0 * pipeLength / this.soundSpeed * this.fs);
+    const bufferLength = this.delayBuffer.length;
+    let readPosition = this.writeIndex - delaySamples;
+    while (readPosition < 0.0) readPosition += bufferLength;
+    const readIndex0 = Math.floor(readPosition) % bufferLength;
+    const readFraction = readPosition - Math.floor(readPosition);
+    const readIndex1 = (readIndex0 + 1) % bufferLength;
+    const delayedWave = this.delayBuffer[readIndex0] * (1.0 - readFraction) + this.delayBuffer[readIndex1] * readFraction;
+
+    // An open pipe end returns a pressure wave with inverted polarity.
+    // Opening the finger hole destroys the high-Q resonator rather than
+    // merely amplitude-muting the pipe.
+    const effectiveReflection = 0.025 + this.gate * (params.reflection - 0.025);
+    const reflectedTarget = -effectiveReflection * delayedWave;
+    this.returnState += 0.62 * (reflectedTarget - this.returnState);
+    const returnedPressure = this.returnState;
+
+    const sideAverage = 0.4 * Math.abs(this.tipDisplacement);
+    const openingArea = this.reedWidth * Math.sqrt(this.tipDisplacement * this.tipDisplacement + this.clearance * this.clearance)
+      + 2.0 * this.reedLength * Math.sqrt(sideAverage * sideAverage + this.clearance * this.clearance);
+    const flowFactor = this.flowContraction * openingArea * Math.sqrt(2.0 / this.airDensity);
+    const pumpedFlow = 0.4 * this.reedWidth * this.reedLength * this.tipVelocity;
+
+    // Solve the algebraic feedback loop p2 = p_return + Z0(U + U_pump),
+    // U = C F sign(dp) sqrt(2 |dp| / rho), with a few Newton iterations.
+    let pipeEntrancePressure = returnedPressure;
+    let flowVelocity = 0.0;
+    for (let iteration = 0; iteration < 4; iteration++) {
+      const pressureDifference = sourcePressure - pipeEntrancePressure;
+      const absolutePressure = Math.max(Math.abs(pressureDifference), 1.0e-5);
+      const pressureSign = pressureDifference >= 0.0 ? 1.0 : -1.0;
+      flowVelocity = flowFactor * pressureSign * Math.sqrt(absolutePressure);
+      const residual = pipeEntrancePressure - returnedPressure - this.characteristicImpedance * (flowVelocity + pumpedFlow);
+      const derivative = 1.0 + this.characteristicImpedance * flowFactor * 0.5 / Math.sqrt(absolutePressure);
+      pipeEntrancePressure -= residual / derivative;
+    }
+
+    const finalDifference = sourcePressure - pipeEntrancePressure;
+    flowVelocity = flowFactor * (finalDifference >= 0.0 ? 1.0 : -1.0) * Math.sqrt(Math.max(Math.abs(finalDifference), 0.0));
+
+    // Hikichi et al. Eq. (1), semi-implicit integration.
+    const pressureForce = (1.5 * this.reedWidth * this.reedLength / effectiveMass) * (sourcePressure - pipeEntrancePressure);
+    const dampingForce = (reedOmega / params.reedQ) * this.tipVelocity;
+    const restoringForce = reedOmega * reedOmega * this.tipDisplacement;
+    const tipAcceleration = pressureForce - dampingForce - restoringForce;
+    this.tipVelocity += tipAcceleration * dt;
+    this.tipDisplacement += this.tipVelocity * dt;
+
+    // Guard only against numerical runaway outside any plausible reed motion.
+    if (!Number.isFinite(this.tipDisplacement) || Math.abs(this.tipDisplacement) > 0.0025) {
+      this.tipDisplacement = Math.max(-0.0025, Math.min(0.0025, Number.isFinite(this.tipDisplacement) ? this.tipDisplacement : 0.0));
+      this.tipVelocity *= 0.15;
+    }
+
+    const netInputFlow = flowVelocity + 0.4 * this.reedWidth * this.reedLength * this.tipVelocity;
+    const outgoingWave = pipeEntrancePressure + this.characteristicImpedance * netInputFlow;
+    this.delayBuffer[this.writeIndex] = outgoingWave;
+    this.writeIndex = (this.writeIndex + 1) % bufferLength;
+
+    // Radiation proxy: remove DC from the entrance travelling wave. The 2003
+    // paper explicitly separates the pipe model from radiation; exact external
+    // radiation is therefore not claimed here.
+    const acWave = outgoingWave - this.previousWave + 0.995 * this.dcBlockState;
+    this.previousWave = outgoingWave;
+    this.dcBlockState = acWave;
+    return acWave * this.gate;
+  }
+}
+
+class ShoPhysicalEngine {
+  constructor(sampleRateValue) {
+    this.fs = sampleRateValue;
+    this.noteDefs = [
+      {name:'乞',freq:430.0,reedRatio:0.990},{name:'一',freq:483.75,reedRatio:0.980},
+      {name:'工',freq:544.21875,reedRatio:0.980},{name:'凢',freq:573.3333333,reedRatio:0.985},
+      {name:'乙',freq:645.0,reedRatio:0.980},{name:'下',freq:725.625,reedRatio:0.980},
+      {name:'十',freq:765.3076172,reedRatio:0.975},{name:'美',freq:816.328125,reedRatio:0.975},
+      {name:'行',freq:860.0,reedRatio:0.975},{name:'七',freq:967.5,reedRatio:0.975},
+      {name:'比',freq:1020.4101563,reedRatio:0.970},{name:'言',freq:1088.4375,reedRatio:0.970},
+      {name:'上',freq:1147.9614258,reedRatio:0.965},{name:'八',freq:1290.0,reedRatio:0.965},
+      {name:'千',freq:1451.25,reedRatio:0.960}
+    ];
+    this.pipes = this.noteDefs.map((noteDef, pipeIndex) => new ShoPipeModel(this.fs, noteDef, pipeIndex));
+    this.params = {pressure:600.0, reedQ:20.0, massRate:0.15, reflection:0.985, pipeScale:1.0, reedCents:0.0, transitionMs:120.0, master:0.28, direction:1.0};
+    this.pressureState = 0.0;
+    this.lowpass1 = 0.0;
+    this.lowpass2 = 0.0;
+    this.peak = 0.0;
+    this.paperMode = false;
+  }
+  setActiveNames(activeNames) {
+    const activeSet = new Set(activeNames);
+    for (const pipe of this.pipes) pipe.gateTarget = activeSet.has(pipe.note.name) ? 1.0 : 0.0;
+  }
+  setParams(nextParams) { Object.assign(this.params, nextParams); }
+  reset() { for (const pipe of this.pipes) pipe.reset(); this.pressureState=0; this.lowpass1=0; this.lowpass2=0; }
+  setPaperMode(enabled) {
+    this.paperMode = enabled;
+    const ichi = this.pipes.find(pipe => pipe.note.name === '一');
+    if (ichi) ichi.note.reedRatio = enabled ? (470.0 / 483.75) : 0.980;
+  }
+  render(outputChannel) {
+    const pressureTarget = this.params.direction * this.params.pressure;
+    const pressureCoefficient = 1.0 - Math.exp(-1.0 / (this.fs * 0.060));
+    // 2-pole post radiation lowpass ~12 kHz. This is a safety / radiation proxy,
+    // not part of the reed oscillator feedback loop.
+    const cutoff = 12000.0;
+    const lowpassCoefficient = 1.0 - Math.exp(-2.0 * Math.PI * cutoff / this.fs);
+    let blockPeak = 0.0;
+    for (let sampleIndex = 0; sampleIndex < outputChannel.length; sampleIndex++) {
+      this.pressureState += (pressureTarget - this.pressureState) * pressureCoefficient;
+      let mixedPressure = 0.0;
+      for (const pipe of this.pipes) mixedPressure += pipe.renderOne(this.pressureState, this.params);
+      mixedPressure *= 0.00062;
+      this.lowpass1 += lowpassCoefficient * (mixedPressure - this.lowpass1);
+      this.lowpass2 += lowpassCoefficient * (this.lowpass1 - this.lowpass2);
+      const safeSignal = Math.tanh(this.lowpass2 * this.params.master);
+      outputChannel[sampleIndex] = safeSignal;
+      blockPeak = Math.max(blockPeak, Math.abs(safeSignal));
+    }
+    this.peak = blockPeak;
+    return blockPeak;
+  }
+}
+`;
+
+let audioContext = null;
+let synthNode = null;
+let fallbackEngine = null;
+let analyser = null;
+let activeNames = [];
+let direction = 1;
+let paperMode = false;
+
+const $ = id => document.getElementById(id);
+const statusEl = $('status');
+
+function currentParams(){
+  return {
+    pressure:+$('pressure').value,
+    reedQ:+$('reedQ').value,
+    massRate:+$('massRate').value,
+    reflection:+$('reflection').value,
+    pipeScale:+$('pipeScale').value,
+    reedCents:+$('reedCents').value,
+    transitionMs:+$('transitionMs').value,
+    master:+$('master').value,
+    direction
+  };
+}
+
+function sendMessage(message){
+  if (synthNode && synthNode.port) synthNode.port.postMessage(message);
+  if (fallbackEngine) {
+    if (message.type==='params') fallbackEngine.setParams(message.params);
+    else if (message.type==='active') fallbackEngine.setActiveNames(message.names);
+    else if (message.type==='reset') fallbackEngine.reset();
+    else if (message.type==='paper') fallbackEngine.setPaperMode(message.enabled);
+  }
+}
+
+async function ensureAudio(){
+  if (audioContext) { await audioContext.resume(); return; }
+  audioContext = new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});
+  analyser = audioContext.createAnalyser(); analyser.fftSize=512;
+  const outputFilter = audioContext.createBiquadFilter();
+  outputFilter.type='lowpass'; outputFilter.frequency.value=15000; outputFilter.Q.value=0.3;
+
+  let workletOK = false;
+  if (audioContext.audioWorklet) {
+    try {
+      const workletSource = ENGINE_CORE + String.raw`
+class ShoWorkletProcessor extends AudioWorkletProcessor {
+  constructor(){
+    super();
+    this.engine = new ShoPhysicalEngine(sampleRate);
+    this.counter = 0;
+    this.port.onmessage = event => {
+      const message = event.data;
+      if (message.type === 'params') this.engine.setParams(message.params);
+      else if (message.type === 'active') this.engine.setActiveNames(message.names);
+      else if (message.type === 'reset') this.engine.reset();
+      else if (message.type === 'paper') this.engine.setPaperMode(message.enabled);
+    };
+  }
+  process(inputs, outputs){
+    const channel = outputs[0][0];
+    const peak = this.engine.render(channel);
+    this.counter++;
+    if ((this.counter & 15) === 0) this.port.postMessage({type:'meter', peak});
+    return true;
+  }
+}
+registerProcessor('sho-physical-processor', ShoWorkletProcessor);
+`;
+      const blob = new Blob([workletSource], {type:'text/javascript'});
+      const moduleURL = URL.createObjectURL(blob);
+      await audioContext.audioWorklet.addModule(moduleURL);
+      URL.revokeObjectURL(moduleURL);
+      synthNode = new AudioWorkletNode(audioContext, 'sho-physical-processor', {numberOfInputs:0, numberOfOutputs:1, outputChannelCount:[1]});
+      synthNode.port.onmessage = event => { if (event.data.type==='meter') setMeter(event.data.peak); };
+      workletOK = true;
+      statusEl.textContent = 'AudioWorklet / 物理モデル稼働';
+    } catch (error) {
+      console.warn('AudioWorklet failed; falling back to ScriptProcessor.', error);
+    }
+  }
+  if (!workletOK) {
+    const EngineConstructor = new Function(ENGINE_CORE + '\nreturn ShoPhysicalEngine;')();
+    fallbackEngine = new EngineConstructor(audioContext.sampleRate);
+    synthNode = audioContext.createScriptProcessor(512, 0, 1);
+    synthNode.onaudioprocess = event => {
+      const channel = event.outputBuffer.getChannelData(0);
+      const peak = fallbackEngine.render(channel);
+      setMeter(peak);
+    };
+    statusEl.textContent = 'ScriptProcessor fallback / file://互換';
+  }
+  synthNode.connect(outputFilter).connect(analyser).connect(audioContext.destination);
+  sendMessage({type:'params',params:currentParams()});
+  sendMessage({type:'active',names:activeNames});
+  sendMessage({type:'paper',enabled:paperMode});
+  await audioContext.resume();
+}
+
+function setMeter(value){ $('meterFill').style.width = Math.min(100, value*100).toFixed(1)+'%'; }
+
+function selectActive(names, sourceButton){
+  activeNames = [...names];
+  document.querySelectorAll('#chordGrid button,#noteGrid button,#paperBtn').forEach(button=>button.classList.remove('on'));
+  if (sourceButton) sourceButton.classList.add('on');
+  sendMessage({type:'active',names:activeNames});
+  updateTable();
+}
+
+function updateTable(){
+  const params=currentParams();
+  const tbody=$('activeTable'); tbody.innerHTML='';
+  const selected=NOTE_DEFS.filter(note=>activeNames.includes(note.name));
+  for(const note of selected){
+    const reedFrequency=note.freq*note.reedRatio*Math.pow(2,params.reedCents/1200);
+    const pipeLength=0.241*(483.75/note.freq)*params.pipeScale;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${note.name}</td><td>${note.note}</td><td>${note.freq.toFixed(2)}</td><td>${reedFrequency.toFixed(2)} Hz</td><td>${(pipeLength*100).toFixed(2)} cm</td>`;
+    tbody.appendChild(tr);
+  }
+  if(!selected.length){ const tr=document.createElement('tr'); tr.innerHTML='<td colspan="5" style="text-align:center;color:#777">停止中</td>'; tbody.appendChild(tr); }
+}
+
+function setupButtons(){
+  for(const [chordName,names] of Object.entries(CHORDS)){
+    const button=document.createElement('button'); button.textContent=chordName; button.title=names.join('・');
+    button.onclick=async()=>{await ensureAudio(); paperMode=false; sendMessage({type:'paper',enabled:false}); selectActive(names,button);};
+    $('chordGrid').appendChild(button);
+  }
+  for(const note of NOTE_DEFS){
+    const button=document.createElement('button'); button.innerHTML=`${note.name}<br><span class="tiny">${note.note}</span>`;
+    button.onclick=async()=>{await ensureAudio(); paperMode=false; sendMessage({type:'paper',enabled:false}); selectActive([note.name],button);};
+    $('noteGrid').appendChild(button);
+  }
+}
+
+const controls=[
+  ['pressure','pressureV',v=>`${(+v).toFixed(0)} Pa`],['reedQ','reedQV',v=>(+v).toFixed(1)],
+  ['massRate','massRateV',v=>(+v).toFixed(2)],['reflection','reflectionV',v=>(+v).toFixed(3)],
+  ['pipeScale','pipeScaleV',v=>`${(+v*100).toFixed(1)} %`],['reedCents','reedCentsV',v=>`${(+v).toFixed(1)} ct`],
+  ['transitionMs','transitionMsV',v=>`${(+v).toFixed(0)} ms`],['master','masterV',v=>(+v).toFixed(2)]
+];
+for(const [id,out,format] of controls){
+  const input=$(id); const refresh=()=>{$(out).textContent=format(input.value); sendMessage({type:'params',params:currentParams()}); updateTable();};
+  input.addEventListener('input',refresh); refresh();
+}
+
+$('startBtn').onclick=async()=>{await ensureAudio(); statusEl.textContent += activeNames.length?'':' — 合竹か一竹を選択';};
+$('stopBtn').onclick=()=>selectActive([],null);
+$('dirBtn').onclick=async()=>{await ensureAudio(); direction*=-1; $('dirBtn').textContent=direction>0?'吹く →':'← 吸う'; sendMessage({type:'params',params:currentParams()});};
+$('paperBtn').onclick=async()=>{
+  await ensureAudio(); paperMode=true; sendMessage({type:'paper',enabled:true});
+  $('pressure').value='600'; $('reedQ').value='20'; $('massRate').value='0.15'; $('reflection').value='0.985'; $('pipeScale').value='1'; $('reedCents').value='0';
+  for(const [id,out,format] of controls){ $(out).textContent=format($(id).value); }
+  sendMessage({type:'params',params:currentParams()});
+  selectActive(['一'],$('paperBtn'));
+  statusEl.textContent='論文検証モード: 一 B4 / L=24.1 cm / fr=470 Hz';
+};
+
+setupButtons(); updateTable();
+</script>
+</body>
+</html>
