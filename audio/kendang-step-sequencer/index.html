@@ -1,0 +1,1913 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Indonesian Kendang Step Sequencer v02</title>
+<style>
+:root{color-scheme:dark;--bg:#10100f;--panel:#191816;--panel2:#201e1a;--line:#3b3730;--muted:#aaa394;--text:#f2ecdf;--gold:#e8b85b;--red:#b75d46;--green:#7da875;--blue:#7598a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 15% 0,#2a241a 0,#131210 40%,#0d0d0c 100%);color:var(--text);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:1180px;margin:auto;padding:14px 14px 88px}
+h1{font-size:1.3rem;margin:0 0 4px}
+.subtitle{color:var(--muted);font-size:.78rem;margin-bottom:12px}
+.panel{background:rgba(25,24,22,.94);border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.controls{display:grid;grid-template-columns:repeat(6,minmax(110px,1fr));gap:8px}
+label.control{display:block;background:var(--panel2);border:1px solid #35322c;border-radius:10px;padding:8px}
+label.control span{display:flex;justify-content:space-between;color:var(--muted);font-size:.68rem;margin-bottom:4px}
+input,select,button{font:inherit}
+input[type=range]{width:100%;accent-color:var(--gold)}
+input[type=number],select{width:100%;background:#121210;color:var(--text);border:1px solid #4b463d;border-radius:8px;padding:7px}
+.presetRow{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:8px}
+#grid{overflow-x:auto;padding-bottom:6px}
+.groupLabel{position:sticky;left:0;width:max-content;background:#2a241c;color:#f2cc82;border:1px solid #514633;border-radius:999px;padding:3px 9px;margin:12px 0 5px;font-weight:700;font-size:.68rem;z-index:2}
+.seqRow{display:grid;grid-template-columns:170px max-content;align-items:center;gap:8px;margin:4px 0;min-width:max-content}
+.headerRow{margin-bottom:8px}
+.trackName{position:sticky;left:0;z-index:3;display:flex;align-items:center;gap:7px;min-height:30px;background:linear-gradient(90deg,#191816 86%,rgba(25,24,22,0));padding-right:12px}
+.trackName b{display:block;font-size:.72rem}
+.trackName small{display:block;color:#8f887c;font-size:.60rem}
+.muteButton{width:28px;height:28px;border-radius:8px;border:1px solid #49443b;background:#25221e;color:#d9d0c1;padding:0}
+.muteButton[data-muted="1"]{background:#542e2b;color:#ffb6a9;border-color:#8a4940}
+.stepStrip{display:grid;grid-template-columns:repeat(var(--step-count),28px);gap:4px}
+.stepCell{width:28px;height:28px;padding:0;border-radius:6px;border:1px solid #403d37;background:#171715;color:transparent;transition:transform .05s,box-shadow .08s,background .08s}
+.stepCell:hover{transform:translateY(-1px)}
+.stepCell[data-state="1"]{background:#4c493f}
+.stepCell[data-state="2"]{background:#7d6842}
+.stepCell[data-state="3"]{background:#b36d37}
+.stepCell[data-state="4"]{background:#7c4c67;box-shadow:inset 0 0 0 2px #d28cab}
+.stepCell.beatStart,.stepNumber.beatStart{border-left:2px solid #8d7852}
+.stepCell.playing{outline:2px solid #fff2b5;outline-offset:1px}
+.stepNumber{width:28px;text-align:center;color:#777166;font:600 .56rem ui-monospace,monospace}
+.status{border-left:4px solid #8a7c67;background:#121210;border-radius:8px;padding:9px 10px;color:#c8c0b4}
+.status.ok{border-color:var(--green)}
+.status.error{border-color:var(--red);white-space:pre-wrap}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:6px;margin-top:8px}
+.stats div{background:#121210;border-radius:8px;padding:7px}
+.stats b{display:block;color:#90897d;font-size:.60rem}
+.stats span{font:700 .68rem ui-monospace,monospace}
+.legend{display:flex;flex-wrap:wrap;gap:8px;color:#a69f92;font-size:.68rem}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px;border:1px solid #4a463f}
+.notes{font-size:.72rem;color:#aaa294}
+.notes strong{color:#ddd3c2}
+.transport{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(13,13,12,.97);border-top:1px solid #39352f;padding:8px max(10px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));display:grid;grid-template-columns:minmax(150px,1fr) 110px 88px 88px;gap:7px}
+.transport button{height:46px;border-radius:10px;border:1px solid #4b453b;background:#27231e;color:var(--text);font-weight:800}
+.transport .render{background:#5b4223;border-color:#8a6534}
+.transport .stop{background:#3c2825}
+.transport button:disabled{opacity:.42}
+@media(max-width:820px){.controls{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.seqRow{grid-template-columns:142px max-content}.trackName{font-size:.68rem}.transport{grid-template-columns:1fr 74px 68px 68px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>Indonesian Kendang Step Sequencer v02</h1>
+  <div class="subtitle">Dedicated Gupekan Wadon/Lanang physical model + tuned Javanese Ciblon / Ketipung / Kendang Ageng prototypes. 32-step grid, seamless physical-model loop render. <span style="opacity:.7">Build 2026-09-25.2</span></div>
+
+  <section class="panel">
+    <div class="controls">
+      <label class="control"><span><b>BPM</b><output id="bpmOut"></output></span><input id="bpm" type="range" min="60" max="220" step="1" value="132"></label>
+      <label class="control"><span><b>Swing</b><output id="swingOut"></output></span><input id="swing" type="range" min="0" max="60" step="1" value="8"></label>
+      <label class="control"><span><b>Humanize</b><output id="humanizeOut"></output></span><input id="humanize" type="range" min="0" max="12" step="0.5" value="1.5"></label>
+      <label class="control"><span><b>Master</b><output id="masterOut"></output></span><input id="master" type="range" min="-18" max="3" step="0.5" value="-6"></label>
+      <label class="control"><span><b>Steps</b><span>16th</span></span><select id="steps"><option value="16">16 / 1 bar</option><option value="32" selected>32 / 2 bars</option></select></label>
+      <label class="control"><span><b>Physics quality</b><span>CPU</span></span><select id="quality"><option value="ECO" selected>ECO</option><option value="NORMAL">NORMAL</option></select></label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="presetRow">
+      <select id="preset">
+        <option value="gupekan" selected>Gupekan call / response — sketch</option>
+        <option value="ciblon">Ciblon + Tipung drive — sketch</option>
+        <option value="full">Full membrane lab — experimental</option>
+        <option value="empty">Empty</option>
+      </select>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="audioTest">Audio test</button>
+        <button id="htmlAudioPlay" disabled>HTMLAudio fallback</button>
+        <button id="clear">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="legend">
+      <span><i style="background:#171715"></i>off</span>
+      <span><i style="background:#4c493f"></i>soft</span>
+      <span><i style="background:#7d6842"></i>normal</span>
+      <span><i style="background:#b36d37"></i>accent</span>
+      <span><i style="background:#7c4c67"></i>flam</span>
+      <span>Click: +1 · Shift-click / right-click: −1</span>
+    </div>
+    <div id="grid"></div>
+  </section>
+
+  <section class="panel">
+    <div id="status" class="status">Ready.</div>
+    <div id="stats" class="stats"></div>
+    <div id="audioDiag" class="notes" style="margin-top:8px">Audio: not initialized.</div>
+  </section>
+
+  <section class="panel notes">
+    <strong>音源構成:</strong> Gupekan Wadon/Lanangは FM/PM Indonesian Ensemble v12 の専用Kendang物理モデルとプロファイルをそのまま継承。
+    Ciblon / Ketipung / Kendang Ageng は同じ非対称二面膜・胴・空洞結合モデルを基に、寸法、膜張力、減衰、接触条件を役割別に再チューニングした prototype。
+    追加3音源は実測個体へのフィッティング前なので、民族楽器の厳密な再現ではなく物理モデル上の近似です。
+  </section>
+</div>
+
+<div class="transport">
+  <button id="render" class="render">▶ Render & Play</button>
+  <button id="playCached" disabled>Play</button>
+  <button id="stop" class="stop">■ Stop</button>
+  <button id="wav" disabled>WAV</button>
+</div>
+
+<script id="engine-source" type="text/plain">// --- v9 Kendang physical extension ---
+(function(global){
+"use strict";
+const PI=Math.PI, TWO_PI=2*Math.PI, LN1000=Math.log(1000), EPS=1e-12;
+function oscillatorCoefficients(omega,sigma,sr){
+  const dt=1/sr,e=Math.exp(-sigma*dt),disc=omega*omega-sigma*sigma;let c,phi;
+  if(disc>1e-12){const wd=Math.sqrt(disc);c=Math.cos(wd*dt);phi=Math.sin(wd*dt)/wd;}
+  else if(disc<-1e-12){const d=Math.sqrt(-disc);c=Math.cosh(d*dt);phi=Math.sinh(d*dt)/d;}
+  else {c=1;phi=dt;}
+  return {a11:e*(c+sigma*phi),a12:e*phi,a21:e*(-omega*omega*phi),a22:e*(c-sigma*phi),invOmega2:1/Math.max(EPS,omega*omega)};
+}
+function prepareOscillatorMode(md,sr){Object.assign(md,oscillatorCoefficients(md.omega,md.sigma,sr));return md;}
+function preparePitchTable(md,sr,maxScale=1.35,steps=96){
+  const table=new Float64Array(steps*5);for(let j=0;j<steps;j++){const scale=1+(maxScale-1)*j/(steps-1),c=oscillatorCoefficients(md.omega*scale,md.sigma,sr),o=j*5;table[o]=c.a11;table[o+1]=c.a12;table[o+2]=c.a21;table[o+3]=c.a22;table[o+4]=c.invOmega2;}md.pitchTable=table;md.pitchTableSteps=steps;md.pitchTableMaxScale=maxScale;return md;
+}
+function pitchedCoefficients(md,scale){
+  if(!md.pitchTable||scale<=1)return [md.a11,md.a12,md.a21,md.a22,md.invOmega2];
+  const steps=md.pitchTableSteps,maxScale=md.pitchTableMaxScale,u=clamp((scale-1)/(maxScale-1),0,1)*(steps-1),j=Math.min(steps-2,Math.floor(u)),f=u-j,o=j*5,t=md.pitchTable;
+  return [t[o]+(t[o+5]-t[o])*f,t[o+1]+(t[o+6]-t[o+1])*f,t[o+2]+(t[o+7]-t[o+2])*f,t[o+3]+(t[o+8]-t[o+3])*f,t[o+4]+(t[o+9]-t[o+4])*f];
+}
+function pitchedCoefficientsInto(md,scale,out){
+  if(!md.pitchTable||scale<=1){out[0]=md.a11;out[1]=md.a12;out[2]=md.a21;out[3]=md.a22;out[4]=md.invOmega2;return out;}
+  const steps=md.pitchTableSteps,maxScale=md.pitchTableMaxScale,u=clamp((scale-1)/(maxScale-1),0,1)*(steps-1),j=Math.min(steps-2,Math.floor(u)),f=u-j,o=j*5,t=md.pitchTable;
+  out[0]=t[o]+(t[o+5]-t[o])*f;out[1]=t[o+1]+(t[o+6]-t[o+1])*f;out[2]=t[o+2]+(t[o+7]-t[o+2])*f;out[3]=t[o+3]+(t[o+8]-t[o+3])*f;out[4]=t[o+4]+(t[o+9]-t[o+4])*f;return out;
+}
+function truePeak4xEstimate(samples){
+  let peak=0;for(let i=0;i<samples.length;i++)peak=Math.max(peak,Math.abs(samples[i]));
+  for(let i=1;i+2<samples.length;i++){const p0=samples[i-1],p1=samples[i],p2=samples[i+1],p3=samples[i+2];for(const t of [0.25,0.5,0.75]){const t2=t*t,t3=t2*t,y=.5*((2*p1)+(-p0+p2)*t+(2*p0-5*p1+4*p2-p3)*t2+(-p0+3*p1-3*p2+p3)*t3);peak=Math.max(peak,Math.abs(y));}}
+  return peak;
+}
+
+const BESSEL_ZEROS=[[0,1,2.4048255576957724],[0,2,5.520078110286311],[0,3,8.653727912911013],[0,4,11.791534439014281],[0,5,14.930917708487787],[0,6,18.071063967910924],[0,7,21.21163662987926],[0,8,24.352471530749302],[0,9,27.493479132040253],[0,10,30.634606468431976],[0,11,33.77582021357357],[0,12,36.917098353664045],[0,13,40.05842576462824],[0,14,43.19979171317673],[0,15,46.341188371661815],[0,16,49.482609897397815],[1,1,3.8317059702075125],[1,2,7.015586669815619],[1,3,10.173468135062722],[1,4,13.323691936314223],[1,5,16.470630050877634],[1,6,19.615858510468243],[1,7,22.760084380592772],[1,8,25.903672087618382],[1,9,29.046828534916855],[1,10,32.189679910974405],[1,11,35.33230755008386],[1,12,38.474766234771614],[1,13,41.61709421281445],[1,14,44.75931899765282],[1,15,47.90146088718545],[1,16,51.043535183571514],[2,1,5.135622301840683],[2,2,8.417244140399866],[2,3,11.61984117214906],[2,4,14.795951782351262],[2,5,17.959819494987826],[2,6,21.116997053021844],[2,7,24.2701123135731],[2,8,27.420573549984557],[2,9,30.569204495516395],[2,10,33.7165195092227],[2,11,36.86285651128381],[2,12,40.008446733478195],[2,13,43.153453778371464],[2,14,46.29799667723692],[2,15,49.442164110416876],[2,16,52.58602350681596],[3,1,6.380161895923984],[3,2,9.76102312998167],[3,3,13.015200721698434],[3,4,16.223466160318768],[3,5,19.409415226435012],[3,6,22.582729593104443],[3,7,25.748166699294977],[3,8,28.908350780921758],[3,9,32.06485240709771],[3,10,35.218670738610115],[3,11,38.37047243475695],[3,12,41.52071967040678],[3,13,44.669743116617255],[3,14,47.8177856915333],[3,15,50.96502990620518],[3,16,54.11161556982187],[4,1,7.588342434503804],[4,2,11.064709488501185],[4,3,14.37253667161759],[4,4,17.615966049804832],[4,5,20.826932956962388],[4,6,24.01901952477111],[4,7,27.19908776598125],[4,8,30.371007667117247],[4,9,33.53713771181922],[4,10,36.69900112874465],[4,11,39.85762730218089],[4,12,43.01373772335443],[4,13,46.167853512924374],[4,14,49.32036068639027],[4,15,52.471551398458026],[4,16,55.62165090976798],[5,1,8.771483815959954],[5,2,12.338604197466944],[5,3,15.70017407971167],[5,4,18.98013387517992],[5,5,22.217799896561267],[5,6,25.430341154222702],[5,7,28.62661830729114],[5,8,31.811716724047763],[5,9,34.988781294559296],[5,10,38.15986856196713],[5,11,41.32638325404741],[5,12,44.48931912321967],[5,13,47.649399806697055],[5,14,50.80716520300633],[5,15,53.96302655837815],[5,16,57.11730278150425],[6,1,9.936109524217686],[6,2,13.589290170541217],[6,3,17.003819667816014],[6,4,20.320789213566506],[6,5,23.58608443558139],[6,6,26.820151983411403],[6,7,30.03372238657047],[6,8,33.23304176284712],[6,9,36.42201966825846],[6,10,39.603239416075404],[6,11,42.77848161319951],[6,12,45.949015998042604],[6,13,49.11577372476426],[6,14,52.27945390360105],[6,15,55.44059206885315],[6,16,58.59960563123769],[7,1,11.086370019245084],[7,2,14.821268727013171],[7,3,18.28758283248173],[7,4,21.6415410198484],[7,5,24.934927887673023],[7,6,28.191188459483197],[7,7,31.42279419226558],[7,8,34.637089352069324],[7,9,37.83871738285361],[7,10,41.03077369158554],[7,11,44.21540850526126],[7,12,47.39416575557051],[7,13,50.568184679795564],[7,14,53.73832537196329],[7,15,56.905249991978785],[7,16,60.069476998277],[8,1,12.225092264004656],[8,2,16.03777419088771],[8,3,19.554536430997054],[8,4,22.945173131874622],[8,5,26.266814641176644],[8,6,29.54565967099855],[8,7,32.795800037341465],[8,8,36.02561506386957],[8,9,39.24044799517814],[8,10,42.44388774327356],[8,11,45.638444182199144],[8,12,48.82593038155386],[8,13,52.0076914566869],[8,14,55.184747939289046],[8,15,58.35788902526969],[8,16,61.527735166816],[9,1,13.35430047743533],[9,2,17.24122038248913],[9,3,20.807047789264107],[9,4,24.23388525775055],[9,5,27.583748963573008],[9,6,30.885378967696674],[9,7,34.154377923855094],[9,8,37.400099977156586],[9,9,40.628553718964525],[9,10,43.84380142033734],[9,11,47.04870073765403],[9,12,50.24532695530538],[9,13,53.43522715704206],[9,14,56.619580266508436],[9,15,59.79930163096023],[9,16,62.9751135342416],[10,1,14.47550068655454],[10,2,18.43346366696658],[10,3,22.0469853646978],[10,4,25.509450554182827],[10,5,28.88737506353046],[10,6,32.211856199712734],[10,7,35.499909205373854],[10,8,38.76180701788165],[10,9,42.0041902366718],[10,10,45.231574103535046],[10,11,48.44715138726939],[10,12,51.65325166816586],[10,13,54.85161907596335],[10,14,58.043587928232476],[10,15,61.23019797729268],[10,16,64.41227241292435],[11,1,15.589847884455486],[11,2,19.61596690396692],[11,3,23.27585372626341],[11,4,26.77332254550954],[11,5,30.17906117878486],[11,6,33.526364075588624],[11,7,36.8335713418949],[11,8,40.11182327095424],[11,9,43.36836094752171],[11,10,46.60813267627494],[11,11,49.83465351039673],[11,12,53.050498959135055],[11,13,56.25760471511448],[11,14,59.457456908388004],[11,15,62.65121738820291],[11,16,65.8398088044451],[12,1,16.698249933848246],[12,2,20.789906360078444],[12,3,24.494885043881354],[12,4,28.026709949973128],[12,5,31.45996003531804],[12,6,34.82998699029024],[12,7,38.15637750468135],[12,8,41.45109230793968],[12,9,44.721943543191145],[12,10,47.97429353126905],[12,11,51.21196700410107],[12,12,54.43777692832508],[12,13,57.65384481190694],[12,14,60.8618046824805],[12,15,64.06293782485014],[12,16,67.25826455634123],[13,1,17.80143515328244],[13,2,21.95624406783631],[13,3,25.705103053924724],[13,4,29.270630441874804],[13,5,32.7310533109784],[13,6,36.123657666448764],[13,7,39.46920682524388],[13,8,42.78043926544716],[13,9,46.06571091157561],[13,10,49.330780096443526],[13,11,52.5797690643834],[13,12,55.81571987630578],[13,13,59.04093403724927],[13,14,62.25718939373173],[13,15,65.46588379723212],[13,16,68.6681332168911],[14,1,18.899997953174022],[14,2,23.115778347252757],[14,3,26.907368976182106],[14,4,30.505950163896035],[14,5,33.99318498478154],[14,6,37.408185128639694],[14,7,40.772827853501866],[14,8,44.1005905657983],[14,9,47.40034778054323],[14,10,50.6782369464799],[14,11,53.93866620912693],[14,12,57.184898598119304],[14,13,60.4194098521303],[14,14,63.64411750896228],[14,15,66.8605330122601],[14,16,70.06986583319646],[15,1,19.994430629816385],[15,2,24.269180026208915],[15,3,28.10241523166776],[15,4,31.733413344374544],[15,5,35.24708678579333],[15,6,38.684276389289565],[15,7,42.067916998656834],[15,8,45.412189614733116],[15,9,48.72646411624069],[15,10,52.0172412788816],[15,11,55.28920414656004],[15,12,58.54582890438507],[15,13,61.78975989594504],[15,14,65.02305025104225],[15,15,68.24732199642078],[15,16,71.46387588502266],[16,1,21.085146113064717],[16,2,25.41701900634276],[16,3,29.29087069631341],[16,4,32.953664885068754],[16,5,36.49339791244648],[16,6,39.952553490221185],[16,7,43.355073203851845],[16,8,46.71580943502576],[16,9,50.04460601684252],[16,10,53.348312331852874],[16,11,56.631875942813004],[16,12,59.89897872877684],[16,13,63.15242819338028],[16,14,66.39440903858825],[16,15,69.62665087986971],[16,16,72.85054350675424]];
+
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+function lerp(a,b,t){return a+(b-a)*t;}
+function dbToGain(db){return Math.pow(10,db/20);}
+function xorshift32(seed){let s=(seed|0)||0x12345678;return function(){s^=s<<13;s^=s>>>17;s^=s<<5;return ((s>>>0)/4294967296);};}
+function gaussian01(rng){let u=Math.max(1e-9,rng()),v=Math.max(1e-9,rng());return Math.sqrt(-2*Math.log(u))*Math.cos(TWO_PI*v);}
+
+// Numerical Recipes/Cephes-style approximations for integer Bessel J0/J1, then upward recurrence.
+function besselJ0(x){
+  let ax=Math.abs(x),y,z,xx,ans1,ans2;
+  if(ax<8.0){
+    y=x*x;
+    ans1=57568490574.0+y*(-13362590354.0+y*(651619640.7+y*(-11214424.18+y*(77392.33017+y*(-184.9052456)))));
+    ans2=57568490411.0+y*(1029532985.0+y*(9494680.718+y*(59272.64853+y*(267.8532712+y))));
+    return ans1/ans2;
+  }
+  z=8.0/ax;y=z*z;xx=ax-0.785398164;
+  ans1=1.0+y*(-0.1098628627e-2+y*(0.2734510407e-4+y*(-0.2073370639e-5+y*0.2093887211e-6)));
+  ans2=-0.1562499995e-1+y*(0.1430488765e-3+y*(-0.6911147651e-5+y*(0.7621095161e-6-y*0.934945152e-7)));
+  return Math.sqrt(0.636619772/ax)*(Math.cos(xx)*ans1-z*Math.sin(xx)*ans2);
+}
+function besselJ1(x){
+  let ax=Math.abs(x),y,z,xx,ans1,ans2,ans;
+  if(ax<8.0){
+    y=x*x;
+    ans1=x*(72362614232.0+y*(-7895059235.0+y*(242396853.1+y*(-2972611.439+y*(15704.48260+y*(-30.16036606))))));
+    ans2=144725228442.0+y*(2300535178.0+y*(18583304.74+y*(99447.43394+y*(376.9991397+y))));
+    return ans1/ans2;
+  }
+  z=8.0/ax;y=z*z;xx=ax-2.356194491;
+  ans1=1.0+y*(0.183105e-2+y*(-0.3516396496e-4+y*(0.2457520174e-5+y*(-0.240337019e-6))));
+  ans2=0.04687499995+y*(-0.2002690873e-3+y*(0.8449199096e-5+y*(-0.88228987e-6+y*0.105787412e-6)));
+  ans=Math.sqrt(0.636619772/ax)*(Math.cos(xx)*ans1-z*Math.sin(xx)*ans2);
+  return x<0?-ans:ans;
+}
+function besselJInt(n,x){
+  if(n===0)return besselJ0(x);
+  if(n===1)return besselJ1(x);
+  const ax=Math.abs(x);
+  if(ax<1e-12)return 0;
+  // Upward recurrence is numerically unstable for high order at small x.
+  // Use the power series there, and upward recurrence only once x is safely large.
+  if(ax<n+8){
+    let fact=1;for(let k=2;k<=n;k++)fact*=k;
+    let term=Math.pow(ax*0.5,n)/fact,sum=term;
+    const xx=ax*ax*0.25;
+    for(let k=1;k<120;k++){
+      term*=-xx/(k*(n+k));
+      sum+=term;
+      if(Math.abs(term)<1e-16*Math.max(1,Math.abs(sum)))break;
+    }
+    if(x<0&&(n&1))sum=-sum;
+    return sum;
+  }
+  let jm1=besselJ0(x),j=besselJ1(x);
+  for(let k=1;k<n;k++){const jp=(2*k/x)*j-jm1;jm1=j;j=jp;}
+  return j;
+}
+
+function modalRadiationPattern(order,kR,theta,directivity=1){
+  const th=Math.abs(theta),s=Math.abs(Math.sin(th)),kr=Math.max(0,kR);let physical;
+  if(order===0){physical=1/Math.sqrt(1+0.18*kr*kr*s*s);}
+  else {const ord=Math.min(5,Math.max(1,order)),multipole=Math.pow(kr/(1+kr),Math.min(2,ord));physical=Math.pow(s,Math.min(4,ord))*multipole;}
+  return lerp(1,physical,clamp(directivity,0,1));
+}
+function reciprocalVelocityCoupling(membraneVelocity,shellVelocity,gain){
+  const g=Number.isFinite(gain)?gain:0,membraneDrive=-g*shellVelocity,shellDrive=g*membraneVelocity;
+  return {membraneDrive,shellDrive,power:membraneVelocity*membraneDrive+shellVelocity*shellDrive};
+}
+
+const DEFAULT_PARAMS={
+ geometry:{diameterCm:90,frontDiameterCm:90,rearDiameterCm:90,bodyLengthCm:114,maxBodyDiameterCm:96,shellThicknessCm:4,bodyCurvature:0.58,cavityVolumeCorrection:1.0,pakelitDiameterCm:0,pakelitLengthCm:4,pakelitPosition:0.50,pakelitLoss:0.30},
+ front:{tension:14000,thickness:0.0015,density:2000,youngModulus:3.5e9,poisson:0.30,lowT60:1.85,highDampingSlope:0.82,stiffnessAmount:0.10,anisotropy:0.018,localTensionVariance:0.012,modeSplit:0.0035},
+ rear:{tension:14600,thickness:0.00145,density:2000,youngModulus:3.5e9,poisson:0.30,lowT60:2.05,highDampingSlope:0.78,stiffnessAmount:0.09,localTensionVariance:0.012,modeSplit:0.0030},
+ irregularity:{rimCompliance:0.025,boundaryLoss:0.03,tackUnevenness:0.018,skinThicknessVariance:0.012,tensionFieldSeed:12345,modeGainVariance:0.055,splitSeed:54321},
+ cavity:{airDensity:1.20,soundSpeed:343,cavityLoss:0.10,couplingGain:0.18,complianceCorrection:1.0,cavityModeGain:0.08,cavityModeLoss:0.35,nonAxisCoupling:0.012},
+ bachi:{massKg:0.29,lengthM:0.52,diameterM:0.038,tipRadiusM:0.019,tipRoundness:0.72,materialStiffness:9.0e9,materialLoss:0.06,contactStiffness:2.1e7,contactExponent:1.5,contactLoss:0.10,contactSpreadM:0.020,strikeVelocity:5.2,strikeAngleDeg:0},
+ nonlinear:{tensionModStrength:0.055,energyResponse:1.0,glideTimeScale:0.42,nonlinearModeLimitHz:650,crossModeAmount:0.008,saturationSafety:0.92},
+ shell:{density:690,eLong:11.0e9,eCirc:1.15e9,shearModulus:1.05e9,poisson:0.34,shellLoss:0.22,membraneBoundaryCoupling:0.10,shellModeGain:0.18,shellModeSplit:0.012,shellRadiationGain:0.20},
+ stand:{massKg:45,stiffness:4.5e6,loss:0.38,floorCoupling:0.16,floorResHz:43,floorLoss:0.42},
+ environment:{humidityPct:50,temperatureC:20,skinAge:0.38,airAbsorption:0.08,tuningDrift:0.0},
+ radiation:{frontGain:1.0,rearGain:0.48,sideGain:0.12,bodyGain:0.16,micDistanceM:1.5,micAngleDeg:0,directivity:0.60,contactGain:0.0},
+ room:{wet:0.22,rt60Sec:1.65,size:0.72,damping:0.38,predelaySec:0.018,earlyLevel:0.24},
+ system:{quality:"NORMAL",maxModeHz:8000,masterGain:0.060,outputGainDb:25.0,limiterEnabled:1,limiterCeilingDb:-1.0,seed:24681357,sampleRate:48000}
+};
+const QUALITY={ECO:{headModes:64,shellModes:4,cavityModes:2},NORMAL:{headModes:128,shellModes:8,cavityModes:4},HIGH:{headModes:240,shellModes:16,cavityModes:8},OFFLINE:{headModes:384,shellModes:24,cavityModes:12}};
+
+function deepClone(x){return JSON.parse(JSON.stringify(x));}
+function mergeParams(base,patch){
+  const out=deepClone(base);
+  function rec(dst,src){if(!src)return;for(const k of Object.keys(src)){if(src[k]&&typeof src[k]==="object"&&!Array.isArray(src[k])&&dst[k]&&typeof dst[k]==="object")rec(dst[k],src[k]);else dst[k]=src[k];}}
+  rec(out,patch);return out;
+}
+
+function headDiameterCm(headName,p){
+  const key=headName==='rear'?'rearDiameterCm':'frontDiameterCm';
+  const v=p.geometry?.[key];
+  return Number.isFinite(v)&&v>0?v:p.geometry.diameterCm;
+}
+function headArea(headName,p){const r=headDiameterCm(headName,p)*0.005;return PI*r*r;}
+function kendangCavityVolumes(p){
+  const L=Math.max(0.12,p.geometry.bodyLengthCm*0.01),pos=clamp(p.geometry.pakelitPosition??0.5,0.20,0.80);
+  const rMax=Math.max(0.04,p.geometry.maxBodyDiameterCm*0.005),rf=Math.max(0.025,headDiameterCm('front',p)*0.005),rr=Math.max(0.025,headDiameterCm('rear',p)*0.005);
+  const rp=Math.max(0.028,Math.min(rMax,0.58*rMax));
+  const frustum=(r1,r2,len)=>PI*len*(r1*r1+r1*r2+r2*r2)/3;
+  const vf=frustum(rf,rp,L*pos),vr=frustum(rp,rr,L*(1-pos)),corr=p.geometry.cavityVolumeCorrection??1;
+  return {front:Math.max(0.002,vf*corr),rear:Math.max(0.002,vr*corr),total:Math.max(0.004,(vf+vr)*corr)};
+}
+
+function pathGet(obj,path){return path.split('.').reduce((a,k)=>a==null?undefined:a[k],obj);}
+function pathSet(obj,path,value){const ks=path.split('.');let o=obj;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=value;return obj;}
+function fnv1a32(text){let h=0x811c9dc5;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,0x01000193);}return (h>>>0).toString(16).padStart(8,'0');}
+const CALIBRATION_PARAMETERS=[
+ {path:'geometry.diameterCm',min:18,max:150,scale:'linear',stage:'geometry'},
+ {path:'geometry.frontDiameterCm',min:18,max:150,scale:'linear',stage:'geometry'},
+ {path:'geometry.rearDiameterCm',min:16,max:150,scale:'linear',stage:'geometry'},
+ {path:'geometry.bodyLengthCm',min:45,max:175,scale:'linear',stage:'geometry'},
+ {path:'front.tension',min:800,max:22000,scale:'log',stage:'membrane'},
+ {path:'rear.tension',min:800,max:23000,scale:'log',stage:'membrane'},
+ {path:'front.thickness',min:0.0010,max:0.0024,scale:'log',stage:'membrane'},
+ {path:'rear.thickness',min:0.0010,max:0.0024,scale:'log',stage:'membrane'},
+ {path:'front.lowT60',min:0.7,max:4.2,scale:'linear',stage:'damping'},
+ {path:'rear.lowT60',min:0.7,max:4.5,scale:'linear',stage:'damping'},
+ {path:'front.highDampingSlope',min:0.20,max:1.50,scale:'linear',stage:'damping'},
+ {path:'rear.highDampingSlope',min:0.20,max:1.50,scale:'linear',stage:'damping'},
+ {path:'front.stiffnessAmount',min:0.0,max:0.25,scale:'linear',stage:'membrane'},
+ {path:'rear.stiffnessAmount',min:0.0,max:0.25,scale:'linear',stage:'membrane'},
+ {path:'cavity.couplingGain',min:0.02,max:0.34,scale:'linear',stage:'cavity'},
+ {path:'cavity.cavityLoss',min:0.0,max:0.75,scale:'linear',stage:'cavity'},
+ {path:'cavity.cavityModeGain',min:0.0,max:0.18,scale:'linear',stage:'cavity'},
+ {path:'bachi.massKg',min:0.12,max:0.45,scale:'linear',stage:'impact'},
+ {path:'bachi.contactStiffness',min:3e6,max:8e7,scale:'log',stage:'impact'},
+ {path:'bachi.contactSpreadM',min:0.008,max:0.035,scale:'log',stage:'impact'},
+ {path:'bachi.strikeVelocity',min:1.5,max:9.0,scale:'linear',stage:'impact'},
+ {path:'nonlinear.tensionModStrength',min:0.0,max:0.12,scale:'linear',stage:'nonlinear'},
+ {path:'shell.eCirc',min:0.45e9,max:2.2e9,scale:'log',stage:'shell'},
+ {path:'shell.shellLoss',min:0.0,max:0.65,scale:'linear',stage:'shell'},
+ {path:'shell.membraneBoundaryCoupling',min:0.0,max:0.25,scale:'linear',stage:'shell'},
+ {path:'radiation.rearGain',min:0.05,max:0.85,scale:'linear',stage:'radiation'}
+];
+function encodeCalibrationValue(def,value){if(def.scale==='log'){const a=Math.log(def.min),b=Math.log(def.max);return clamp((Math.log(Math.max(def.min,Math.min(def.max,value)))-a)/(b-a),0,1);}return clamp((value-def.min)/(def.max-def.min),0,1);}
+function decodeCalibrationValue(def,x){x=clamp(x,0,1);if(def.scale==='log')return Math.exp(Math.log(def.min)+(Math.log(def.max)-Math.log(def.min))*x);return def.min+(def.max-def.min)*x;}
+function getCalibrationVector(params,defs=CALIBRATION_PARAMETERS){return defs.map(d=>encodeCalibrationValue(d,pathGet(params,d.path)));}
+function applyCalibrationVector(params,vector,defs=CALIBRATION_PARAMETERS){const out=mergeParams(params,{});for(let i=0;i<Math.min(vector.length,defs.length);i++)pathSet(out,defs[i].path,decodeCalibrationValue(defs[i],vector[i]));return out;}
+function calibrationParameterSchema(){return CALIBRATION_PARAMETERS.map((d,i)=>({index:i,...d,defaultValue:pathGet(DEFAULT_PARAMS,d.path),defaultNormalized:encodeCalibrationValue(d,pathGet(DEFAULT_PARAMS,d.path))}));}
+function buildCalibrationMetadata(params,hits=[],extra={}){const physical={geometry:deepClone(params.geometry),front:deepClone(params.front),rear:deepClone(params.rear),irregularity:deepClone(params.irregularity),cavity:deepClone(params.cavity),bachi:deepClone(params.bachi),nonlinear:deepClone(params.nonlinear),shell:deepClone(params.shell),stand:deepClone(params.stand),environment:deepClone(params.environment),radiation:deepClone(params.radiation)};const snapshot=JSON.stringify(params),physicsSnapshot=JSON.stringify(physical);return {schema:'odaiko-calibration-metadata/v0.11',engineVersion:'0.11',calibrationStatus:extra.calibrationStatus??'modeled',referenceId:extra.referenceId??null,corpusId:extra.corpusId??null,conditionId:extra.conditionId??null,groupId:extra.groupId??null,sampleRate:params.system.sampleRate,quality:params.system.quality,parameterHash:fnv1a32(snapshot),physicsHash:fnv1a32(physicsSnapshot),fitParameterCount:CALIBRATION_PARAMETERS.length,fitVector:getCalibrationVector(params),physical,hits:hits.map(h=>({timeSec:h.timeSec,x:h.x,y:h.y,velocity:h.velocity,articulation:h.articulation||'DON',angleDeg:h.angleDeg??0})),notes:extra.notes??''};}
+function buildCalibrationPackage(renderResult,extra={}){return {schema:'odaiko-calibration-package/v0.11',metadata:buildCalibrationMetadata(renderResult.params,renderResult.hits,extra),params:deepClone(renderResult.params),engineMeta:{solver:renderResult.meta.solver,frontModes:renderResult.meta.frontModes,rearModes:renderResult.meta.rearModes,shellModes:renderResult.meta.shellModes,cavityModes:renderResult.meta.cavityModes},fitSchema:calibrationParameterSchema()};}
+async function coordinateSearch(initialVector,objective,opt={}){let x=Array.from(initialVector,v=>clamp(v,0,1)),loss=await objective(x),evaluations=1,step=opt.initialStep??0.12,minStep=opt.minStep??0.012,maxPasses=opt.maxPasses??6,maxEvaluations=opt.maxEvaluations??(1+x.length*2*maxPasses),history=[{evaluation:evaluations,loss,step,vector:[...x]}];for(let pass=0;pass<maxPasses&&evaluations<maxEvaluations&&step>=minStep;pass++){let improved=false;for(let i=0;i<x.length&&evaluations<maxEvaluations;i++){let bestLoss=loss,bestX=x[i];for(const dir of [-1,1]){const cand=[...x];cand[i]=clamp(x[i]+dir*step,0,1);if(cand[i]===x[i])continue;const l=await objective(cand);evaluations++;if(l<bestLoss){bestLoss=l;bestX=cand[i];}if(evaluations>=maxEvaluations)break;}if(bestLoss<loss){x[i]=bestX;loss=bestLoss;improved=true;history.push({evaluation:evaluations,loss,step,index:i,vector:[...x]});}}if(!improved)step*=0.5;}return {bestVector:x,bestLoss:loss,evaluations,finalStep:step,history};}
+
+function calibrationDef(path){return CALIBRATION_PARAMETERS.find(d=>d.path===path)||null;}
+function clampCalibrationPath(path,value){const d=calibrationDef(path);return d?clamp(value,d.min,d.max):value;}
+function prefitCalibrationFromTargets(baseParams,targets,opt={}){
+  const p=mergeParams(baseParams||DEFAULT_PARAMS,{}),report=[];
+  if(targets&&Number.isFinite(targets.baseHz)&&targets.baseHz>10){const R=p.geometry.diameterCm*0.005,alpha01=2.4048255577,mu=p.front.density*p.front.thickness,wave=TWO_PI*R*targets.baseHz/alpha01,T=clampCalibrationPath('front.tension',mu*wave*wave),ratio=clamp(p.rear.tension/Math.max(1,p.front.tension),0.75,1.35);report.push({path:'front.tension',from:p.front.tension,to:T,source:'membrane f01'});p.front.tension=T;p.rear.tension=clampCalibrationPath('rear.tension',T*ratio);report.push({path:'rear.tension',to:p.rear.tension,source:'preserve rear/front ratio'});}
+  if(targets&&Number.isFinite(targets.lowT60)&&targets.lowT60>0.15){const t=clampCalibrationPath('front.lowT60',targets.lowT60),rr=clamp(p.rear.lowT60/Math.max(.1,p.front.lowT60),.8,1.35);report.push({path:'front.lowT60',from:p.front.lowT60,to:t,source:'Analyzer low T60'});p.front.lowT60=t;p.rear.lowT60=clampCalibrationPath('rear.lowT60',t*rr);report.push({path:'rear.lowT60',to:p.rear.lowT60,source:'preserve rear/front decay ratio'});}
+  if(targets&&Number.isFinite(targets.attackTimeSec)&&targets.attackTimeSec>0){const a=clamp(targets.attackTimeSec,0.0025,0.035),u=1-(Math.log(a)-Math.log(.0025))/(Math.log(.035)-Math.log(.0025)),d=calibrationDef('bachi.contactStiffness'),k=d?Math.exp(Math.log(d.min)+(Math.log(d.max)-Math.log(d.min))*clamp(u,0,1)):p.bachi.contactStiffness;report.push({path:'bachi.contactStiffness',from:p.bachi.contactStiffness,to:k,source:'attack-time heuristic'});p.bachi.contactStiffness=k;}
+  return {schema:'odaiko-prefit/v0.9',params:p,vector:getCalibrationVector(p),targets:targets||{},report};
+}
+function corpusHitsFromItem(item){const m=item.metadata||{};if(Array.isArray(item.hits)&&item.hits.length)return item.hits;if(Array.isArray(m.hits)&&m.hits.length)return m.hits;const h=m.hit||m.strike||{};return [{timeSec:h.timeSec??m.onsetSec??0.12,x:h.x??m.strikeX??(String(h.articulation??m.articulation??'DON').toUpperCase()==='KA'?.96:.10),y:h.y??m.strikeY??0,velocity:h.velocity??m.velocity??1,articulation:h.articulation??m.articulation??'DON',angleDeg:h.angleDeg??m.angleDeg}];}
+function createCorpusCandidateFactory(baseParams,renderDefaults={}){const base=mergeParams(baseParams||DEFAULT_PARAMS,{});return async function(vector,item){const p=applyCalibrationVector(base,vector),m=item.metadata||{},sampleRate=item.sampleRate??renderDefaults.sampleRate??p.system.sampleRate,quality=item.quality??m.quality??renderDefaults.quality??'ECO',durationSec=item.durationSec??m.durationSec??renderDefaults.durationSec??Math.min(4,(item.referenceSamples?.length||sampleRate*4)/sampleRate+.05),hits=corpusHitsFromItem(item);p.system.sampleRate=sampleRate;p.room.wet=renderDefaults.roomWet??0;p.system.outputGainDb=0;p.system.limiterEnabled=0;const r=render({params:p,sampleRate,quality,durationSec,hits});return {samples:r.raw.dry,sampleRate:r.sampleRate,render:r};};}
+async function fitCalibrationCorpus(analyzer,referenceItems,baseParams=DEFAULT_PARAMS,opt={}){
+  if(!analyzer?.estimateReferenceTargets||!analyzer?.makeCorpusObjective||!analyzer?.separableCmaEs)throw new Error('Taiko Analyzer v0.11 calibration APIs are required');if(!Array.isArray(referenceItems)||!referenceItems.length)throw new Error('Reference corpus is empty');
+  let prefit={params:mergeParams(baseParams,{}) ,vector:getCalibrationVector(baseParams),report:[],targets:null};
+  if(opt.prefit!==false){const first=referenceItems[0],targets=await analyzer.estimateReferenceTargets(first.referenceSamples,first.sampleRate??opt.sampleRate,{diameterCm:baseParams.geometry.diameterCm,maxSec:opt.maxSec??Math.min(4,(first.referenceSamples.length/(first.sampleRate??opt.sampleRate))),modeMinHz:opt.modeMinHz??30,modeMaxHz:opt.modeMaxHz??700});prefit=prefitCalibrationFromTargets(baseParams,targets,opt);}
+  const initial=[...prefit.vector],factory=createCorpusCandidateFactory(prefit.params,opt.renderDefaults||{}),objective=analyzer.makeCorpusObjective(referenceItems,factory,{holdoutRatio:opt.holdoutRatio??.25,seed:opt.splitSeed??12345,levelAlignMode:opt.levelAlignMode??'onset-rms',maxSec:opt.maxSec??4,modeMinHz:opt.modeMinHz??30,modeMaxHz:opt.modeMaxHz??700,objectiveSplit:'train'});
+  let sensitivity=null,active=opt.activeIndices?Array.from(opt.activeIndices):null;if(!active&&opt.runSensitivity!==false){sensitivity=await analyzer.sensitivityScan(initial,objective,{delta:opt.sensitivityDelta??.035,indices:opt.sensitivityIndices});active=sensitivity.rows.slice(0,opt.activeParameterCount??10).map(r=>r.index).sort((a,b)=>a-b);}if(!active)active=initial.map((_,i)=>i);if(!active.length)throw new Error('No active calibration parameters');
+  const baseVector=[...initial],sub0=active.map(i=>baseVector[i]),subObjective=async sub=>{const full=[...baseVector];for(let k=0;k<active.length;k++)full[active[k]]=sub[k];return objective(full);};
+  const restarts=Math.max(1,opt.restarts??1),candidates=[];for(let r=0;r<restarts;r++){const seed=(opt.cmaSeed??24680)+r*7919,start=sub0.map((v,i)=>r===0?v:clamp(v+0.08*Math.sin((i+1)*(r+2)*1.618),0,1)),cma=await analyzer.separableCmaEs(start,subObjective,{seed,sigma:opt.sigma??.18,maxEvaluations:opt.maxEvaluations??Math.max(120,active.length*18),targetLoss:opt.targetLoss??0.02});const full=[...baseVector];for(let k=0;k<active.length;k++)full[active[k]]=cma.bestVector[k];await objective(full);const corpus=objective.lastResult;candidates.push({id:`restart-${r}`,cma,fullVector:full,summary:corpus.summary,corpus});}
+  const ranked=analyzer.rankCalibrationCandidates(candidates,{generalizationGapWeight:opt.generalizationGapWeight??.35,trainWeight:opt.trainWeight??.20}),winner=ranked[0]?.candidate;if(!winner)throw new Error('Calibration produced no candidate');const fittedParams=applyCalibrationVector(prefit.params,winner.fullVector);return {schema:'odaiko-calibration-fit/v0.11',prefit,sensitivity,activeIndices:active,candidates,ranking:ranked.map(x=>({id:x.id,score:x.score,trainLoss:x.trainLoss,holdoutLoss:x.holdoutLoss,generalizationGap:x.generalizationGap})),bestVector:winner.fullVector,bestParams:fittedParams,bestCorpus:winner.corpus,bestLoss:winner.cma.bestLoss,evaluations:candidates.reduce((a,c)=>a+c.cma.evaluations,0)+(sensitivity?.evaluations??0)};
+}
+
+async function fitCalibrationCorpusMultiStage(analyzer,referenceItems,baseParams=DEFAULT_PARAMS,opt={}){
+  const coarse=await fitCalibrationCorpus(analyzer,referenceItems,baseParams,{...opt,activeParameterCount:opt.coarseActiveParameterCount??12,restarts:opt.coarseRestarts??3,maxEvaluations:opt.coarseMaxEvaluations??180,sigma:opt.coarseSigma??.20});
+  const fineBase=coarse.best?.params||coarse.bestParams||applyCalibrationVector(baseParams,coarse.best?.fullVector||getCalibrationVector(baseParams));
+  const fine=await fitCalibrationCorpus(analyzer,referenceItems,fineBase,{...opt,prefit:false,runSensitivity:false,activeIndices:opt.fineActiveIndices??getCalibrationVector(fineBase).map((_,i)=>i),restarts:opt.fineRestarts??2,maxEvaluations:opt.fineMaxEvaluations??260,sigma:opt.fineSigma??.09});
+  const ensemble=[...(coarse.candidates||[]),...(fine.candidates||[])],uncertainty=analyzer?.calibrationUncertainty?analyzer.calibrationUncertainty(ensemble):null;
+  return {schema:'odaiko-multistage-fit/v0.9',coarse,fine,best:{params:fine.bestParams||coarse.bestParams,vector:fine.bestVector||coarse.bestVector,corpus:fine.bestCorpus||coarse.bestCorpus,loss:Number.isFinite(fine.bestLoss)?fine.bestLoss:coarse.bestLoss},uncertainty};
+}
+
+function applyEnvironment(head,p){
+  const h=(p.environment.humidityPct-50);
+  const temp=(p.environment.temperatureC-20);
+  const age=p.environment.skinAge-0.38;
+  // Measured wadaiko trend: humidity has far stronger effect than temperature.
+  const humidityOct=-0.0060*h;
+  const tempOct=(0.1/30)*temp;
+  const ageOct=-0.035*age;
+  const pitchScale=Math.pow(2,humidityOct+tempOct+ageOct+p.environment.tuningDrift);
+  return {tension:head.tension*pitchScale*pitchScale, dampingScale:1+0.006*Math.max(0,h)+0.20*Math.max(0,age)};
+}
+function headCandidates(headName,p){
+  const head=p[headName],env=applyEnvironment(head,p),R=headDiameterCm(headName,p)*0.005;
+  const baseMu=head.density*head.thickness;
+  const rng=xorshift32((p.irregularity.tensionFieldSeed+(headName==="front"?11:97))|0);
+  const splitRng=xorshift32((p.irregularity.splitSeed+(headName==="front"?31:131))|0);
+  const candidates=[];
+  for(const [m,n,alpha] of BESSEL_ZEROS){
+    const thicknessPerturb=clamp(1+p.irregularity.skinThicknessVariance*0.55*gaussian01(rng),0.82,1.18);
+    const mu=baseMu*thicknessPerturb;
+    const wave=Math.sqrt(env.tension/mu);
+    let f=alpha/(TWO_PI*R)*wave;
+    // Stretched-plate correction from bending rigidity D = E h^3 / [12(1-nu^2)].
+    const bendD=head.youngModulus*Math.pow(head.thickness*thicknessPerturb,3)/(12*Math.max(0.2,1-head.poisson*head.poisson));
+    const plateRatio=bendD*alpha*alpha/(Math.max(1,env.tension)*R*R);
+    const stiffnessCorr=Math.sqrt(1+head.stiffnessAmount*plateRatio);
+    const boundaryCorr=1-0.040*p.irregularity.rimCompliance-0.025*p.shell.membraneBoundaryCoupling;
+    f*=stiffnessCorr*boundaryCorr;
+    const randT=head.localTensionVariance*0.5*gaussian01(rng);
+    const tackShift=p.irregularity.tackUnevenness*0.16*((m+1)/(m+n+2))*gaussian01(rng);
+    f*=Math.sqrt(Math.max(0.75,1+randT))*(1+tackShift);
+    if(f>p.system.maxModeHz*1.15)continue;
+    const orientations=m===0?[0]:[0,1];
+    for(const orient of orientations){
+      let ff=f;
+      if(m>0){
+        const split=head.modeSplit*(0.45+0.55*splitRng())*(1+0.12*m);
+        ff*=1+(orient===0?-0.5:0.5)*split;
+        const anis=head.anisotropy||0;
+        ff*=1+(orient===0?1:-1)*anis*0.012*(m/(m+1));
+      }
+      const baseT60=head.lowT60*env.dampingScale;
+      const highTerm=1.8*head.highDampingSlope*Math.pow(Math.max(0,ff/900),1.25);
+      const t60=clamp((baseT60/(1+highTerm)+0.018)/(1+1.7*p.irregularity.boundaryLoss+0.7*p.irregularity.tackUnevenness),0.018,8);
+      const sigma=LN1000/t60;
+      const meanWeight=m===0?(2*besselJ1(alpha)/alpha):0;
+      const modeMass=(mu*PI*R*R)*clamp(0.19+0.035*n+0.008*m,0.20,0.48);
+      const gainVar=(1+p.irregularity.modeGainVariance*(2*rng()-1))*(1-0.12*p.irregularity.tackUnevenness*m/(m+2));
+      candidates.push({m,n,alpha,orient,f:ff,omega:TWO_PI*ff,sigma,t60,meanWeight,modeMass,gainVar});
+    }
+  }
+  candidates.sort((a,b)=>a.f-b.f);
+  return candidates;
+}
+function modeShape(mode,rNorm,theta){
+  const radial=besselJInt(mode.m,mode.alpha*clamp(rNorm,0,0.999999));
+  if(mode.m===0)return radial;
+  const a=mode.m*theta;
+  return radial*(mode.orient===0?Math.cos(a):Math.sin(a));
+}
+function buildHead(headName,p,strike){
+  const quality=QUALITY[p.system.quality]||QUALITY.NORMAL;
+  const candidates=headCandidates(headName,p).filter(m=>m.f<=p.system.maxModeHz).slice(0,quality.headModes);
+  const R=headDiameterCm(headName,p)*0.005;
+  const rNorm=clamp(Math.hypot(strike.x,strike.y),0,0.96),theta=Math.atan2(strike.y,strike.x);
+  const effectiveTip=0.5*(p.bachi.tipRadiusM+0.5*p.bachi.diameterM);
+  const contactSpread=p.bachi.contactSpreadM*Math.pow(Math.max(0.4,effectiveTip/0.019),0.45)*lerp(1.14,0.88,p.bachi.tipRoundness);
+  const spread=clamp(contactSpread/R,0.002,0.30);
+  const q=new Float64Array(candidates.length),v=new Float64Array(candidates.length),shape=new Float64Array(candidates.length),radWeight=new Float64Array(candidates.length),micWeight=new Float64Array(candidates.length),sideWeight=new Float64Array(candidates.length),boundaryWeight=new Float64Array(candidates.length);
+  const micAngle=((p.radiation.micAngleDeg%360)+360)%360*PI/180,headTheta=headName==="front"?Math.acos(clamp(Math.cos(micAngle),-1,1)):Math.acos(clamp(Math.cos(PI-micAngle),-1,1));
+  for(let i=0;i<candidates.length;i++){
+    const md=prepareOscillatorMode(candidates[i],p.system.sampleRate);if(md.f<=p.nonlinear.nonlinearModeLimitHz)preparePitchTable(md,p.system.sampleRate);const patch=Math.exp(-0.5*Math.pow(md.alpha*spread,2));
+    shape[i]=modeShape(md,rNorm,theta)*patch*md.gainVar;
+    const orderPenalty=1/(1+0.040*md.m*md.m),freqRad=0.48+0.52*(1-Math.exp(-md.f/420)),kR=TWO_PI*md.f*R/Math.max(100,p.cavity.soundSpeed);
+    radWeight[i]=orderPenalty*freqRad;
+    const airLoss=Math.exp(-p.environment.airAbsorption*p.radiation.micDistanceM*Math.pow(md.f/6000,1.35));
+    micWeight[i]=radWeight[i]*airLoss*modalRadiationPattern(md.m,kR,headTheta,p.radiation.directivity);
+    sideWeight[i]=radWeight[i]*airLoss*modalRadiationPattern(md.m,kR,PI/2,p.radiation.directivity)*Math.abs(Math.sin(micAngle));
+    boundaryWeight[i]=clamp(0.25+0.75*md.alpha/(md.alpha+8+md.m),0.20,0.95);
+  }
+  return {name:headName,modes:candidates,q,v,shape,radWeight,micWeight,sideWeight,boundaryWeight};
+}
+function buildShell(p){
+  const quality=QUALITY[p.system.quality]||QUALITY.NORMAL,N=quality.shellModes;
+  const R=p.geometry.maxBodyDiameterCm*0.005,th=p.geometry.shellThicknessCm*0.01,rho=p.shell.density;
+  const relLong=p.shell.eLong/11.0e9,relShear=p.shell.shearModulus/1.05e9,relPoisson=(1-p.shell.poisson*p.shell.poisson)/(1-0.34*0.34);
+  const eEff=Math.max(1e6,p.shell.eCirc*(1+0.08*(relLong-1)+0.13*(relShear-1))*relPoisson);
+  const ref=Math.sqrt(eEff/rho)/(TWO_PI*R)*0.11;
+  const ratios=[1,1.34,1.72,2.18,2.78,3.52,4.46,5.55,6.8,8.2,9.8,11.6,13.6,15.8,18.2,20.8,23.6,26.6,29.8,33.2,36.8,40.6,44.6,48.8];
+  const modes=[],q=new Float64Array(N),v=new Float64Array(N);
+  for(let i=0;i<N;i++){
+    const split=1+(i%2===0?-0.5:0.5)*p.shell.shellModeSplit;
+    const f=clamp(ref*ratios[i]*(1+0.04*th/R)*split,45,5000);
+    const t60=clamp((0.72/(1+0.25*i)+0.035)/(1+1.2*p.shell.shellLoss),0.035,1.3);
+    modes.push(prepareOscillatorMode({f,omega:TWO_PI*f,sigma:LN1000/Math.max(0.025,t60),gain:1/(1+0.16*i)},p.system.sampleRate));
+  }
+  return {modes,q,v};
+}
+function buildCavity(p){
+  const quality=QUALITY[p.system.quality]||QUALITY.NORMAL,N=quality.cavityModes;
+  const L=Math.max(0.2,p.geometry.bodyLengthCm*0.01),R=Math.max(0.15,p.geometry.maxBodyDiameterCm*0.005),c=p.cavity.soundSpeed;
+  const modes=[],q=new Float64Array(N),v=new Float64Array(N);
+  for(let i=0;i<N;i++){
+    const axial=1+Math.floor(i/3),radial=i%3;
+    const kz=axial/L,kr=radial===0?0:(radial===1?0.586:1.05)/R;
+    const f=clamp(0.5*c*Math.sqrt(kz*kz+kr*kr)*(0.96+0.08*p.geometry.bodyCurvature),70,4500);
+    const t60=clamp(0.50/(1+0.18*i)/(1+2.2*p.cavity.cavityModeLoss)+0.025,0.03,0.9);
+    const frontSign=1,rearSign=(axial%2===0?1:-1),overlap=1/(1+0.14*i+0.18*radial);
+    modes.push(prepareOscillatorMode({f,omega:TWO_PI*f,sigma:LN1000/t60,gain:1/(1+0.22*i),frontSign,rearSign,overlap},p.system.sampleRate));
+  }
+  return {modes,q,v};
+}
+function cavityVolume(p){return kendangCavityVolumes(p).total;}
+const ARTICULATIONS={
+ DON:{kind:'head',velocityScale:1.00,contactStiffnessScale:1.00,spreadScale:1.00,transientScale:1.00,angleOffsetDeg:0},
+ TSU:{kind:'head',velocityScale:0.48,contactStiffnessScale:0.82,spreadScale:1.16,transientScale:0.62,angleOffsetDeg:0},
+ KA:{kind:'rim',velocityScale:0.82,rimImpulseScale:1.00,transientScale:1.20,defaultRadius:0.96,angleOffsetDeg:8},
+ EDGE:{kind:'head',velocityScale:0.92,contactStiffnessScale:1.03,spreadScale:0.92,transientScale:1.08,defaultRadius:0.82,angleOffsetDeg:0},
+ SLAP:{kind:'head',velocityScale:0.90,contactStiffnessScale:1.38,spreadScale:0.62,transientScale:2.45,defaultRadius:0.46,angleOffsetDeg:24},
+ ROLL:{kind:'head',velocityScale:0.72,contactStiffnessScale:0.90,spreadScale:1.05,transientScale:0.78,angleOffsetDeg:0},
+ // Research-oriented Balinese kendang articulation primitives. These encode physical gestures, not fixed samples.
+ DE:{kind:'head',defaultHead:'front',velocityScale:0.72,contactStiffnessScale:0.46,spreadScale:1.45,transientScale:0.62,defaultRadius:0.80,angleOffsetDeg:4},
+ DET:{kind:'head',defaultHead:'front',velocityScale:0.88,contactStiffnessScale:0.58,spreadScale:1.22,transientScale:0.82,defaultRadius:0.78,angleOffsetDeg:7,holdSec:0.070,dampTarget:72},
+ CUNG:{kind:'head',defaultHead:'front',velocityScale:0.62,contactStiffnessScale:0.38,spreadScale:1.35,transientScale:0.55,defaultRadius:0.86,angleOffsetDeg:2,holdSec:0.045,dampTarget:42},
+ PAK:{kind:'head',defaultHead:'rear',velocityScale:0.95,contactStiffnessScale:1.55,spreadScale:0.58,transientScale:2.10,defaultRadius:0.42,angleOffsetDeg:18,holdSec:0.035,dampOpposite:68},
+ KUNG:{kind:'head',defaultHead:'rear',velocityScale:0.72,contactStiffnessScale:0.52,spreadScale:1.35,transientScale:0.68,defaultRadius:0.30,angleOffsetDeg:2},
+ TUT:{kind:'head',defaultHead:'front',velocityScale:0.78,contactStiffnessScale:0.72,spreadScale:1.05,transientScale:0.82,defaultRadius:0.72,angleOffsetDeg:6},
+ PEK:{kind:'head',defaultHead:'rear',velocityScale:0.92,contactStiffnessScale:1.35,spreadScale:0.66,transientScale:1.75,defaultRadius:0.48,angleOffsetDeg:15,holdSec:0.025,dampOpposite:48},
+ PERUNG:{kind:'head',defaultHead:'front',velocityScale:0.82,contactStiffnessScale:0.50,spreadScale:1.32,transientScale:0.70,defaultRadius:0.55,angleOffsetDeg:3}
+};
+function articulationSpec(name){const key=String(name||'DON').toUpperCase();return {name:ARTICULATIONS[key]?key:'DON',...(ARTICULATIONS[key]||ARTICULATIONS.DON)};}
+function makeHitEvent(timeSec,opt,p,index){
+  opt=opt||{};const art=articulationSpec(opt.articulation),baseVelocity=(opt.velocity!=null)?opt.velocity:p.bachi.strikeVelocity,force=(opt.force!=null)?opt.force:1;
+  let x=(opt.x!=null)?opt.x:(art.defaultRadius??0.10),y=(opt.y!=null)?opt.y:0;if(art.name==='EDGE'&&opt.x==null&&opt.y==null){x=.82;y=0;}if(art.name==='KA'&&opt.x==null&&opt.y==null){x=.96;y=0;}
+  return {timeSec,velocity:baseVelocity*force*(opt.absoluteVelocity?1:art.velocityScale),x,y,index,articulation:art.name,kind:art.kind,head:((opt.head??art.defaultHead)==='rear'?'rear':'front'),contactStiffnessScale:opt.contactStiffnessScale??art.contactStiffnessScale??1,spreadScale:opt.spreadScale??art.spreadScale??1,transientScale:opt.transientScale??art.transientScale??1,rimImpulseScale:opt.rimImpulseScale??art.rimImpulseScale??0,angleDeg:opt.angleDeg??(p.bachi.strikeAngleDeg+(art.angleOffsetDeg??0)),holdSec:Math.max(0,opt.holdSec??art.holdSec??0),dampTarget:Math.max(0,opt.dampTarget??art.dampTarget??0),dampOpposite:Math.max(0,opt.dampOpposite??art.dampOpposite??0)};
+}
+function emptyHitEvent(){return {timeSec:0,targetFrame:0,velocity:0,x:0,y:0,index:0,articulation:'DON',kind:'head',head:'front',contactStiffnessScale:1,spreadScale:1,transientScale:1,rimImpulseScale:0,angleDeg:0,holdSec:0,dampTarget:0,dampOpposite:0};}
+function copyHitEvent(dst,src){dst.timeSec=src.timeSec;dst.targetFrame=src.targetFrame;dst.velocity=src.velocity;dst.x=src.x;dst.y=src.y;dst.index=src.index;dst.articulation=src.articulation;dst.kind=src.kind;dst.head=src.head;dst.contactStiffnessScale=src.contactStiffnessScale;dst.spreadScale=src.spreadScale;dst.transientScale=src.transientScale;dst.rimImpulseScale=src.rimImpulseScale;dst.angleDeg=src.angleDeg;dst.holdSec=src.holdSec;dst.dampTarget=src.dampTarget;dst.dampOpposite=src.dampOpposite;return dst;}
+function fillHitEventInto(dst,timeSec,opt,p,index,targetFrame){
+  opt=opt||{};let key=opt.articulation||'DON',art=ARTICULATIONS[key];if(!art){key=String(key).toUpperCase();art=ARTICULATIONS[key]||ARTICULATIONS.DON;if(!ARTICULATIONS[key])key='DON';}
+  const baseVelocity=(opt.velocity!=null)?opt.velocity:p.bachi.strikeVelocity,force=(opt.force!=null)?opt.force:1;let x=(opt.x!=null)?opt.x:(art.defaultRadius??0.10),y=(opt.y!=null)?opt.y:0;if(key==='EDGE'&&opt.x==null&&opt.y==null){x=.82;y=0;}if(key==='KA'&&opt.x==null&&opt.y==null){x=.96;y=0;}
+  dst.timeSec=timeSec;dst.targetFrame=targetFrame;dst.velocity=baseVelocity*force*(opt.absoluteVelocity?1:art.velocityScale);dst.x=x;dst.y=y;dst.index=index;dst.articulation=key;dst.kind=art.kind;dst.head=((opt.head??art.defaultHead)==='rear'?'rear':'front');dst.contactStiffnessScale=opt.contactStiffnessScale??art.contactStiffnessScale??1;dst.spreadScale=opt.spreadScale??art.spreadScale??1;dst.transientScale=opt.transientScale??art.transientScale??1;dst.rimImpulseScale=opt.rimImpulseScale??art.rimImpulseScale??0;dst.angleDeg=opt.angleDeg??(p.bachi.strikeAngleDeg+(art.angleOffsetDeg??0));dst.holdSec=Math.max(0,opt.holdSec??art.holdSec??0);dst.dampTarget=Math.max(0,opt.dampTarget??art.dampTarget??0);dst.dampOpposite=Math.max(0,opt.dampOpposite??art.dampOpposite??0);return dst;
+}
+function createBlockOutputBuffers(frameCount){frameCount=Math.max(0,Math.floor(frameCount));return {startFrame:0,frameCount,raw:{dry:new Float32Array(frameCount),buses:{front:new Float32Array(frameCount),rear:new Float32Array(frameCount),body:new Float32Array(frameCount)},states:{front:new Float32Array(frameCount),rear:new Float32Array(frameCount),shell:new Float32Array(frameCount)}},wetRaw:new Float32Array(frameCount)};}
+
+function createRoomProcessor(sr,room){
+  const wetMix=clamp(room.wet,0,1);if(wetMix<=1e-5)return {process:(input)=>input};
+  const predelay=Math.max(0,Math.floor(room.predelaySec*sr));
+  const size=clamp(room.size,0.2,1.5),rt=Math.max(0.15,room.rt60Sec),rtFeedback=rt*1.225,damp=clamp(room.damping,0,0.95);
+  const base=[0.0371,0.0411,0.0437,0.0479,0.0533,0.0599],delays=base.map(d=>Math.max(17,Math.floor(d*size*sr)));
+  const bufs=delays.map(L=>new Float32Array(L)),idx=new Int32Array(delays.length),lp=new Float64Array(delays.length),gains=delays.map(L=>Math.pow(10,-3*(L/sr)/rtFeedback));
+  const prebuf=new Float32Array(Math.max(1,predelay+1));let preIdx=0;
+  const earlyDelays=[0.011,0.019,0.029,0.043].map(d=>Math.max(1,Math.floor((d*size+room.predelaySec)*sr))),earlyBuf=new Float32Array(Math.max(...earlyDelays)+2);let earlyIdx=0;
+  return {process(input){let pre=input;if(predelay>0){pre=prebuf[preIdx];prebuf[preIdx]=input;preIdx=(preIdx+1)%prebuf.length;}let rv=0;for(let k=0;k<bufs.length;k++){const b=bufs[k],j=idx[k],out=b[j];lp[k]+=(out-lp[k])*(1-damp*0.72);b[j]=pre+lp[k]*gains[k];idx[k]=(j+1)%b.length;rv+=out;}earlyBuf[earlyIdx]=input;let early=0;for(let k=0;k<earlyDelays.length;k++){let j=earlyIdx-earlyDelays[k];if(j<0)j+=earlyBuf.length;early+=earlyBuf[j]*(room.earlyLevel/(k+1));}earlyIdx=(earlyIdx+1)%earlyBuf.length;rv=rv/Math.sqrt(bufs.length)+early;return input+wetMix*rv;}};
+}
+
+function buildHeadRealtimeKernel(head,p){
+  const N=head.modes.length,pitchStride=96*5,f=new Float64Array(N),omega=new Float64Array(N),modeMass=new Float64Array(N),meanWeight=new Float64Array(N),m=new Int16Array(N),cavityWeight=new Float64Array(N),nonlinear=new Uint8Array(N),a11=new Float64Array(N),a12=new Float64Array(N),a21=new Float64Array(N),a22=new Float64Array(N),invOmega2=new Float64Array(N),sideOrderFactor=new Float64Array(N),pitchData=new Float64Array(N*pitchStride);
+  for(let i=0;i<N;i++){const md=head.modes[i];f[i]=md.f;omega[i]=md.omega;modeMass[i]=md.modeMass;meanWeight[i]=md.meanWeight;m[i]=md.m;cavityWeight[i]=md.m===0?md.meanWeight:p.cavity.nonAxisCoupling*((md.orient===0?1:-1)/(1+md.m));nonlinear[i]=md.f<=p.nonlinear.nonlinearModeLimitHz?1:0;a11[i]=md.a11;a12[i]=md.a12;a21[i]=md.a21;a22[i]=md.a22;invOmega2[i]=md.invOmega2;sideOrderFactor[i]=md.m>0?md.m/(md.m+2):0;if(md.pitchTable)pitchData.set(md.pitchTable,i*pitchStride);}
+  return {pitchStride,f,omega,modeMass,meanWeight,m,cavityWeight,nonlinear,a11,a12,a21,a22,invOmega2,sideOrderFactor,pitchData};
+}
+function createEngineState(options={}){
+  const p=mergeParams(DEFAULT_PARAMS,options.params||{});if(options.sampleRate)p.system.sampleRate=options.sampleRate;if(options.quality)p.system.quality=options.quality;
+  const sr=p.system.sampleRate,dt=1/sr,eventCapacity=Math.max(8,Math.floor(options.eventCapacity??1024)),contactCapacity=Math.max(2,Math.floor(options.contactCapacity??32)),diagnosticCapacity=Math.max(16,Math.floor(options.diagnosticCapacity??1024)),historyCapacity=Math.max(eventCapacity,Math.floor(options.historyCapacity??1024));
+  const realtimeStats={hotPathAllocations:0,wrapperAllocations:0,processCalls:0,processedFrames:0,queuedEvents:0,eventQueueHighWater:0,droppedEvents:0,lateEvents:0,contactOverflows:0,diagnosticOverflows:0,historyOverflows:0,maxActiveContacts:0,shapeCacheHits:0,shapeCacheMisses:0};
+  const eventPool=new Array(eventCapacity);for(let i=0;i<eventCapacity;i++)eventPool[i]=emptyHitEvent();const eventScratch=emptyHitEvent();let eventCount=0,hitCursor=0,nextHitIndex=0,front=null,eventShapePool=null,eventShapeModes=0,shapeCacheData=null,shapeCacheX=null,shapeCacheY=null,shapeCacheSpread=null,shapeCacheCount=0;
+  const historyPool=new Array(historyCapacity);for(let i=0;i<historyCapacity;i++)historyPool[i]=emptyHitEvent();let historyCount=0;
+  function recordHistory(ev){if(historyCount>=historyCapacity){realtimeStats.historyOverflows++;return;}copyHitEvent(historyPool[historyCount++],ev);}
+  function copyEventShapeRow(dst,src){if(!eventShapePool||eventShapeModes<=0||dst===src)return;const od=dst*eventShapeModes,os=src*eventShapeModes;for(let i=0;i<eventShapeModes;i++)eventShapePool[od+i]=eventShapePool[os+i];}
+  function compactEvents(){if(hitCursor<=0)return;if(hitCursor>=eventCount){eventCount=0;hitCursor=0;return;}const remain=eventCount-hitCursor;for(let i=0;i<remain;i++){copyHitEvent(eventPool[i],eventPool[hitCursor+i]);copyEventShapeRow(i,hitCursor+i);}eventCount=remain;hitCursor=0;}
+  let currentFrame=0;
+  function enqueueHitFixed(h,isInitial=false,indexOverride=null){h=h||{};if(eventCount>=eventCapacity&&hitCursor>0)compactEvents();if(eventCount>=eventCapacity){realtimeStats.droppedEvents++;return null;}const index=indexOverride!=null?indexOverride:nextHitIndex++,requestedFrame=Number.isFinite(h.targetFrame)?Math.round(h.targetFrame):Math.round((h.timeSec??(currentFrame/sr))*sr),targetFrame=isInitial?Math.max(0,requestedFrame):Math.max(currentFrame,requestedFrame),timeSec=h.timeSec??(requestedFrame/sr);if(!isInitial&&requestedFrame<currentFrame)realtimeStats.lateEvents++;fillHitEventInto(eventScratch,timeSec,h,p,index,targetFrame);let pos=hitCursor;while(pos<eventCount&&(eventPool[pos].targetFrame<targetFrame||(eventPool[pos].targetFrame===targetFrame&&eventPool[pos].index<index)))pos++;for(let j=eventCount;j>pos;j--){copyHitEvent(eventPool[j],eventPool[j-1]);copyEventShapeRow(j,j-1);}copyHitEvent(eventPool[pos],eventScratch);if(eventShapePool)prepareEventShape(pos,eventPool[pos]);eventCount++;recordHistory(eventScratch);realtimeStats.queuedEvents=eventCount-hitCursor;realtimeStats.eventQueueHighWater=Math.max(realtimeStats.eventQueueHighWater,realtimeStats.queuedEvents);return eventPool[pos];}
+  const srcHits=(options.hits&&options.hits.length?options.hits:(options.defaultHit===false?[]:[{timeSec:0.12}]));for(let i=0;i<srcHits.length;i++){enqueueHitFixed(srcHits[i],true,i);nextHitIndex=Math.max(nextHitIndex,i+1);}
+  const strikeForModes=eventCount?{x:eventPool[0].x,y:eventPool[0].y}:{x:.10,y:0};front=buildHead("front",p,strikeForModes);const rear=buildHead("rear",p,strikeForModes),frontKernel=buildHeadRealtimeKernel(front,p),rearKernel=buildHeadRealtimeKernel(rear,p),shell=buildShell(p),cavityModes=buildCavity(p);
+  const frontR=headDiameterCm('front',p)*0.005,rearR=headDiameterCm('rear',p)*0.005,frontArea=PI*frontR*frontR,rearArea=PI*rearR*rearR;
+  const cavityVolumes=kendangCavityVolumes(p),V=Math.max(0.004,cavityVolumes.total),cavityBulk=p.cavity.airDensity*p.cavity.soundSpeed*p.cavity.soundSpeed*p.cavity.couplingGain*p.cavity.complianceCorrection;
+  const pakelitDiameterM=Math.max(0,(p.geometry.pakelitDiameterCm??0)*0.01),pakelitArea=PI*Math.pow(pakelitDiameterM*0.5,2),pakelitEnabled=pakelitArea>1e-5;
+  const pakelitLengthM=Math.max(0.008,(p.geometry.pakelitLengthCm??4)*0.01+0.85*pakelitDiameterM),pakelitMass=pakelitEnabled?p.cavity.airDensity*pakelitLengthM/pakelitArea:1;
+  const pakelitK=cavityBulk*(1/cavityVolumes.front+1/cavityVolumes.rear),pakelitZeta=clamp(0.035+0.42*(p.geometry.pakelitLoss??0.30),0.02,0.55),pakelitResistance=pakelitEnabled?2*pakelitZeta*Math.sqrt(Math.max(1e-9,pakelitMass*pakelitK)):0;
+  let pakelitFlow=0,pakelitVolumeDisplacement=0;
+  const eventShapeModesFront=front.modes.length,eventShapeModesRear=rear.modes.length,eventShapeStride=eventShapeModesFront+eventShapeModesRear;eventShapeModes=eventShapeStride;eventShapePool=new Float64Array(eventCapacity*eventShapeStride);const shapeCacheCapacity=0;shapeCacheData=new Float64Array(0);shapeCacheX=new Float64Array(0);shapeCacheY=new Float64Array(0);shapeCacheSpread=new Float64Array(0);
+  let prng=xorshift32(p.system.seed|0),noiseLP=0,noisePrev=0,nlEnvFront=0,nlEnvRear=0,cavityPressureLP=0,rimTransientEnv=0,peakDry=0,dampUntilFront=0,dampUntilRear=0,dampRateFront=0,dampRateRear=0;
+  const contactPool=new Array(contactCapacity);for(let i=0;i<contactCapacity;i++)contactPool[i]={index:0,timeSec:0,targetFrame:0,articulation:'DON',z:0,v:0,ever:false,age:0,lastForce:0,maxForce:0,impulse:0,contactSamples:0,relativeImpactVelocity:0,contactStiffnessScale:1,transientScale:1,angleDeg:0,head:'front'};let activeCount=0;
+  function copyContact(a,b){a.index=b.index;a.timeSec=b.timeSec;a.targetFrame=b.targetFrame;a.articulation=b.articulation;a.z=b.z;a.v=b.v;a.ever=b.ever;a.age=b.age;a.lastForce=b.lastForce;a.maxForce=b.maxForce;a.impulse=b.impulse;a.contactSamples=b.contactSamples;a.relativeImpactVelocity=b.relativeImpactVelocity;a.contactStiffnessScale=b.contactStiffnessScale;a.transientScale=b.transientScale;a.angleDeg=b.angleDeg;a.head=b.head;}
+  const diagnosticPool=new Array(diagnosticCapacity);for(let i=0;i<diagnosticCapacity;i++)diagnosticPool[i]={index:0,timeSec:0,targetFrame:0,articulation:'DON',contactType:'head',maxForceN:0,impulseNs:0,contactDurationSec:0,relativeImpactVelocity:0,completed:false};let diagnosticCount=0;
+  function writeDiagnostic(index,timeSec,targetFrame,articulation,contactType,maxForceN,impulseNs,contactDurationSec,relativeImpactVelocity,completed){if(diagnosticCount>=diagnosticCapacity){realtimeStats.diagnosticOverflows++;return;}const d=diagnosticPool[diagnosticCount++];d.index=index;d.timeSec=timeSec;d.targetFrame=targetFrame;d.articulation=articulation;d.contactType=contactType;d.maxForceN=maxForceN;d.impulseNs=impulseNs;d.contactDurationSec=contactDurationSec;d.relativeImpactVelocity=relativeImpactVelocity;d.completed=completed;}
+  function writeHeadDiagnostic(ct){writeDiagnostic(ct.index,ct.timeSec,ct.targetFrame,ct.articulation,'head',ct.maxForce,ct.impulse,ct.contactSamples*dt,ct.relativeImpactVelocity,ct.ever);}
+  const standOmega=Math.sqrt(Math.max(1,p.stand.stiffness)/Math.max(0.2,p.stand.massKg)),standT60=clamp(1.15*(1-p.stand.loss)+0.09,0.08,1.2),standSigma=LN1000/standT60,standCoef=oscillatorCoefficients(standOmega,standSigma,sr);let standQ=0,standV=0;
+  const floorOmega=TWO_PI*p.stand.floorResHz,floorSigma=LN1000/Math.max(0.04,0.55*(1-p.stand.floorLoss*0.65)),floorCoef=oscillatorCoefficients(floorOmega,floorSigma,sr);let floorQ=0,floorV=0;
+  const axisFront=[],axisRear=[];for(let i=0;i<front.modes.length;i++)if(front.modes[i].m===0)axisFront.push(i);for(let i=0;i<rear.modes.length;i++)if(rear.modes[i].m===0)axisRear.push(i);
+  const roomProcessor=createRoomProcessor(sr,p.room),frontNorm=1/Math.sqrt(Math.max(1,front.q.length)),rearNorm=1/Math.sqrt(Math.max(1,rear.q.length)),shellNorm=1/Math.sqrt(Math.max(1,shell.q.length)),cavityNorm=1/Math.sqrt(Math.max(1,cavityModes.q.length)),rimDecay=Math.exp(-dt/0.0032),contactMassDen=Math.max(0.03,p.bachi.massKg*Math.sqrt(Math.max(0.45,p.bachi.lengthM/0.52))),impactLengthScale=Math.sqrt(Math.max(0.45,p.bachi.lengthM/0.52)),cavityPressureAlpha=clamp(dt*3500*(1-p.cavity.cavityLoss*0.75),0,1),couplingScaleConst=clamp(p.cavity.couplingGain/0.18,0,2.2),nlAlphaConst=clamp(dt/(Math.max(0.01,p.nonlinear.glideTimeScale)*0.08),0,1),distanceGainConst=1/Math.max(0.55,p.radiation.micDistanceM),effectiveHardnessKConst=p.bachi.contactStiffness*Math.sqrt(Math.max(0.15,p.bachi.materialStiffness/9.0e9)),hardnessConst=clamp((Math.log10(effectiveHardnessKConst)-6.5)/1.7,0,1),baseTangential=Math.abs(Math.sin(p.bachi.strikeAngleDeg*PI/180)),energyResponseConst=p.nonlinear.energyResponse,nlSafetyConst=(1-clamp(p.nonlinear.saturationSafety,0.05,1))*0.7,nlStrengthConst=p.nonlinear.tensionModStrength;
+  function computeStrikeShapeInto(headObj,headName,x,y,spreadScale,dst,offset=0){const radius=headName==='rear'?rearR:frontR,rNorm=clamp(Math.hypot(x,y),0,0.96),theta=Math.atan2(y,x),effectiveTip=0.5*(p.bachi.tipRadiusM+0.5*p.bachi.diameterM),contactSpread=p.bachi.contactSpreadM*Math.pow(Math.max(0.4,effectiveTip/0.019),0.45)*lerp(1.14,0.88,p.bachi.tipRoundness),spread=clamp(contactSpread*spreadScale/radius,0.002,0.45);for(let i=0;i<headObj.modes.length;i++){const md=headObj.modes[i],patch=Math.exp(-0.5*Math.pow(md.alpha*spread,2));dst[offset+i]=modeShape(md,rNorm,theta)*patch*md.gainVar;}}
+  function prepareEventShape(slot,ev){const dst=slot*eventShapeStride;computeStrikeShapeInto(front,'front',ev.x,ev.y,ev.spreadScale||1,eventShapePool,dst);computeStrikeShapeInto(rear,'rear',ev.x,ev.y,ev.spreadScale||1,eventShapePool,dst+eventShapeModesFront);realtimeStats.shapeCacheMisses++;}
+  for(let ei=0;ei<eventCount;ei++)prepareEventShape(ei,eventPool[ei]);
+  function loadStrikeShape(eventSlot){const off=eventSlot*eventShapeStride;for(let i=0;i<eventShapeModesFront;i++)front.shape[i]=eventShapePool[off+i];for(let i=0;i<eventShapeModesRear;i++)rear.shape[i]=eventShapePool[off+eventShapeModesFront+i];}
+  function armDamping(hit){if(!(hit.holdSec>0))return;const end=hit.targetFrame+Math.max(1,Math.round(hit.holdSec*sr)),target=hit.head==='rear'?'rear':'front',opposite=target==='front'?'rear':'front';const set=(name,rate)=>{if(!(rate>0))return;if(name==='front'){dampUntilFront=Math.max(dampUntilFront,end);dampRateFront=Math.max(dampRateFront,rate);}else{dampUntilRear=Math.max(dampUntilRear,end);dampRateRear=Math.max(dampRateRear,rate);}};set(target,hit.dampTarget);set(opposite,hit.dampOpposite);}
+  function startContact(hit,eventSlot){if(activeCount>=contactCapacity){realtimeStats.contactOverflows++;return;}loadStrikeShape(eventSlot);const target=hit.head==='rear'?rear:front;let currentSkin=0,currentSkinV=0;for(let i=0;i<target.q.length;i++){currentSkin+=target.q[i]*target.shape[i];currentSkinV+=target.v[i]*target.shape[i];}const relativeImpactVelocity=Math.max(0.1,hit.velocity*Math.max(0.12,Math.cos((hit.angleDeg??p.bachi.strikeAngleDeg)*PI/180))*impactLengthScale),ct=contactPool[activeCount++];ct.index=hit.index;ct.timeSec=hit.timeSec;ct.targetFrame=hit.targetFrame;ct.articulation=hit.articulation;ct.z=currentSkin+1e-7;ct.v=currentSkinV+relativeImpactVelocity;ct.ever=false;ct.age=0;ct.lastForce=0;ct.maxForce=0;ct.impulse=0;ct.contactSamples=0;ct.relativeImpactVelocity=relativeImpactVelocity;ct.contactStiffnessScale=hit.contactStiffnessScale||1;ct.transientScale=hit.transientScale||1;ct.angleDeg=hit.angleDeg??p.bachi.strikeAngleDeg;ct.head=hit.head==='rear'?'rear':'front';armDamping(hit);realtimeStats.maxActiveContacts=Math.max(realtimeStats.maxActiveContacts,activeCount);}
+  function triggerRim(hit){const impulse=p.bachi.massKg*hit.velocity*(hit.rimImpulseScale||1);for(let i=0;i<shell.v.length;i++){const sign=(i%4<2?1:-1),weight=1/(1+0.10*i);shell.v[i]+=sign*impulse*0.24*weight;}rimTransientEnv+=clamp(hit.velocity/5,0.15,2.5)*(hit.transientScale||1);writeDiagnostic(hit.index,hit.timeSec,hit.targetFrame,hit.articulation,'rim',0,impulse,0,hit.velocity,true);}
+  function startHit(hit,eventSlot){if(hit.kind==='rim'){triggerRim(hit);armDamping(hit);}else startContact(hit,eventSlot);}
+  function enqueueHit(h){return enqueueHitFixed(h,false,null);}
+  function nonlinearBoostValue(env,amountScale){const nlNorm=clamp(env/3.5,0,6),rawNl=energyResponseConst===1?nlNorm:Math.pow(nlNorm,energyResponseConst),safeNl=rawNl/(1+rawNl*nlSafetyConst);return 1+nlStrengthConst*amountScale*safeNl;}
+  function processBlockInto(outputs,frameCount,outputOffset=0){frameCount=Math.max(0,Math.floor(frameCount));outputOffset=Math.max(0,Math.floor(outputOffset));const dry=outputs?.raw?.dry,wetRaw=outputs?.wetRaw,frontBus=outputs?.raw?.buses?.front,rearBus=outputs?.raw?.buses?.rear,bodyBus=outputs?.raw?.buses?.body,frontStateBus=outputs?.raw?.states?.front,rearStateBus=outputs?.raw?.states?.rear,shellStateBus=outputs?.raw?.states?.shell,need=outputOffset+frameCount;if(!dry||!wetRaw||!frontBus||!rearBus||!bodyBus||!frontStateBus||!rearStateBus||!shellStateBus||dry.length<need||wetRaw.length<need||frontBus.length<need||rearBus.length<need||bodyBus.length<need||frontStateBus.length<need||rearStateBus.length<need||shellStateBus.length<need)throw new RangeError('processBlockInto: caller-owned output buffers are missing or too small');const startFrame=currentFrame;
+    for(let bi=0;bi<frameCount;bi++){
+    const n=currentFrame+bi,oi=outputOffset+bi;
+    while(hitCursor<eventCount && eventPool[hitCursor].targetFrame<=n){const eventSlot=hitCursor;startHit(eventPool[eventSlot],eventSlot);hitCursor++;}
+
+    let meanF=0,meanR=0,meanVF=0,meanVR=0,localW=0,localV=0,localWR=0,localVR=0,modalEnergyFront=0,modalEnergyRear=0,meanAllV=0,membraneBoundaryVel=0;
+    for(let i=0;i<front.q.length;i++){const qi=front.q[i],vi=front.v[i],mi=frontKernel.m[i],mw=frontKernel.meanWeight[i],om=frontKernel.omega[i],mm=frontKernel.modeMass[i];if(mi===0){meanF+=qi*mw;meanVF+=vi*mw;}localW+=qi*front.shape[i];localV+=vi*front.shape[i];modalEnergyFront+=0.5*mm*(vi*vi+om*om*qi*qi);meanAllV+=vi;if(i<24)membraneBoundaryVel+=vi*front.boundaryWeight[i]/24;}
+    meanAllV/=Math.max(1,front.v.length);
+    for(let i=0;i<rear.q.length;i++){const qi=rear.q[i],vi=rear.v[i],mi=rearKernel.m[i],mw=rearKernel.meanWeight[i],om=rearKernel.omega[i],mm=rearKernel.modeMass[i];if(mi===0){meanR+=qi*mw;meanVR+=vi*mw;}localWR+=qi*rear.shape[i];localVR+=vi*rear.shape[i];modalEnergyRear+=0.5*mm*(vi*vi+om*om*qi*qi);if(i<24)membraneBoundaryVel+=vi*rear.boundaryWeight[i]/24;}
+    let pFrontBase,pRearBase;
+    if(pakelitEnabled){
+      pFrontBase=cavityBulk*(frontArea*meanF-pakelitVolumeDisplacement)/cavityVolumes.front;
+      pRearBase=cavityBulk*(rearArea*meanR+pakelitVolumeDisplacement)/cavityVolumes.rear;
+      const accel=(pFrontBase-pRearBase-pakelitResistance*pakelitFlow)/Math.max(1e-9,pakelitMass);
+      pakelitFlow=clamp(pakelitFlow+accel*dt,-0.08,0.08);pakelitVolumeDisplacement=clamp(pakelitVolumeDisplacement+pakelitFlow*dt,-0.002,0.002);
+      pFrontBase=cavityBulk*(frontArea*meanF-pakelitVolumeDisplacement)/cavityVolumes.front;
+      pRearBase=cavityBulk*(rearArea*meanR+pakelitVolumeDisplacement)/cavityVolumes.rear;
+      cavityPressureLP+=(((pFrontBase+pRearBase)*0.5)-cavityPressureLP)*cavityPressureAlpha;
+    }else{const pLegacy=cavityBulk*(frontArea*meanF+rearArea*meanR)/V;cavityPressureLP+=(pLegacy-cavityPressureLP)*cavityPressureAlpha;pFrontBase=pRearBase=cavityPressureLP;}
+    const couplingScale=couplingScaleConst;
+    let cavityModalOut=0,cavityFeedbackFront=0,cavityFeedbackRear=0;
+    for(let i=0;i<cavityModes.q.length;i++){const md=cavityModes.modes[i],modalVolumeVelocity=frontArea*meanVF*md.frontSign+rearArea*meanVR*md.rearSign,drive=(modalVolumeVelocity/V)*md.omega*42*md.overlap*couplingScale,q0=cavityModes.q[i],v0=cavityModes.v[i],qeq=drive*md.invOmega2;cavityModes.q[i]=md.a11*q0+md.a12*v0+(1-md.a11)*qeq;cavityModes.v[i]=md.a21*q0+md.a22*v0-md.a21*qeq;const qNew=cavityModes.q[i],pMode=qNew*p.cavity.airDensity*p.cavity.soundSpeed*p.cavity.soundSpeed*p.cavity.cavityModeGain*md.overlap*couplingScale*1e-3;cavityFeedbackFront+=pMode*md.frontSign;cavityFeedbackRear+=pMode*md.rearSign;cavityModalOut+=cavityModes.v[i]*md.gain*cavityNorm;}
+    const pCav=(pFrontBase+pRearBase)*0.5,pFront=pFrontBase+cavityFeedbackFront,pRear=pRearBase+cavityFeedbackRear;
+
+    let contactForceFront=0,contactForceRear=0,contactDerivative=0,contactTextureForce=0,contactTextureDerivative=0,contactTangential=0;
+    for(let c=activeCount-1;c>=0;c--){
+      const ct=contactPool[c],targetRear=ct.head==='rear',targetW=targetRear?localWR:localW,targetV=targetRear?localVR:localV;
+      const delta=ct.z-targetW,relV=ct.v-targetV;let F=0;
+      if(delta>0){const effectiveK=p.bachi.contactStiffness*ct.contactStiffnessScale*Math.sqrt(Math.max(0.15,p.bachi.materialStiffness/9.0e9)),effectiveExponent=p.bachi.contactExponent*lerp(0.94,1.06,p.bachi.tipRoundness),base=effectiveK*Math.pow(delta,effectiveExponent),effectiveLoss=p.bachi.contactLoss+0.75*p.bachi.materialLoss,lossFactor=clamp(1+effectiveLoss*0.18*Math.max(-10,Math.min(20,relV)),0.12,3.0);F=Math.max(0,base*lossFactor);ct.ever=true;}
+      if(targetRear)contactForceRear+=F;else contactForceFront+=F;contactTextureForce+=F*ct.transientScale;contactTangential=Math.max(contactTangential,Math.abs(Math.sin(ct.angleDeg*PI/180)));
+      if(F>0){ct.maxForce=Math.max(ct.maxForce,F);ct.impulse+=F*dt;ct.contactSamples++;}
+      const dF=(F-ct.lastForce)*sr;contactDerivative+=dF;contactTextureDerivative+=dF*ct.transientScale;ct.lastForce=F;ct.v+=(-F/contactMassDen)*dt;ct.z+=ct.v*dt;ct.age+=dt;
+      if((ct.ever&&delta<=0&&relV<0)||ct.age>0.020){writeHeadDiagnostic(ct);for(let j=c;j<activeCount-1;j++)copyContact(contactPool[j],contactPool[j+1]);activeCount--;}
+    }
+
+    if(n>=dampUntilFront)dampRateFront=0;if(n>=dampUntilRear)dampRateRear=0;const nlAlpha=nlAlphaConst;nlEnvFront+=(modalEnergyFront-nlEnvFront)*nlAlpha;nlEnvRear+=(modalEnergyRear-nlEnvRear)*nlAlpha;
+    const pitchBoost=nonlinearBoostValue(nlEnvFront,1),rearPitchBoost=nonlinearBoostValue(nlEnvRear,0.86);
+    let frontPitchJ=0,frontPitchF=0,rearPitchJ=0,rearPitchF=0;if(pitchBoost>1){const u=clamp((pitchBoost-1)/(1.35-1),0,1)*95;frontPitchJ=Math.min(94,Math.floor(u));frontPitchF=u-frontPitchJ;}if(rearPitchBoost>1){const u=clamp((rearPitchBoost-1)/(1.35-1),0,1)*95;rearPitchJ=Math.min(94,Math.floor(u));rearPitchF=u-rearPitchJ;}
+    let shellBoundaryVelPrev=0;for(let i=0;i<shell.v.length;i++)shellBoundaryVelPrev+=shell.v[i]*shell.modes[i].gain*shellNorm;
+    const reciprocalGain=Number.isFinite(p.shell.membraneBoundaryCoupling)?p.shell.membraneBoundaryCoupling:0,reciprocalMembraneDrive=-reciprocalGain*shellBoundaryVelPrev,reciprocalShellDrive=reciprocalGain*membraneBoundaryVel;
+    let frontOut=0,rearOut=0,sideOut=0,frontStateOut=0,rearStateOut=0;
+    for(let i=0;i<front.q.length;i++){
+      const modeMass=frontKernel.modeMass[i],omega=frontKernel.omega[i],mi=frontKernel.m[i];
+      const q0=front.q[i],v0=front.v[i];let drive=0;
+      if(contactForceFront>0)drive+=(contactForceFront*front.shape[i])/modeMass;
+      const cavityWeight=frontKernel.cavityWeight[i];
+      drive+=(-pFront*frontArea*cavityWeight)/modeMass;
+      drive+=reciprocalMembraneDrive*front.boundaryWeight[i]*omega*0.004;
+      drive+=p.nonlinear.crossModeAmount*(meanAllV-v0)*omega*0.018;
+      // Nonlinear tension selects/interpolates between precomputed exact
+      // oscillator transition matrices. This preserves pitch glide without
+      // explicit-stiffness energy injection during long rolls.
+      let a11,a12,a21,a22,invW2;if(frontKernel.nonlinear[i]&&pitchBoost>1){const t=frontKernel.pitchData,o=i*frontKernel.pitchStride+frontPitchJ*5,f=frontPitchF;a11=t[o]+(t[o+5]-t[o])*f;a12=t[o+1]+(t[o+6]-t[o+1])*f;a21=t[o+2]+(t[o+7]-t[o+2])*f;a22=t[o+3]+(t[o+8]-t[o+3])*f;invW2=t[o+4]+(t[o+9]-t[o+4])*f;}else{a11=frontKernel.a11[i];a12=frontKernel.a12[i];a21=frontKernel.a21[i];a22=frontKernel.a22[i];invW2=frontKernel.invOmega2[i];}const qeq=drive*invW2;
+      front.q[i]=a11*q0+a12*v0+(1-a11)*qeq;
+      front.v[i]=a21*q0+a22*v0-a21*qeq;if(n<dampUntilFront&&dampRateFront>0)front.v[i]*=Math.exp(-dampRateFront*dt);
+      frontStateOut+=front.v[i]*frontNorm;frontOut+=front.v[i]*front.micWeight[i]*frontNorm;
+      if(mi>0)sideOut+=front.v[i]*front.sideWeight[i]*frontKernel.sideOrderFactor[i]*frontNorm;
+    }
+    for(let i=0;i<rear.q.length;i++){
+      const q0=rear.q[i],v0=rear.v[i],modeMass=rearKernel.modeMass[i],omega=rearKernel.omega[i],mi=rearKernel.m[i];
+      const cavityWeight=rearKernel.cavityWeight[i];
+      let drive=0;if(contactForceRear>0)drive+=(contactForceRear*rear.shape[i])/modeMass;drive+=(-pRear*rearArea*cavityWeight)/modeMass;drive+=reciprocalMembraneDrive*rear.boundaryWeight[i]*omega*0.0035;const nl=rearKernel.nonlinear[i]?rearPitchBoost:1;let a11,a12,a21,a22,invW2;if(rearKernel.nonlinear[i]&&rearPitchBoost>1){const t=rearKernel.pitchData,o=i*rearKernel.pitchStride+rearPitchJ*5,f=rearPitchF;a11=t[o]+(t[o+5]-t[o])*f;a12=t[o+1]+(t[o+6]-t[o+1])*f;a21=t[o+2]+(t[o+7]-t[o+2])*f;a22=t[o+3]+(t[o+8]-t[o+3])*f;invW2=t[o+4]+(t[o+9]-t[o+4])*f;}else{a11=rearKernel.a11[i];a12=rearKernel.a12[i];a21=rearKernel.a21[i];a22=rearKernel.a22[i];invW2=rearKernel.invOmega2[i];}const qeq=drive*invW2;
+      rear.q[i]=a11*q0+a12*v0+(1-a11)*qeq;
+      rear.v[i]=a21*q0+a22*v0-a21*qeq;if(n<dampUntilRear&&dampRateRear>0)rear.v[i]*=Math.exp(-dampRateRear*dt);
+      rearStateOut+=rear.v[i]*rearNorm;rearOut+=rear.v[i]*rear.micWeight[i]*rearNorm;
+      if(mi>0)sideOut+=0.55*rear.v[i]*rear.sideWeight[i]*rearKernel.sideOrderFactor[i]*rearNorm;
+    }
+
+    const rimDrive=rimTransientEnv*0.030;const shellDrive=reciprocalShellDrive*0.012+pCav*1e-5+rimDrive;
+    let shellOut=0;
+    for(let i=0;i<shell.q.length;i++){
+      const md=shell.modes[i],q0=shell.q[i],v0=shell.v[i],drive=shellDrive*p.shell.shellModeGain*md.gain,qeq=drive*md.invOmega2;
+      shell.q[i]=md.a11*q0+md.a12*v0+(1-md.a11)*qeq;shell.v[i]=md.a21*q0+md.a22*v0-md.a21*qeq;shellOut+=shell.v[i]*md.gain*shellNorm;
+    }
+    const standDrive=shellOut*p.shell.membraneBoundaryCoupling*0.35,standQ0=standQ,standV0=standV,standEq=standDrive*standCoef.invOmega2;
+    standQ=standCoef.a11*standQ0+standCoef.a12*standV0+(1-standCoef.a11)*standEq;standV=standCoef.a21*standQ0+standCoef.a22*standV0-standCoef.a21*standEq;
+    const floorDrive=(shellOut+0.75*standV)*p.stand.floorCoupling*0.22,floorQ0=floorQ,floorV0=floorV,floorEq=floorDrive*floorCoef.invOmega2;
+    floorQ=floorCoef.a11*floorQ0+floorCoef.a12*floorV0+(1-floorCoef.a11)*floorEq;floorV=floorCoef.a21*floorQ0+floorCoef.a22*floorV0-floorCoef.a21*floorEq;
+    const bodyOut=shellOut*p.shell.shellRadiationGain+standV*0.11+floorV*0.16;
+
+    // Deterministic high-frequency contact texture: residual only, not the main tone.
+    const white=2*prng()-1;noiseLP+=0.13*(white-noiseLP);const hp=white-noiseLP;
+    const forceRef=Math.max(1,p.radiation.contactForceRefN??2200);const derivativeRef=Math.max(1,p.radiation.contactDerivativeRef??2.5e6);
+    const forceNorm=clamp(contactTextureForce/forceRef,0,3);
+    const derivNorm=clamp(Math.abs(contactTextureDerivative)/derivativeRef,0,3);
+    const hardness=hardnessConst;
+    const tangential=Math.max(contactTangential,baseTangential);
+    const textureGain=Math.max(0,p.radiation.contactTextureGain??1);const derivativePresence=clamp(derivNorm/1.35,0,1);const textureBase=(0.045+0.220*derivativePresence+0.680*Math.pow(hardness,2.0));const transient=textureGain*textureBase*(1+0.55*tangential)*hp*(0.54*forceNorm+0.46*derivNorm)+0.18*rimTransientEnv*hp;rimTransientEnv*=rimDecay;
+
+    const distanceGain=distanceGainConst;
+    let sample=(p.radiation.frontGain*frontOut+p.radiation.rearGain*rearOut+p.radiation.sideGain*sideOut+p.radiation.bodyGain*bodyOut+p.cavity.cavityModeGain*0.045*cavityModalOut)*distanceGain;
+    sample+=transient*(1+1.6*p.radiation.contactGain);
+    sample*=p.system.masterGain;
+    frontBus[oi]=frontOut*p.system.masterGain;rearBus[oi]=rearOut*p.system.masterGain;bodyBus[oi]=bodyOut*p.system.masterGain;frontStateBus[oi]=frontStateOut;rearStateBus[oi]=rearStateOut;shellStateBus[oi]=shellBoundaryVelPrev;
+    dry[oi]=sample;peakDry=Math.max(peakDry,Math.abs(sample));
+
+      wetRaw[oi]=roomProcessor.process(dry[oi]);
+    }
+    currentFrame+=frameCount;realtimeStats.processCalls++;realtimeStats.processedFrames+=frameCount;realtimeStats.queuedEvents=eventCount-hitCursor;outputs.startFrame=startFrame;outputs.frameCount=frameCount;return frameCount;
+  }
+  function processBlock(frameCount){const out=createBlockOutputBuffers(frameCount);realtimeStats.wrapperAllocations+=8;processBlockInto(out,frameCount,0);return out;}
+  function getHitsSnapshot(){const rows=new Array(historyCount);for(let i=0;i<historyCount;i++)rows[i]=Object.assign({},historyPool[i]);return rows;}
+  function finalizeDiagnostics(){const rows=new Array(diagnosticCount+activeCount);let k=0;for(let i=0;i<diagnosticCount;i++)rows[k++]=Object.assign({},diagnosticPool[i]);for(let i=0;i<activeCount;i++){const ct=contactPool[i];rows[k++]={index:ct.index,timeSec:ct.timeSec,targetFrame:ct.targetFrame,articulation:ct.articulation,contactType:'head',maxForceN:ct.maxForce,impulseNs:ct.impulse,contactDurationSec:ct.contactSamples*dt,relativeImpactVelocity:ct.relativeImpactVelocity,completed:ct.ever};}rows.sort((a,b)=>a.index-b.index);return rows;}
+  return {p,sampleRate:sr,get currentFrame(){return currentFrame;},get hits(){return getHitsSnapshot();},front,rear,frontKernel,rearKernel,shell,cavityModes,processBlockInto,processBlock,enqueueHit,finalizeDiagnostics,getHitsSnapshot,realtimeStats,get peakDry(){return peakDry;}};
+}
+
+function renderBlocks(options={},blockPattern=[128]){
+  const p0=mergeParams(DEFAULT_PARAMS,options.params||{});if(options.sampleRate)p0.system.sampleRate=options.sampleRate;if(options.quality)p0.system.quality=options.quality;const sr=p0.system.sampleRate,duration=options.durationSec||6,N=Math.max(1,Math.floor(duration*sr));
+  const state=createEngineState({...options,params:p0}),rawDry=new Float32Array(N),rawFront=new Float32Array(N),rawRear=new Float32Array(N),rawBody=new Float32Array(N),rawFrontState=new Float32Array(N),rawRearState=new Float32Array(N),rawShellState=new Float32Array(N),wetRaw=new Float32Array(N),blockOutputs={startFrame:0,frameCount:0,raw:{dry:rawDry,buses:{front:rawFront,rear:rawRear,body:rawBody},states:{front:rawFrontState,rear:rawRearState,shell:rawShellState}},wetRaw};
+  const pattern=(Array.isArray(blockPattern)&&blockPattern.length?blockPattern:[128]).map(x=>Math.max(1,Math.floor(x)));let pos=0,pi=0;while(pos<N){const count=Math.min(pattern[pi++%pattern.length],N-pos);state.processBlockInto(blockOutputs,count,pos);pos+=count;}
+  const p=state.p,outDry=new Float32Array(rawDry),outFront=new Float32Array(rawFront),outRear=new Float32Array(rawRear),outBody=new Float32Array(rawBody),wet=new Float32Array(wetRaw),outputGainDb=Number.isFinite(p.system.outputGainDb)?p.system.outputGainDb:0,outputGainLinear=Math.pow(10,outputGainDb/20);let outputSamplePeakBeforeLimiter=0;
+  for(let i=0;i<N;i++){outDry[i]*=outputGainLinear;wet[i]*=outputGainLinear;outFront[i]*=outputGainLinear;outRear[i]*=outputGainLinear;outBody[i]*=outputGainLinear;outputSamplePeakBeforeLimiter=Math.max(outputSamplePeakBeforeLimiter,Math.abs(outDry[i]),Math.abs(wet[i]));}
+  const outputTruePeakBeforeLimiter=Math.max(truePeak4xEstimate(outDry),truePeak4xEstimate(wet));let outputLimiterGain=1;if(p.system.limiterEnabled!==0){const ceilingDb=Number.isFinite(p.system.limiterCeilingDb)?Math.min(0,p.system.limiterCeilingDb):-1,ceilingLinear=Math.pow(10,ceilingDb/20);if(outputTruePeakBeforeLimiter>ceilingLinear){outputLimiterGain=ceilingLinear/outputTruePeakBeforeLimiter;for(let i=0;i<N;i++){outDry[i]*=outputLimiterGain;wet[i]*=outputLimiterGain;outFront[i]*=outputLimiterGain;outRear[i]*=outputLimiterGain;outBody[i]*=outputLimiterGain;}}}
+  const outputTruePeakAfterLimiter=Math.max(truePeak4xEstimate(outDry),truePeak4xEstimate(wet)),hitDiagnostics=state.finalizeDiagnostics(),stateHits=state.getHitsSnapshot(),calibration=buildCalibrationMetadata(p,stateHits,options.calibration||{}),safetyGain=1;
+  return {sampleRate:sr,durationSec:duration,dry:outDry,wet,buses:{front:outFront,rear:outRear,body:outBody},raw:{dry:rawDry,buses:{front:rawFront,rear:rawRear,body:rawBody},states:{front:rawFrontState,rear:rawRearState,shell:rawShellState}},params:p,hits:stateHits,meta:{solver:"exact-damped-modal-v5-asymmetric-kendang",calibration,frontModes:state.front.modes.map(m=>({m:m.m,n:m.n,orient:m.orient,f:m.f,t60:m.t60})),rearModes:state.rear.modes.map(m=>({m:m.m,n:m.n,orient:m.orient,f:m.f,t60:m.t60})),shellModes:state.shell.modes.map(m=>({f:m.f})),cavityModes:state.cavityModes.modes.map(m=>({f:m.f,frontSign:m.frontSign,rearSign:m.rearSign,overlap:m.overlap})),hitDiagnostics,articulationCounts:stateHits.reduce((a,h)=>(a[h.articulation]=(a[h.articulation]||0)+1,a),{}),blockPattern:pattern,realtimeStats:{...state.realtimeStats},safetyGain,outputGainDb,outputGainLinear,outputSamplePeakBeforeLimiter,outputTruePeakBeforeLimiter,outputTruePeakAfterLimiter,outputLimiterGain}};
+}
+
+function render(options={}){return renderBlocks(options,[Math.max(1,Math.floor((options.durationSec||6)*(options.sampleRate||options.params?.system?.sampleRate||DEFAULT_PARAMS.system.sampleRate)))]);}
+
+function applyRoom(dry,wet,sr,room,seed){const rp=createRoomProcessor(sr,room);for(let i=0;i<dry.length;i++)wet[i]=rp.process(dry[i]);}
+
+function renderDiagnosticResonator(options={}){
+  const sr=options.sampleRate||48000,f=options.frequencyHz||1000,t60=options.t60Sec||1.2,duration=options.durationSec||Math.max(2,t60*1.8),N=Math.floor(sr*duration),out=new Float32Array(N),omega=TWO_PI*f,sigma=LN1000/Math.max(.01,t60),c=oscillatorCoefficients(omega,sigma,sr);let q=0,v=(options.amplitude??0.5)*omega;
+  for(let i=0;i<N;i++){out[i]=q;const q0=q,v0=v;q=c.a11*q0+c.a12*v0;v=c.a21*q0+c.a22*v0;}
+  return {sampleRate:sr,samples:out,expectedFrequencyHz:f,expectedT60Sec:t60};
+}
+function renderRoomImpulse(options={}){
+  const p=mergeParams(DEFAULT_PARAMS,options.params||{});if(options.sampleRate)p.system.sampleRate=options.sampleRate;
+  const sr=p.system.sampleRate,duration=options.durationSec||Math.max(4,p.room.rt60Sec*2.4),N=Math.floor(duration*sr),impulse=new Float32Array(N),wet=new Float32Array(N);
+  impulse[0]=1;const room=Object.assign({},p.room,{wet:1});applyRoom(impulse,wet,sr,room,p.system.seed+777);
+  const ir=new Float32Array(N);for(let i=0;i<N;i++)ir[i]=wet[i]-impulse[i];
+  return {sampleRate:sr,ir,params:p};
+}
+
+function encodeWav(samples,sr){
+  const N=samples.length,ab=new ArrayBuffer(44+N*2),dv=new DataView(ab);
+  function str(o,s){for(let i=0;i<s.length;i++)dv.setUint8(o+i,s.charCodeAt(i));}
+  str(0,"RIFF");dv.setUint32(4,36+N*2,true);str(8,"WAVE");str(12,"fmt ");dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,1,true);dv.setUint32(24,sr,true);dv.setUint32(28,sr*2,true);dv.setUint16(32,2,true);dv.setUint16(34,16,true);str(36,"data");dv.setUint32(40,N*2,true);
+  let o=44;for(let i=0;i<N;i++,o+=2){const s=clamp(samples[i],-1,1);dv.setInt16(o,s<0?s*32768:s*32767,true);}return ab;
+}
+function encodeWavFloat32(samples,sr){
+  const N=samples.length,ab=new ArrayBuffer(44+N*4),dv=new DataView(ab);function str(o,s){for(let i=0;i<s.length;i++)dv.setUint8(o+i,s.charCodeAt(i));}
+  str(0,"RIFF");dv.setUint32(4,36+N*4,true);str(8,"WAVE");str(12,"fmt ");dv.setUint32(16,16,true);dv.setUint16(20,3,true);dv.setUint16(22,1,true);dv.setUint32(24,sr,true);dv.setUint32(28,sr*4,true);dv.setUint16(32,4,true);dv.setUint16(34,32,true);str(36,"data");dv.setUint32(40,N*4,true);let o=44;for(let i=0;i<N;i++,o+=4)dv.setFloat32(o,samples[i],true);return ab;
+}
+
+const QUICK_DEFAULT={size:0.5,tension:0.5,depth:0.60,skinHardness:0.55,skinAge:0.38,humidity:0.50,bachiWeight:0.58,bachiHardness:0.58,strikeX:0.10,strikeY:0,force:0.62,boom:0.62,body:0.50,airCoupling:0.52,room:0.38};
+function paramsFromQuick(q,base){
+  const p=mergeParams(base||DEFAULT_PARAMS,{});
+  q=Object.assign({},QUICK_DEFAULT,q||{});
+  p.geometry.diameterCm=lerp(75,130,q.size);
+  const tensionScale=lerp(0.72,1.32,q.tension);p.front.tension*=tensionScale;p.rear.tension*=tensionScale*1.02;
+  p.front.lowT60=lerp(1.15,2.8,q.depth);p.rear.lowT60=lerp(1.25,3.0,q.depth);
+  p.front.stiffnessAmount=lerp(0.03,0.18,q.skinHardness);p.rear.stiffnessAmount=lerp(0.03,0.16,q.skinHardness);
+  p.bachi.contactStiffness=Math.pow(10,lerp(6.7,7.65,q.bachiHardness));
+  p.bachi.massKg=lerp(0.16,0.36,q.bachiWeight);p.bachi.diameterM=lerp(0.030,0.044,q.bachiWeight);p.bachi.tipRadiusM=p.bachi.diameterM*0.5;p.bachi.contactSpreadM=p.bachi.tipRadiusM*lerp(0.85,1.35,1-q.bachiHardness);
+  p.bachi.strikeVelocity=lerp(2.2,7.2,q.force);
+  p.environment.skinAge=q.skinAge;p.environment.humidityPct=lerp(25,85,q.humidity);
+  p.cavity.couplingGain=lerp(0.06,0.30,q.airCoupling);
+  p.shell.shellModeGain=lerp(0.08,0.30,q.body);p.radiation.bodyGain=lerp(0.06,0.28,q.body);
+  p.front.lowT60*=lerp(0.85,1.25,q.boom);p.rear.lowT60*=lerp(0.88,1.25,q.boom);
+  p.room.wet=lerp(0,0.48,q.room);p.room.rt60Sec=lerp(0.5,3.2,q.room);
+  return p;
+}
+
+const PRESETS={
+ "Physical / 90 cm Standard":{geometry:{diameterCm:90}},
+ "Physical / 90 cm Dry-Tight":{geometry:{diameterCm:90},front:{tension:15800,lowT60:1.45,highDampingSlope:0.95},rear:{tension:16300,lowT60:1.55,highDampingSlope:0.90},environment:{humidityPct:32},room:{wet:0.10,rt60Sec:0.85}},
+ "Physical / 90 cm Humid-Relaxed":{geometry:{diameterCm:90},front:{tension:12700,lowT60:2.15},rear:{tension:13200,lowT60:2.30},environment:{humidityPct:76,skinAge:0.55}},
+ "Physical / 96 cm Standard":{geometry:{diameterCm:96,bodyLengthCm:120,maxBodyDiameterCm:102}},
+ "Physical / 96 cm Dry-Tight":{geometry:{diameterCm:96,bodyLengthCm:120,maxBodyDiameterCm:102},front:{tension:15800,lowT60:1.50},rear:{tension:16300,lowT60:1.60},environment:{humidityPct:32}},
+ "Physical / 96 cm Humid-Relaxed":{geometry:{diameterCm:96,bodyLengthCm:120,maxBodyDiameterCm:102},front:{tension:12700,lowT60:2.20},rear:{tension:13200,lowT60:2.35},environment:{humidityPct:76,skinAge:0.55}},
+ "Physical / 105 cm Standard":{geometry:{diameterCm:105,bodyLengthCm:132,maxBodyDiameterCm:112},front:{lowT60:2.00},rear:{lowT60:2.18}},
+ "Physical / 105 cm Dry-Tight":{geometry:{diameterCm:105,bodyLengthCm:132,maxBodyDiameterCm:112},front:{tension:16000,lowT60:1.58},rear:{tension:16600,lowT60:1.68},environment:{humidityPct:30}},
+ "Physical / 105 cm Humid-Relaxed":{geometry:{diameterCm:105,bodyLengthCm:132,maxBodyDiameterCm:112},front:{tension:12500,lowT60:2.35},rear:{tension:13000,lowT60:2.48},environment:{humidityPct:78,skinAge:0.60}},
+ "Physical / 120 cm Standard":{geometry:{diameterCm:120,bodyLengthCm:145,maxBodyDiameterCm:128},front:{lowT60:2.18},rear:{lowT60:2.35},bachi:{massKg:0.32,diameterM:0.041,tipRadiusM:0.0205,contactSpreadM:0.022}},
+ "Physical / 120 cm Dry-Tight":{geometry:{diameterCm:120,bodyLengthCm:145,maxBodyDiameterCm:128},front:{tension:16300,lowT60:1.70},rear:{tension:16900,lowT60:1.82},environment:{humidityPct:30},bachi:{massKg:0.33}},
+ "Physical / 120 cm Humid-Relaxed":{geometry:{diameterCm:120,bodyLengthCm:145,maxBodyDiameterCm:128},front:{tension:12400,lowT60:2.55},rear:{tension:12900,lowT60:2.72},environment:{humidityPct:80,skinAge:0.64},bachi:{massKg:0.33}},
+ "Playing / Center Soft":{bachi:{contactStiffness:8.0e6,contactSpreadM:0.025,strikeVelocity:3.3,massKg:0.25},room:{wet:0.08}},
+ "Playing / Center Medium":{bachi:{contactStiffness:2.1e7,contactSpreadM:0.020,strikeVelocity:5.2,massKg:0.29}},
+ "Playing / Center Hard":{bachi:{contactStiffness:4.0e7,contactSpreadM:0.014,strikeVelocity:6.3,massKg:0.31},room:{wet:0.10}},
+ "Playing / Off-center":{bachi:{strikeVelocity:5.2},irregularity:{modeGainVariance:0.07}},
+ "Playing / Near-edge":{bachi:{strikeVelocity:4.7,contactSpreadM:0.016},irregularity:{modeGainVariance:0.08}},
+ "Playing / Light Bachi":{bachi:{massKg:0.17,diameterM:0.030,tipRadiusM:0.015,contactSpreadM:0.015,contactStiffness:2.5e7,strikeVelocity:5.8}},
+ "Playing / Heavy Bachi":{bachi:{massKg:0.35,diameterM:0.043,tipRadiusM:0.0215,contactSpreadM:0.023,contactStiffness:2.3e7,strikeVelocity:5.0}},
+ "Playing / Rolling State":{front:{lowT60:1.65},rear:{lowT60:1.80},bachi:{contactStiffness:2.7e7,contactSpreadM:0.017,strikeVelocity:4.4},room:{wet:0.12,rt60Sec:1.1}},
+ "Environment / Dry Studio":{room:{wet:0.03,rt60Sec:0.45,earlyLevel:0.06},radiation:{micDistanceM:0.8,frontGain:1.0,rearGain:0.18,bodyGain:0.10}},
+ "Environment / Close Front":{room:{wet:0.08,rt60Sec:0.75},radiation:{micDistanceM:0.55,frontGain:1.15,rearGain:0.10,bodyGain:0.08,directivity:0.82}},
+ "Environment / Side-Body":{room:{wet:0.08,rt60Sec:0.85},radiation:{micDistanceM:0.8,micAngleDeg:90,frontGain:0.55,rearGain:0.28,bodyGain:0.32,directivity:0.75}},
+ "Environment / Stage":{room:{wet:0.20,rt60Sec:1.45,size:0.78,earlyLevel:0.25},stand:{floorCoupling:0.22,floorResHz:47}},
+ "Environment / Hall":{room:{wet:0.38,rt60Sec:2.75,size:1.18,damping:0.46,earlyLevel:0.30},radiation:{micDistanceM:2.4}},
+ "Environment / Outdoor Festival":{room:{wet:0.08,rt60Sec:0.65,size:1.25,earlyLevel:0.16},radiation:{micDistanceM:2.2,frontGain:1.0,rearGain:0.38,bodyGain:0.20}},
+ "Creative / Massive":{geometry:{diameterCm:128,bodyLengthCm:152,maxBodyDiameterCm:136},front:{tension:13300,lowT60:2.8},rear:{tension:13900,lowT60:3.0},bachi:{massKg:0.36,strikeVelocity:6.4},cavity:{couplingGain:0.25},room:{wet:0.28,rt60Sec:2.2}},
+ "Creative / Thunder":{geometry:{diameterCm:135},front:{tension:12200,lowT60:3.2},rear:{tension:12800,lowT60:3.4},nonlinear:{tensionModStrength:0.085},shell:{shellModeGain:0.28},room:{wet:0.42,rt60Sec:3.2}},
+ "Creative / Tight Giant":{geometry:{diameterCm:118},front:{tension:19000,lowT60:1.55},rear:{tension:19600,lowT60:1.65},bachi:{contactStiffness:4.2e7,contactSpreadM:0.015},room:{wet:0.12,rt60Sec:1.0}},
+ "Creative / Ancient Skin":{environment:{skinAge:0.95,humidityPct:67},front:{tension:12100,lowT60:2.6,highDampingSlope:0.65,localTensionVariance:0.032,modeSplit:0.009},rear:{tension:12700,lowT60:2.8,localTensionVariance:0.030,modeSplit:0.008},irregularity:{tackUnevenness:0.06,modeGainVariance:0.11}},
+ "Creative / Deep Slow":{geometry:{diameterCm:145,bodyLengthCm:160,maxBodyDiameterCm:154},front:{tension:11800,lowT60:3.0},rear:{tension:12400,lowT60:3.2},bachi:{massKg:0.36,contactSpreadM:0.026,strikeVelocity:4.8},room:{wet:0.24,rt60Sec:2.4}},
+ "Creative / Hyper Resonant":{front:{lowT60:4.0,highDampingSlope:0.45},rear:{lowT60:4.3,highDampingSlope:0.42},cavity:{couplingGain:0.29,cavityLoss:0.03},shell:{shellLoss:0.08,shellModeGain:0.30},room:{wet:0.32,rt60Sec:3.6}},
+ "Diagnostic / Linear Front-only":{cavity:{couplingGain:0},radiation:{rearGain:0,bodyGain:0},shell:{shellModeGain:0},stand:{floorCoupling:0},nonlinear:{tensionModStrength:0,crossModeAmount:0},room:{wet:0}},
+ "Diagnostic / Rear-dominant":{cavity:{couplingGain:0.26},radiation:{frontGain:0.05,rearGain:1.0,sideGain:0.05,bodyGain:0},shell:{shellModeGain:0},room:{wet:0}},
+ "Diagnostic / No Cavity":{cavity:{couplingGain:0,cavityModeGain:0},room:{wet:0}},
+ "Diagnostic / No Shell":{shell:{shellModeGain:0,shellRadiationGain:0,membraneBoundaryCoupling:0},stand:{floorCoupling:0},room:{wet:0}},
+ "Diagnostic / No Room":{room:{wet:0}},
+ "Diagnostic / Symmetric Heads":{front:{tension:14000,thickness:0.0015,density:2000,lowT60:1.85,highDampingSlope:0.82,stiffnessAmount:0.10,localTensionVariance:0.0,modeSplit:0.0},rear:{tension:14000,thickness:0.0015,density:2000,lowT60:1.85,highDampingSlope:0.82,stiffnessAmount:0.10,localTensionVariance:0.0,modeSplit:0.0},irregularity:{tackUnevenness:0,skinThicknessVariance:0,modeGainVariance:0},cavity:{couplingGain:0.24,cavityModeGain:0.12,cavityModeLoss:0.18},room:{wet:0}},
+ "Diagnostic / No Nonlinearity":{nonlinear:{tensionModStrength:0,crossModeAmount:0},room:{wet:0}},
+ "Diagnostic / Rigid Uniform Boundary":{irregularity:{rimCompliance:0,boundaryLoss:0,tackUnevenness:0,skinThicknessVariance:0,modeGainVariance:0},shell:{membraneBoundaryCoupling:0},room:{wet:0}}
+};
+
+global.TaikoSynthCore={version:"0.12-kendang",DEFAULT_PARAMS,QUALITY,PRESETS,ARTICULATIONS,CALIBRATION_PARAMETERS,headDiameterCm,kendangCavityVolumes,render,renderBlocks,createEngineState,createBlockOutputBuffers,pitchedCoefficientsInto,renderDiagnosticResonator,renderRoomImpulse,encodeWav,encodeWavFloat32,mergeParams,paramsFromQuick,besselJInt,truePeak4xEstimate,modalRadiationPattern,reciprocalVelocityCoupling,getCalibrationVector,applyCalibrationVector,calibrationParameterSchema,buildCalibrationMetadata,buildCalibrationPackage,coordinateSearch,prefitCalibrationFromTargets,createCorpusCandidateFactory,fitCalibrationCorpus,fitCalibrationCorpusMultiStage,articulationSpec,pathGet};
+if(typeof module!=="undefined"&&module.exports)module.exports=global.TaikoSynthCore;
+})(typeof window!=="undefined"?window:globalThis);</script>
+<script id="profile-source" type="text/plain">const KENDANG_PROFILES = Object.freeze({
+  gupekanWadon: Object.freeze({
+    id:'gupekanWadon', role:'wadon', label:'Gupekan Wadon prototype', pan:-0.18, mixGain:11.0,
+    patch:Object.freeze({
+      geometry:{diameterCm:30,frontDiameterCm:30,rearDiameterCm:23,bodyLengthCm:70,maxBodyDiameterCm:36,shellThicknessCm:1.9,bodyCurvature:.76,cavityVolumeCorrection:.94,pakelitDiameterCm:5.5,pakelitLengthCm:5.0,pakelitPosition:.52,pakelitLoss:.28},
+      front:{tension:2200,thickness:.00120,density:2000,youngModulus:2.4e9,lowT60:.78,highDampingSlope:1.18,stiffnessAmount:.055,anisotropy:.026,localTensionVariance:.018,modeSplit:.0052},
+      rear:{tension:3000,thickness:.00100,density:2000,youngModulus:2.4e9,lowT60:.60,highDampingSlope:1.30,stiffnessAmount:.048,localTensionVariance:.020,modeSplit:.0058},
+      irregularity:{rimCompliance:.040,boundaryLoss:.055,tackUnevenness:.026,skinThicknessVariance:.020,modeGainVariance:.070},
+      cavity:{cavityLoss:.17,couplingGain:.23,complianceCorrection:1.0,cavityModeGain:.052,cavityModeLoss:.44,nonAxisCoupling:.018},
+      bachi:{massKg:.060,lengthM:.18,diameterM:.055,tipRadiusM:.027,tipRoundness:.86,materialStiffness:1.3e8,materialLoss:.22,contactStiffness:2.3e6,contactExponent:1.38,contactLoss:.28,contactSpreadM:.030,strikeVelocity:3.15,strikeAngleDeg:4},
+      nonlinear:{tensionModStrength:.030,energyResponse:.90,glideTimeScale:.30,nonlinearModeLimitHz:850,crossModeAmount:.010,saturationSafety:.94},
+      shell:{density:620,eLong:8.5e9,eCirc:1.05e9,shearModulus:.86e9,shellLoss:.32,membraneBoundaryCoupling:.12,shellModeGain:.12,shellModeSplit:.016,shellRadiationGain:.13},
+      stand:{massKg:12,stiffness:1.8e6,loss:.55,floorCoupling:.035,floorResHz:62,floorLoss:.60},
+      radiation:{frontGain:.92,rearGain:.72,sideGain:.18,bodyGain:.14,micDistanceM:1.35,directivity:.48,contactGain:.06,contactTextureGain:1.55,contactForceRefN:150,contactDerivativeRef:2.2e5}
+    })
+  }),
+  gupekanLanang: Object.freeze({
+    id:'gupekanLanang', role:'lanang', label:'Gupekan Lanang prototype', pan:0.18, mixGain:9.5,
+    patch:Object.freeze({
+      geometry:{diameterCm:27.5,frontDiameterCm:27.5,rearDiameterCm:20.5,bodyLengthCm:67,maxBodyDiameterCm:33,shellThicknessCm:1.7,bodyCurvature:.78,cavityVolumeCorrection:.93,pakelitDiameterCm:4.8,pakelitLengthCm:4.5,pakelitPosition:.51,pakelitLoss:.26},
+      front:{tension:2700,thickness:.00110,density:2000,youngModulus:2.4e9,lowT60:.66,highDampingSlope:1.26,stiffnessAmount:.052,anisotropy:.028,localTensionVariance:.019,modeSplit:.0055},
+      rear:{tension:3600,thickness:.00095,density:2000,youngModulus:2.4e9,lowT60:.50,highDampingSlope:1.38,stiffnessAmount:.045,localTensionVariance:.022,modeSplit:.0062},
+      irregularity:{rimCompliance:.044,boundaryLoss:.060,tackUnevenness:.028,skinThicknessVariance:.021,modeGainVariance:.075},
+      cavity:{cavityLoss:.19,couplingGain:.22,complianceCorrection:1.0,cavityModeGain:.047,cavityModeLoss:.48,nonAxisCoupling:.020},
+      bachi:{massKg:.052,lengthM:.17,diameterM:.050,tipRadiusM:.024,tipRoundness:.84,materialStiffness:1.6e8,materialLoss:.20,contactStiffness:2.7e6,contactExponent:1.40,contactLoss:.26,contactSpreadM:.026,strikeVelocity:3.35,strikeAngleDeg:5},
+      nonlinear:{tensionModStrength:.028,energyResponse:.92,glideTimeScale:.28,nonlinearModeLimitHz:950,crossModeAmount:.011,saturationSafety:.94},
+      shell:{density:620,eLong:8.5e9,eCirc:1.05e9,shearModulus:.86e9,shellLoss:.34,membraneBoundaryCoupling:.115,shellModeGain:.11,shellModeSplit:.017,shellRadiationGain:.12},
+      stand:{massKg:10,stiffness:1.7e6,loss:.58,floorCoupling:.028,floorResHz:68,floorLoss:.62},
+      radiation:{frontGain:.90,rearGain:.76,sideGain:.19,bodyGain:.12,micDistanceM:1.35,directivity:.46,contactGain:.08,contactTextureGain:1.75,contactForceRefN:120,contactDerivativeRef:1.8e5}
+    })
+  })
+});
+
+const PERCUSSION_MODES = Object.freeze({off:0,subtle:1,ceremonial:2,active:3,full:4});
+
+function hashText(text){let h=2166136261>>>0;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
+function xorshift(seed){let s=seed>>>0;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return(s>>>0)/4294967296;};}</script>
+<script id="worker-controller" type="text/plain">
+'use strict';
+
+const PhysicalCore = globalThis.TaikoSynthCore;
+if (!PhysicalCore) throw new Error('TaikoSynthCore missing');
+
+function makeTunedProfile(baseProfileId, profileId, label, pan, mixGain, extraPatch) {
+  const baseProfile = KENDANG_PROFILES[baseProfileId];
+  if (!baseProfile) throw new Error('Unknown base profile ' + baseProfileId);
+  return Object.freeze({
+    id: profileId,
+    role: profileId,
+    label: label,
+    pan: pan,
+    mixGain: mixGain,
+    patch: Object.freeze(PhysicalCore.mergeParams(baseProfile.patch, extraPatch))
+  });
+}
+
+const PROFILE_MAP = Object.freeze({
+  gupekanWadon: KENDANG_PROFILES.gupekanWadon,
+  gupekanLanang: KENDANG_PROFILES.gupekanLanang,
+
+  javaneseCiblon: makeTunedProfile(
+    'gupekanWadon',
+    'javaneseCiblon',
+    'Kendang Ciblon tuned prototype',
+    -0.06,
+    9.8,
+    {
+      geometry: {
+        diameterCm: 31.0,
+        frontDiameterCm: 31.0,
+        rearDiameterCm: 24.0,
+        bodyLengthCm: 63.0,
+        maxBodyDiameterCm: 35.0,
+        shellThicknessCm: 1.65,
+        cavityVolumeCorrection: 0.91,
+        pakelitDiameterCm: 4.2,
+        pakelitLengthCm: 4.0,
+        pakelitPosition: 0.50,
+        pakelitLoss: 0.31
+      },
+      front: {
+        tension: 2500,
+        lowT60: 0.64,
+        highDampingSlope: 1.25,
+        stiffnessAmount: 0.050,
+        anisotropy: 0.024,
+        modeSplit: 0.0050
+      },
+      rear: {
+        tension: 3450,
+        lowT60: 0.48,
+        highDampingSlope: 1.36,
+        stiffnessAmount: 0.046,
+        modeSplit: 0.0058
+      },
+      cavity: {
+        cavityLoss: 0.22,
+        couplingGain: 0.20,
+        cavityModeGain: 0.045,
+        cavityModeLoss: 0.48
+      },
+      bachi: {
+        massKg: 0.048,
+        tipRadiusM: 0.023,
+        contactStiffness: 2.8e6,
+        contactExponent: 1.40,
+        contactLoss: 0.31,
+        contactSpreadM: 0.024,
+        strikeVelocity: 3.0
+      },
+      radiation: {
+        frontGain: 0.95,
+        rearGain: 0.76,
+        bodyGain: 0.12,
+        contactTextureGain: 1.75
+      }
+    }
+  ),
+
+  javaneseKetipung: makeTunedProfile(
+    'gupekanLanang',
+    'javaneseKetipung',
+    'Kendang Ketipung tuned prototype',
+    0.10,
+    8.3,
+    {
+      geometry: {
+        diameterCm: 22.0,
+        frontDiameterCm: 22.0,
+        rearDiameterCm: 17.0,
+        bodyLengthCm: 46.0,
+        maxBodyDiameterCm: 26.0,
+        shellThicknessCm: 1.35,
+        cavityVolumeCorrection: 0.88,
+        pakelitDiameterCm: 3.5,
+        pakelitLengthCm: 3.3,
+        pakelitPosition: 0.50,
+        pakelitLoss: 0.34
+      },
+      front: {
+        tension: 3850,
+        lowT60: 0.40,
+        highDampingSlope: 1.42,
+        stiffnessAmount: 0.046,
+        anisotropy: 0.026,
+        modeSplit: 0.0060
+      },
+      rear: {
+        tension: 5000,
+        lowT60: 0.31,
+        highDampingSlope: 1.55,
+        stiffnessAmount: 0.042,
+        modeSplit: 0.0066
+      },
+      cavity: {
+        cavityLoss: 0.28,
+        couplingGain: 0.17,
+        cavityModeGain: 0.032,
+        cavityModeLoss: 0.57
+      },
+      bachi: {
+        massKg: 0.035,
+        tipRadiusM: 0.018,
+        contactStiffness: 3.2e6,
+        contactExponent: 1.42,
+        contactLoss: 0.34,
+        contactSpreadM: 0.018,
+        strikeVelocity: 3.25
+      },
+      radiation: {
+        frontGain: 0.94,
+        rearGain: 0.82,
+        bodyGain: 0.08,
+        contactTextureGain: 1.95
+      }
+    }
+  ),
+
+  javaneseAgeng: makeTunedProfile(
+    'gupekanWadon',
+    'javaneseAgeng',
+    'Kendang Ageng tuned prototype',
+    0.0,
+    12.6,
+    {
+      geometry: {
+        diameterCm: 42.0,
+        frontDiameterCm: 42.0,
+        rearDiameterCm: 34.0,
+        bodyLengthCm: 82.0,
+        maxBodyDiameterCm: 48.0,
+        shellThicknessCm: 2.25,
+        cavityVolumeCorrection: 0.98,
+        pakelitDiameterCm: 6.2,
+        pakelitLengthCm: 5.8,
+        pakelitPosition: 0.51,
+        pakelitLoss: 0.24
+      },
+      front: {
+        tension: 1550,
+        lowT60: 0.98,
+        highDampingSlope: 1.02,
+        stiffnessAmount: 0.060,
+        anisotropy: 0.020,
+        modeSplit: 0.0044
+      },
+      rear: {
+        tension: 2100,
+        lowT60: 0.76,
+        highDampingSlope: 1.14,
+        stiffnessAmount: 0.054,
+        modeSplit: 0.0049
+      },
+      cavity: {
+        cavityLoss: 0.15,
+        couplingGain: 0.27,
+        cavityModeGain: 0.065,
+        cavityModeLoss: 0.38
+      },
+      bachi: {
+        massKg: 0.075,
+        tipRadiusM: 0.032,
+        contactStiffness: 2.05e6,
+        contactExponent: 1.36,
+        contactLoss: 0.25,
+        contactSpreadM: 0.036,
+        strikeVelocity: 2.8
+      },
+      radiation: {
+        frontGain: 0.98,
+        rearGain: 0.70,
+        bodyGain: 0.18,
+        contactTextureGain: 1.35
+      }
+    }
+  )
+});
+
+const PROFILE_REFERENCE_GAIN_DB = Object.freeze({
+  // Exact v12 source-reference calibration for the dedicated Gupekan pair voices.
+  gupekanWadon: 16.268632,
+  gupekanLanang: 15.324236,
+  // v01 tuned prototypes inherit the closest calibrated parent until a dedicated corpus fit is made.
+  javaneseCiblon: 16.268632,
+  javaneseKetipung: 15.324236,
+  javaneseAgeng: 16.268632
+});
+
+function profileReferenceGainLinear(profileId) {
+  const gainDb = PROFILE_REFERENCE_GAIN_DB[profileId];
+  return Math.pow(10, (Number.isFinite(gainDb) ? gainDb : 0) / 20);
+}
+
+function buildParams(profile, quality, seed) {
+  const params = PhysicalCore.mergeParams(PhysicalCore.DEFAULT_PARAMS, profile.patch);
+  params.room.wet = 0;
+  params.room.earlyLevel = 0;
+  params.room.rt60Sec = 0.30;
+  params.system.sampleRate = 48000;
+  params.system.quality = quality;
+  params.system.maxModeHz = 9000;
+  params.system.outputGainDb = 0;
+  params.system.limiterEnabled = 0;
+  params.system.seed = seed >>> 0;
+  params.system.masterGain = 0.060;
+  return params;
+}
+
+function xorshift32(seedValue) {
+  let stateValue = (seedValue >>> 0) || 0x6d2b79f5;
+  return function nextRandom() {
+    stateValue ^= stateValue << 13;
+    stateValue ^= stateValue >>> 17;
+    stateValue ^= stateValue << 5;
+    return (stateValue >>> 0) / 4294967296;
+  };
+}
+
+function renderPattern(request, progressCallback) {
+  const sampleRate = 48000;
+  const stepCount = Math.max(4, Math.min(32, Math.floor(request.steps || 32)));
+  const bpmValue = Math.max(40, Math.min(260, Number(request.bpm) || 120));
+  const stepDurationSec = 60 / bpmValue / 4;
+  const cycleDurationSec = stepCount * stepDurationSec;
+  const cycleFrameCount = Math.max(1, Math.round(cycleDurationSec * sampleRate));
+  const renderDurationSec = cycleDurationSec * 2 + 1.25;
+  const swingAmount = Math.max(0, Math.min(0.66, Number(request.swing) || 0));
+  const humanizeSec = Math.max(0, Math.min(0.020, (Number(request.humanizeMs) || 0) / 1000));
+  const randomValue = xorshift32((request.seed || 20260925) >>> 0);
+  const velocityScale = [0, 0.54, 0.76, 1.0, 1.0];
+  const groupedEvents = new Map();
+
+  for (const trackInfo of request.tracks || []) {
+    if (trackInfo.muted) continue;
+    const rowValues = (request.pattern && request.pattern[trackInfo.id]) || [];
+    for (let stepIndex = 0; stepIndex < stepCount; stepIndex++) {
+      const stateValue = Math.max(0, Math.min(4, Math.floor(rowValues[stepIndex] || 0)));
+      if (stateValue === 0) continue;
+
+      const oddSwingSec = (stepIndex & 1) ? stepDurationSec * swingAmount * 0.5 : 0;
+      const humanOffsetSec = humanizeSec > 0 ? (randomValue() * 2 - 1) * humanizeSec : 0;
+      const baseTimeSec = stepIndex * stepDurationSec + oddSwingSec + humanOffsetSec;
+      const profileEvents = groupedEvents.get(trackInfo.profileId) || [];
+      const firstVelocity = trackInfo.velocity * velocityScale[stateValue] * (stateValue === 4 ? 0.66 : 1.0);
+
+      const addEvent = function(eventTimeSec, eventVelocity) {
+        for (let cycleIndex = 0; cycleIndex < 2; cycleIndex++) {
+          profileEvents.push({
+            timeSec: Math.max(0.004, eventTimeSec + cycleIndex * cycleDurationSec),
+            velocity: eventVelocity,
+            absoluteVelocity: true,
+            articulation: trackInfo.articulation,
+            head: trackInfo.head,
+            x: trackInfo.x,
+            y: trackInfo.y,
+            angleDeg: trackInfo.angleDeg || 0
+          });
+        }
+      };
+
+      addEvent(baseTimeSec, firstVelocity);
+      if (stateValue === 4) {
+        addEvent(baseTimeSec + 0.018, trackInfo.velocity * 0.96);
+      }
+      groupedEvents.set(trackInfo.profileId, profileEvents);
+    }
+  }
+
+  const mixLeft = new Float32Array(cycleFrameCount);
+  const mixRight = new Float32Array(cycleFrameCount);
+  const renderedProfiles = [];
+  const profileEntries = Array.from(groupedEvents.entries());
+  let profileCounter = 0;
+
+  for (const profileEntry of profileEntries) {
+    const profileId = profileEntry[0];
+    const hitEvents = profileEntry[1];
+    const profile = PROFILE_MAP[profileId];
+    if (!profile || !hitEvents.length) continue;
+
+    const params = buildParams(profile, request.quality === 'NORMAL' ? 'NORMAL' : 'ECO', ((request.seed || 20260925) + profileCounter * 2654435761) >>> 0);
+    const result = PhysicalCore.render({
+      params: params,
+      sampleRate: sampleRate,
+      quality: params.system.quality,
+      durationSec: renderDurationSec,
+      hits: hitEvents
+    });
+
+    const monoData = result.raw.dry;
+    const panValue = Math.max(-1, Math.min(1, profile.pan || 0));
+    const referenceGain = profileReferenceGainLinear(profileId);
+    const leftGain = Math.sqrt((1 - panValue) * 0.5) * profile.mixGain * referenceGain;
+    const rightGain = Math.sqrt((1 + panValue) * 0.5) * profile.mixGain * referenceGain;
+    const startFrame = cycleFrameCount;
+
+    for (let frameIndex = 0; frameIndex < cycleFrameCount; frameIndex++) {
+      const sourceIndex = startFrame + frameIndex;
+      const sampleValue = monoData[sourceIndex] || 0;
+      mixLeft[frameIndex] += sampleValue * leftGain;
+      mixRight[frameIndex] += sampleValue * rightGain;
+    }
+
+    renderedProfiles.push({
+      id: profileId,
+      hitCount: hitEvents.length / 2,
+      frontFundamentalHz: result.meta && result.meta.frontModes && result.meta.frontModes[0] ? result.meta.frontModes[0].f : null,
+      rearFundamentalHz: result.meta && result.meta.rearModes && result.meta.rearModes[0] ? result.meta.rearModes[0].f : null,
+      referenceGainDb: PROFILE_REFERENCE_GAIN_DB[profileId] || 0
+    });
+
+    profileCounter++;
+    if (progressCallback) progressCallback(profileCounter, profileEntries.length, profileId);
+  }
+
+  const masterDb = Math.max(-24, Math.min(6, Number(request.masterDb) || -6));
+  const fixedMasterGain = Math.pow(10, masterDb / 20);
+  let samplePeak = 0;
+  let powerSum = 0;
+
+  for (let frameIndex = 0; frameIndex < cycleFrameCount; frameIndex++) {
+    mixLeft[frameIndex] *= fixedMasterGain;
+    mixRight[frameIndex] *= fixedMasterGain;
+    samplePeak = Math.max(samplePeak, Math.abs(mixLeft[frameIndex]), Math.abs(mixRight[frameIndex]));
+    powerSum += (mixLeft[frameIndex] * mixLeft[frameIndex] + mixRight[frameIndex] * mixRight[frameIndex]) * 0.5;
+  }
+  const loopRmsBeforeSafety = Math.sqrt(powerSum / Math.max(1, cycleFrameCount));
+
+  const safetyGain = samplePeak > 0.98 ? 0.98 / samplePeak : 1;
+  if (safetyGain < 1) {
+    for (let frameIndex = 0; frameIndex < cycleFrameCount; frameIndex++) {
+      mixLeft[frameIndex] *= safetyGain;
+      mixRight[frameIndex] *= safetyGain;
+    }
+  }
+
+  return {
+    left: mixLeft,
+    right: mixRight,
+    sampleRate: sampleRate,
+    stats: {
+      bpm: bpmValue,
+      steps: stepCount,
+      durationSec: cycleDurationSec,
+      samplePeakBeforeSafety: samplePeak,
+      loopRmsBeforeSafety: loopRmsBeforeSafety,
+      safetyGain: safetyGain,
+      renderedProfiles: renderedProfiles,
+      scheduledHitCount: Array.from(groupedEvents.values()).reduce(function(totalValue, eventList) {
+        return totalValue + eventList.length / 2;
+      }, 0)
+    }
+  };
+}
+
+function smokeTest() {
+  const testTrack = {
+    id: 'smoke',
+    profileId: 'gupekanWadon',
+    articulation: 'DE',
+    head: 'front',
+    x: 0.80,
+    y: 0.02,
+    velocity: 2.4,
+    angleDeg: 0,
+    muted: false
+  };
+  const testRequest = {
+    steps: 4,
+    bpm: 180,
+    swing: 0,
+    humanizeMs: 0,
+    seed: 1,
+    quality: 'ECO',
+    masterDb: -9,
+    tracks: [testTrack],
+    pattern: { smoke: [3, 0, 0, 0] }
+  };
+  const output = renderPattern(testRequest);
+  let finiteFlag = output.left.length > 0;
+  let energyValue = 0;
+  let peakValue = 0;
+  for (let sampleIndex = 0; sampleIndex < output.left.length; sampleIndex++) {
+    const sampleValue = output.left[sampleIndex];
+    if (!Number.isFinite(sampleValue)) finiteFlag = false;
+    energyValue += sampleValue * sampleValue;
+    peakValue = Math.max(peakValue, Math.abs(sampleValue), Math.abs(output.right[sampleIndex] || 0));
+  }
+  const rmsValue = Math.sqrt(energyValue / Math.max(1, output.left.length));
+  return {
+    pass: finiteFlag && energyValue > 1e-10 && peakValue > 0.01,
+    frames: output.left.length,
+    energy: energyValue,
+    peak: peakValue,
+    rms: rmsValue,
+    profiles: Object.keys(PROFILE_MAP)
+  };
+}
+
+
+function renderVoiceDiagnostic(request = {}) {
+  const sampleRate = 48000;
+  const profileId = request.profileId || 'gupekanWadon';
+  const profile = PROFILE_MAP[profileId];
+  if (!profile) throw new RangeError('Unknown profile ' + profileId);
+
+  const eventTimeSec = Number.isFinite(request.eventTimeSec) ? request.eventTimeSec : 0.100;
+  const durationSec = Math.max(0.5, Math.min(4.0, Number(request.durationSec) || 2.4));
+  const quality = request.quality === 'NORMAL' ? 'NORMAL' : 'ECO';
+  const seedValue = (request.seed || 20260925) >>> 0;
+  const params = buildParams(profile, quality, seedValue);
+  const hit = {
+    timeSec: eventTimeSec,
+    velocity: Number(request.velocity) || 2.8,
+    absoluteVelocity: true,
+    articulation: request.articulation || 'DON',
+    head: request.head === 'rear' ? 'rear' : 'front',
+    x: Number.isFinite(request.x) ? request.x : 0.5,
+    y: Number.isFinite(request.y) ? request.y : 0,
+    angleDeg: Number(request.angleDeg) || 0
+  };
+
+  const result = PhysicalCore.render({
+    params: params,
+    sampleRate: sampleRate,
+    quality: quality,
+    durationSec: durationSec,
+    hits: [hit]
+  });
+
+  const left = new Float32Array(result.raw.dry.length);
+  const right = new Float32Array(result.raw.dry.length);
+  const panValue = Math.max(-1, Math.min(1, profile.pan || 0));
+  const referenceGain = profileReferenceGainLinear(profileId);
+  const masterGain = Math.pow(10, (Number.isFinite(request.masterDb) ? request.masterDb : -6) / 20);
+  const leftGain = Math.sqrt((1 - panValue) * 0.5) * profile.mixGain * referenceGain * masterGain;
+  const rightGain = Math.sqrt((1 + panValue) * 0.5) * profile.mixGain * referenceGain * masterGain;
+
+  let samplePeak = 0;
+  for (let frameIndex = 0; frameIndex < left.length; frameIndex++) {
+    const sampleValue = result.raw.dry[frameIndex] || 0;
+    left[frameIndex] = sampleValue * leftGain;
+    right[frameIndex] = sampleValue * rightGain;
+    samplePeak = Math.max(samplePeak, Math.abs(left[frameIndex]), Math.abs(right[frameIndex]));
+  }
+
+  const safetyGain = samplePeak > 0.98 ? 0.98 / samplePeak : 1;
+  if (safetyGain < 1) {
+    for (let frameIndex = 0; frameIndex < left.length; frameIndex++) {
+      left[frameIndex] *= safetyGain;
+      right[frameIndex] *= safetyGain;
+    }
+  }
+
+  return {
+    left: left,
+    right: right,
+    sampleRate: sampleRate,
+    eventTimeSec: eventTimeSec,
+    stats: {
+      profileId: profileId,
+      articulation: hit.articulation,
+      head: hit.head,
+      samplePeakBeforeSafety: samplePeak,
+      safetyGain: safetyGain,
+      referenceGainDb: PROFILE_REFERENCE_GAIN_DB[profileId] || 0,
+      frontFundamentalHz: result.meta && result.meta.frontModes && result.meta.frontModes[0] ? result.meta.frontModes[0].f : null,
+      rearFundamentalHz: result.meta && result.meta.rearModes && result.meta.rearModes[0] ? result.meta.rearModes[0].f : null
+    }
+  };
+}
+
+globalThis.KendangSequencerWorker = Object.freeze({
+  PROFILE_MAP: PROFILE_MAP,
+  renderPattern: renderPattern,
+  renderVoiceDiagnostic: renderVoiceDiagnostic,
+  smokeTest: smokeTest
+});
+
+if (typeof self !== 'undefined' && self && typeof self.postMessage === 'function') {
+  self.onmessage = function(event) {
+    const messageData = event.data || {};
+    if (messageData.type !== 'render') return;
+    try {
+      self.postMessage({type: 'status', text: 'Rendering physical drums...'});
+      const output = renderPattern(messageData.request, function(doneCount, totalCount, profileId) {
+        self.postMessage({
+          type: 'progress',
+          done: doneCount,
+          total: totalCount,
+          profileId: profileId
+        });
+      });
+      self.postMessage(
+        {
+          type: 'done',
+          left: output.left,
+          right: output.right,
+          sampleRate: output.sampleRate,
+          stats: output.stats
+        },
+        [output.left.buffer, output.right.buffer]
+      );
+    } catch (errorValue) {
+      self.postMessage({
+        type: 'error',
+        message: errorValue && errorValue.stack ? errorValue.stack : String(errorValue)
+      });
+    }
+  };
+}
+</script>
+<script>
+'use strict';
+
+const TRACKS = Object.freeze([
+  {id:'wadon_de', group:'Bali · Gupekan Wadon', label:'Wadon DE', detail:'front open', profileId:'gupekanWadon', articulation:'DE', head:'front', x:0.80, y:0.02, velocity:2.65},
+  {id:'wadon_det', group:'Bali · Gupekan Wadon', label:'Wadon DET', detail:'front held', profileId:'gupekanWadon', articulation:'DET', head:'front', x:0.78, y:-0.04, velocity:3.05},
+  {id:'wadon_pak', group:'Bali · Gupekan Wadon', label:'Wadon PAK', detail:'rear slap', profileId:'gupekanWadon', articulation:'PAK', head:'rear', x:0.42, y:0.05, velocity:3.25},
+  {id:'wadon_kung', group:'Bali · Gupekan Wadon', label:'Wadon KUNG', detail:'rear resonant', profileId:'gupekanWadon', articulation:'KUNG', head:'rear', x:0.30, y:-0.03, velocity:2.55},
+
+  {id:'lanang_tut', group:'Bali · Gupekan Lanang', label:'Lanang TUT', detail:'front', profileId:'gupekanLanang', articulation:'TUT', head:'front', x:0.72, y:0.03, velocity:2.85},
+  {id:'lanang_pek', group:'Bali · Gupekan Lanang', label:'Lanang PEK', detail:'rear slap', profileId:'gupekanLanang', articulation:'PEK', head:'rear', x:0.48, y:-0.04, velocity:3.20},
+  {id:'lanang_perung', group:'Bali · Gupekan Lanang', label:'Lanang PERUNG', detail:'front resonant', profileId:'gupekanLanang', articulation:'PERUNG', head:'front', x:0.55, y:0.02, velocity:2.75},
+
+  {id:'ciblon_dhen', group:'Java · Ciblon prototype', label:'Ciblon DHEN', detail:'open low', profileId:'javaneseCiblon', articulation:'DON', head:'front', x:0.56, y:0.02, velocity:2.70},
+  {id:'ciblon_det', group:'Java · Ciblon prototype', label:'Ciblon DET', detail:'held', profileId:'javaneseCiblon', articulation:'DET', head:'front', x:0.72, y:-0.03, velocity:2.90},
+  {id:'ciblon_thak', group:'Java · Ciblon prototype', label:'Ciblon THAK', detail:'dry slap', profileId:'javaneseCiblon', articulation:'SLAP', head:'rear', x:0.74, y:0.04, velocity:2.85},
+
+  {id:'tipung_thung', group:'Java · Ketipung prototype', label:'Tipung THUNG', detail:'small open', profileId:'javaneseKetipung', articulation:'TUT', head:'front', x:0.64, y:0.02, velocity:2.95},
+  {id:'tipung_ket', group:'Java · Ketipung prototype', label:'Tipung KET', detail:'small slap', profileId:'javaneseKetipung', articulation:'PEK', head:'rear', x:0.50, y:-0.02, velocity:3.20},
+
+  {id:'ageng_dah', group:'Java · Kendang Ageng prototype', label:'Ageng DAH', detail:'large low cue', profileId:'javaneseAgeng', articulation:'DON', head:'front', x:0.34, y:0.01, velocity:2.55}
+]);
+
+const MAX_STEPS = 32;
+const patternState = Object.create(null);
+const mutedState = Object.create(null);
+for (const trackInfo of TRACKS) {
+  patternState[trackInfo.id] = new Array(MAX_STEPS).fill(0);
+  mutedState[trackInfo.id] = false;
+}
+
+const elementById = function(idValue) { return document.getElementById(idValue); };
+const gridElement = elementById('grid');
+const statusElement = elementById('status');
+const renderButton = elementById('render');
+const playButton = elementById('playCached');
+const stopButton = elementById('stop');
+const wavButton = elementById('wav');
+const bpmInput = elementById('bpm');
+const swingInput = elementById('swing');
+const humanizeInput = elementById('humanize');
+const masterInput = elementById('master');
+const qualitySelect = elementById('quality');
+const stepsSelect = elementById('steps');
+const presetSelect = elementById('preset');
+const statsElement = elementById('stats');
+const audioDiagElement = elementById('audioDiag');
+const audioTestButton = elementById('audioTest');
+const htmlAudioPlayButton = elementById('htmlAudioPlay');
+
+let renderWorker = null;
+let audioContext = null;
+let currentSource = null;
+let cachedLeft = null;
+let cachedRight = null;
+let cachedSampleRate = 48000;
+let cachedStats = null;
+let playAnimationHandle = 0;
+let playStartContextTime = 0;
+let playbackAnalyser = null;
+let playbackMonitorTimer = 0;
+let lastPlaybackInternalRms = 0;
+let htmlAudioElement = null;
+let htmlAudioObjectUrl = null;
+
+function setAudioDiagnostic(extraText) {
+  const stateText = audioContext ? audioContext.state : 'not-created';
+  const rateText = audioContext ? audioContext.sampleRate + ' Hz' : 'n/a';
+  const rmsText = lastPlaybackInternalRms > 0 ? (20 * Math.log10(lastPlaybackInternalRms)).toFixed(1) + ' dBFS' : 'n/a';
+  audioDiagElement.textContent = 'AudioContext=' + stateText + ' · sampleRate=' + rateText + ' · internal RMS=' + rmsText + (extraText ? ' · ' + extraText : '');
+}
+
+function stopPlaybackMonitor() {
+  if (playbackMonitorTimer) clearInterval(playbackMonitorTimer);
+  playbackMonitorTimer = 0;
+  playbackAnalyser = null;
+}
+
+function startPlaybackMonitor(analyserNode) {
+  stopPlaybackMonitor();
+  playbackAnalyser = analyserNode;
+  const timeData = new Float32Array(analyserNode.fftSize);
+  let monitorTicks = 0;
+  let maxObservedRms = 0;
+  playbackMonitorTimer = setInterval(function() {
+    if (!playbackAnalyser || !audioContext) return;
+    playbackAnalyser.getFloatTimeDomainData(timeData);
+    let sumSquares = 0;
+    for (let sampleIndex = 0; sampleIndex < timeData.length; sampleIndex++) sumSquares += timeData[sampleIndex] * timeData[sampleIndex];
+    const rmsValue = Math.sqrt(sumSquares / Math.max(1, timeData.length));
+    maxObservedRms = Math.max(maxObservedRms, rmsValue);
+    lastPlaybackInternalRms = maxObservedRms;
+    monitorTicks++;
+    setAudioDiagnostic(maxObservedRms > 0.00005 ? 'signal reaches destination graph' : 'waiting for signal');
+    if (monitorTicks >= 24) stopPlaybackMonitor();
+  }, 50);
+}
+
+function currentStepCount() {
+  return Number(stepsSelect.value) === 16 ? 16 : 32;
+}
+
+function cellSelector(trackId, stepIndex) {
+  return '.stepCell[data-track="' + trackId + '"][data-step="' + stepIndex + '"]';
+}
+
+function updateCell(trackId, stepIndex) {
+  const cellElement = gridElement.querySelector(cellSelector(trackId, stepIndex));
+  if (!cellElement) return;
+  const stateValue = patternState[trackId][stepIndex];
+  cellElement.dataset.state = String(stateValue);
+  const names = ['off', 'soft', 'normal', 'accent', 'flam'];
+  cellElement.title = trackId + ' step ' + (stepIndex + 1) + ': ' + names[stateValue];
+  cellElement.setAttribute('aria-label', cellElement.title);
+}
+
+function buildGrid() {
+  gridElement.innerHTML = '';
+  const stepCount = currentStepCount();
+
+  const headerRow = document.createElement('div');
+  headerRow.className = 'seqRow headerRow';
+  const headerName = document.createElement('div');
+  headerName.className = 'trackName';
+  headerName.textContent = 'VOICE';
+  headerRow.appendChild(headerName);
+  const headerSteps = document.createElement('div');
+  headerSteps.className = 'stepStrip';
+  headerSteps.style.setProperty('--step-count', String(stepCount));
+  for (let stepIndex = 0; stepIndex < stepCount; stepIndex++) {
+    const marker = document.createElement('div');
+    marker.className = 'stepNumber' + (stepIndex % 4 === 0 ? ' beatStart' : '');
+    marker.textContent = String(stepIndex + 1);
+    headerSteps.appendChild(marker);
+  }
+  headerRow.appendChild(headerSteps);
+  gridElement.appendChild(headerRow);
+
+  let lastGroup = '';
+  for (const trackInfo of TRACKS) {
+    if (trackInfo.group !== lastGroup) {
+      const groupElement = document.createElement('div');
+      groupElement.className = 'groupLabel';
+      groupElement.textContent = trackInfo.group;
+      gridElement.appendChild(groupElement);
+      lastGroup = trackInfo.group;
+    }
+
+    const rowElement = document.createElement('div');
+    rowElement.className = 'seqRow';
+    const nameElement = document.createElement('div');
+    nameElement.className = 'trackName';
+
+    const muteElement = document.createElement('button');
+    muteElement.className = 'muteButton';
+    muteElement.textContent = mutedState[trackInfo.id] ? 'M' : '●';
+    muteElement.title = mutedState[trackInfo.id] ? 'unmute' : 'mute';
+    muteElement.dataset.muted = mutedState[trackInfo.id] ? '1' : '0';
+    muteElement.onclick = function() {
+      mutedState[trackInfo.id] = !mutedState[trackInfo.id];
+      buildGrid();
+    };
+
+    const labelWrap = document.createElement('div');
+    const primary = document.createElement('b');
+    primary.textContent = trackInfo.label;
+    const secondary = document.createElement('small');
+    secondary.textContent = trackInfo.detail;
+    labelWrap.appendChild(primary);
+    labelWrap.appendChild(secondary);
+    nameElement.appendChild(muteElement);
+    nameElement.appendChild(labelWrap);
+
+    const stepStrip = document.createElement('div');
+    stepStrip.className = 'stepStrip';
+    stepStrip.style.setProperty('--step-count', String(stepCount));
+
+    for (let stepIndex = 0; stepIndex < stepCount; stepIndex++) {
+      const cellElement = document.createElement('button');
+      cellElement.className = 'stepCell' + (stepIndex % 4 === 0 ? ' beatStart' : '');
+      cellElement.dataset.track = trackInfo.id;
+      cellElement.dataset.step = String(stepIndex);
+      cellElement.dataset.state = String(patternState[trackInfo.id][stepIndex]);
+      cellElement.onclick = function(mouseEvent) {
+        const directionValue = mouseEvent.shiftKey ? -1 : 1;
+        const oldValue = patternState[trackInfo.id][stepIndex];
+        patternState[trackInfo.id][stepIndex] = (oldValue + directionValue + 5) % 5;
+        updateCell(trackInfo.id, stepIndex);
+      };
+      cellElement.oncontextmenu = function(contextEvent) {
+        contextEvent.preventDefault();
+        const oldValue = patternState[trackInfo.id][stepIndex];
+        patternState[trackInfo.id][stepIndex] = (oldValue + 4) % 5;
+        updateCell(trackInfo.id, stepIndex);
+      };
+      stepStrip.appendChild(cellElement);
+      updateCell(trackInfo.id, stepIndex);
+    }
+
+    rowElement.appendChild(nameElement);
+    rowElement.appendChild(stepStrip);
+    gridElement.appendChild(rowElement);
+  }
+}
+
+function clearPattern() {
+  for (const trackInfo of TRACKS) patternState[trackInfo.id].fill(0);
+}
+
+function setSteps(trackId, steps, stateValue) {
+  for (const stepIndex of steps) {
+    if (stepIndex >= 0 && stepIndex < MAX_STEPS) patternState[trackId][stepIndex] = stateValue;
+  }
+}
+
+function applyPreset(presetId) {
+  clearPattern();
+
+  if (presetId === 'gupekan') {
+    setSteps('wadon_de', [0,8,16,24], 3);
+    setSteps('wadon_pak', [4,12,20,28], 2);
+    setSteps('wadon_kung', [6,14,22,30], 1);
+    setSteps('wadon_det', [15,31], 3);
+    setSteps('lanang_tut', [2,6,10,14,18,22,26,30], 2);
+    setSteps('lanang_pek', [3,7,11,19,23,27], 2);
+    setSteps('lanang_pek', [15,31], 4);
+    setSteps('lanang_perung', [1,9,17,25], 1);
+  } else if (presetId === 'ciblon') {
+    setSteps('ageng_dah', [0,16], 3);
+    setSteps('ciblon_dhen', [0,6,8,14,16,22,24,30], 2);
+    setSteps('ciblon_det', [4,12,20,28], 2);
+    setSteps('ciblon_thak', [2,3,7,10,11,15,18,19,23,26,27,31], 2);
+    setSteps('tipung_thung', [1,5,9,13,17,21,25,29], 1);
+    setSteps('tipung_ket', [7,15,23,31], 3);
+  } else if (presetId === 'full') {
+    setSteps('ageng_dah', [0,16], 3);
+    setSteps('wadon_de', [0,8,16,24], 2);
+    setSteps('wadon_pak', [4,12,20,28], 2);
+    setSteps('lanang_tut', [2,6,10,14,18,22,26,30], 2);
+    setSteps('lanang_pek', [7,15,23,31], 4);
+    setSteps('ciblon_dhen', [0,5,8,13,16,21,24,29], 1);
+    setSteps('ciblon_thak', [3,11,19,27], 2);
+    setSteps('tipung_thung', [1,9,17,25], 1);
+    setSteps('tipung_ket', [6,14,22,30], 2);
+  }
+
+  buildGrid();
+}
+
+function updateControlText() {
+  elementById('bpmOut').textContent = bpmInput.value + ' BPM';
+  elementById('swingOut').textContent = swingInput.value + '%';
+  elementById('humanizeOut').textContent = Number(humanizeInput.value).toFixed(1) + ' ms';
+  elementById('masterOut').textContent = Number(masterInput.value).toFixed(1) + ' dB';
+}
+
+function buildRequest() {
+  const stepCount = currentStepCount();
+  const tracks = TRACKS.map(function(trackInfo) {
+    return Object.assign({}, trackInfo, {muted: mutedState[trackInfo.id]});
+  });
+  const pattern = {};
+  for (const trackInfo of TRACKS) pattern[trackInfo.id] = patternState[trackInfo.id].slice(0, stepCount);
+  return {
+    bpm: Number(bpmInput.value),
+    steps: stepCount,
+    swing: Number(swingInput.value) / 100,
+    humanizeMs: Number(humanizeInput.value),
+    masterDb: Number(masterInput.value),
+    quality: qualitySelect.value,
+    seed: 20260925,
+    tracks: tracks,
+    pattern: pattern
+  };
+}
+
+function ensureWorker() {
+  if (renderWorker) return renderWorker;
+  const engineText = elementById('engine-source').textContent;
+  const profileText = elementById('profile-source').textContent;
+  const controllerText = elementById('worker-controller').textContent;
+  const workerBlob = new Blob([engineText, '\n', profileText, '\n', controllerText], {type:'text/javascript'});
+  renderWorker = new Worker(URL.createObjectURL(workerBlob));
+  renderWorker.onmessage = handleWorkerMessage;
+  return renderWorker;
+}
+
+function primeAudioFromGesture() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});
+    audioContext.addEventListener('statechange', function() { setAudioDiagnostic('statechange'); });
+  }
+  const resumePromise = audioContext.state === 'suspended' ? audioContext.resume() : Promise.resolve();
+
+  // A one-frame silent source started inside the click handler makes the user-activation
+  // relationship explicit on Safari/Chrome without producing an audible artifact.
+  const silentBuffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
+  const silentSource = audioContext.createBufferSource();
+  silentSource.buffer = silentBuffer;
+  silentSource.connect(audioContext.destination);
+  silentSource.start(0);
+  setAudioDiagnostic('gesture received');
+  return resumePromise;
+}
+
+async function ensureAudio() {
+  if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext.state === 'suspended') await audioContext.resume();
+  if (audioContext.state !== 'running') throw new Error('AudioContext is ' + audioContext.state);
+}
+
+function stopHtmlAudioFallback() {
+  if (htmlAudioElement) {
+    try { htmlAudioElement.pause(); } catch (ignoreValue) {}
+    htmlAudioElement.removeAttribute('src');
+    try { htmlAudioElement.load(); } catch (ignoreValue) {}
+    htmlAudioElement = null;
+  }
+  if (htmlAudioObjectUrl) {
+    URL.revokeObjectURL(htmlAudioObjectUrl);
+    htmlAudioObjectUrl = null;
+  }
+}
+
+function stopPlayback() {
+  stopPlaybackMonitor();
+  stopHtmlAudioFallback();
+  if (currentSource) {
+    try { currentSource.stop(); } catch (ignoreValue) {}
+    currentSource = null;
+  }
+  if (playAnimationHandle) cancelAnimationFrame(playAnimationHandle);
+  playAnimationHandle = 0;
+  for (const cellElement of gridElement.querySelectorAll('.stepCell.playing')) cellElement.classList.remove('playing');
+}
+
+async function playCached() {
+  if (!cachedLeft || !cachedRight) return;
+  await ensureAudio();
+  stopPlayback();
+
+  const frameCount = Math.min(cachedLeft.length, cachedRight.length);
+  const audioBuffer = audioContext.createBuffer(2, frameCount, cachedSampleRate);
+  audioBuffer.copyToChannel(cachedLeft, 0);
+  audioBuffer.copyToChannel(cachedRight, 1);
+
+  currentSource = audioContext.createBufferSource();
+  currentSource.buffer = audioBuffer;
+  currentSource.loop = true;
+
+  const analyserNode = audioContext.createAnalyser();
+  analyserNode.fftSize = 1024;
+  currentSource.connect(analyserNode);
+  analyserNode.connect(audioContext.destination);
+
+  currentSource.start();
+  playStartContextTime = audioContext.currentTime;
+  lastPlaybackInternalRms = 0;
+  startPlaybackMonitor(analyserNode);
+  setAudioDiagnostic('buffer source started');
+  animatePlayhead();
+}
+
+function animatePlayhead() {
+  if (!currentSource || !cachedStats) return;
+  const stepCount = cachedStats.steps;
+  const stepDuration = cachedStats.durationSec / stepCount;
+  const elapsed = (audioContext.currentTime - playStartContextTime) % cachedStats.durationSec;
+  const stepIndex = Math.floor(elapsed / stepDuration);
+
+  for (const cellElement of gridElement.querySelectorAll('.stepCell.playing')) cellElement.classList.remove('playing');
+  for (const cellElement of gridElement.querySelectorAll('.stepCell[data-step="' + stepIndex + '"]')) cellElement.classList.add('playing');
+
+  playAnimationHandle = requestAnimationFrame(animatePlayhead);
+}
+
+function handleWorkerMessage(event) {
+  const messageData = event.data || {};
+  if (messageData.type === 'status') {
+    statusElement.textContent = messageData.text;
+    return;
+  }
+  if (messageData.type === 'progress') {
+    statusElement.textContent = 'Rendering ' + messageData.profileId + ' · ' + messageData.done + '/' + messageData.total;
+    return;
+  }
+  if (messageData.type === 'error') {
+    renderButton.disabled = false;
+    statusElement.textContent = 'Render error: ' + messageData.message;
+    statusElement.className = 'status error';
+    return;
+  }
+  if (messageData.type === 'done') {
+    renderButton.disabled = false;
+    cachedLeft = messageData.left;
+    cachedRight = messageData.right;
+    cachedSampleRate = messageData.sampleRate;
+    cachedStats = messageData.stats;
+    playButton.disabled = false;
+    wavButton.disabled = false;
+    htmlAudioPlayButton.disabled = false;
+
+    const peakDb = cachedStats.samplePeakBeforeSafety > 0 ? 20 * Math.log10(cachedStats.samplePeakBeforeSafety) : -Infinity;
+    const rmsDb = cachedStats.loopRmsBeforeSafety > 0 ? 20 * Math.log10(cachedStats.loopRmsBeforeSafety) : -Infinity;
+    const safetyDb = cachedStats.safetyGain < 1 ? 20 * Math.log10(cachedStats.safetyGain) : 0;
+    statsElement.innerHTML =
+      '<div><b>Loop</b><span>' + cachedStats.durationSec.toFixed(3) + ' s</span></div>' +
+      '<div><b>Peak before safety</b><span>' + peakDb.toFixed(2) + ' dBFS</span></div>' +
+      '<div><b>Loop RMS</b><span>' + rmsDb.toFixed(2) + ' dBFS</span></div>' +
+      '<div><b>Safety gain</b><span>' + safetyDb.toFixed(2) + ' dB</span></div>';
+
+    const audioState = audioContext ? audioContext.state : 'not-created';
+    if (audioContext && audioContext.state === 'running') {
+      statusElement.textContent = 'Rendered. Playing · AudioContext=' + audioState;
+      statusElement.className = 'status ok';
+      playCached().catch(function(errorValue) {
+        statusElement.textContent = 'Rendered, but autoplay failed. Click Play. ' + String(errorValue);
+        statusElement.className = 'status';
+      });
+    } else {
+      statusElement.textContent = 'Rendered. Click Play to unlock audio · AudioContext=' + audioState;
+      statusElement.className = 'status ok';
+    }
+  }
+}
+
+function encodeWav(leftData, rightData, sampleRate) {
+  const frameCount = Math.min(leftData.length, rightData.length);
+  const arrayBuffer = new ArrayBuffer(44 + frameCount * 4);
+  const view = new DataView(arrayBuffer);
+  const writeText = function(offsetValue, textValue) {
+    for (let charIndex = 0; charIndex < textValue.length; charIndex++) view.setUint8(offsetValue + charIndex, textValue.charCodeAt(charIndex));
+  };
+  writeText(0, 'RIFF');
+  view.setUint32(4, 36 + frameCount * 4, true);
+  writeText(8, 'WAVE');
+  writeText(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 2, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 4, true);
+  view.setUint16(32, 4, true);
+  view.setUint16(34, 16, true);
+  writeText(36, 'data');
+  view.setUint32(40, frameCount * 4, true);
+  let byteOffset = 44;
+  for (let frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+    const leftValue = Math.max(-1, Math.min(1, leftData[frameIndex]));
+    const rightValue = Math.max(-1, Math.min(1, rightData[frameIndex]));
+    view.setInt16(byteOffset, Math.round(leftValue < 0 ? leftValue * 32768 : leftValue * 32767), true);
+    view.setInt16(byteOffset + 2, Math.round(rightValue < 0 ? rightValue * 32768 : rightValue * 32767), true);
+    byteOffset += 4;
+  }
+  return new Blob([arrayBuffer], {type:'audio/wav'});
+}
+
+async function playHtmlAudioFallback() {
+  if (!cachedLeft || !cachedRight) return;
+
+  stopPlayback();
+  const wavBlob = encodeWav(cachedLeft, cachedRight, cachedSampleRate);
+  htmlAudioObjectUrl = URL.createObjectURL(wavBlob);
+  htmlAudioElement = new Audio(htmlAudioObjectUrl);
+  htmlAudioElement.loop = true;
+  htmlAudioElement.volume = 1.0;
+  htmlAudioElement.preload = 'auto';
+
+  htmlAudioElement.addEventListener('playing', function() {
+    statusElement.textContent = 'HTMLAudio fallback playing.';
+    statusElement.className = 'status ok';
+    setAudioDiagnostic('HTMLAudio currentTime=' + htmlAudioElement.currentTime.toFixed(3) + ' s');
+  });
+
+  htmlAudioElement.addEventListener('error', function() {
+    const mediaError = htmlAudioElement && htmlAudioElement.error ? htmlAudioElement.error.code : 'unknown';
+    statusElement.textContent = 'HTMLAudio fallback error: code ' + mediaError;
+    statusElement.className = 'status error';
+  });
+
+  try {
+    await htmlAudioElement.play();
+    setAudioDiagnostic('HTMLAudio play() resolved');
+  } catch (errorValue) {
+    statusElement.textContent = 'HTMLAudio fallback play failed: ' + String(errorValue);
+    statusElement.className = 'status error';
+    setAudioDiagnostic('HTMLAudio play() rejected');
+  }
+}
+
+htmlAudioPlayButton.onclick = playHtmlAudioFallback;
+
+async function runAudioOutputTest() {
+  try {
+    await primeAudioFromGesture();
+    await ensureAudio();
+    stopPlayback();
+
+    const oscillatorNode = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    const analyserNode = audioContext.createAnalyser();
+    analyserNode.fftSize = 1024;
+
+    oscillatorNode.type = 'sine';
+    oscillatorNode.frequency.value = 440;
+    gainNode.gain.value = 0.12;
+
+    oscillatorNode.connect(gainNode);
+    gainNode.connect(analyserNode);
+    analyserNode.connect(audioContext.destination);
+
+    lastPlaybackInternalRms = 0;
+    startPlaybackMonitor(analyserNode);
+    oscillatorNode.start();
+    oscillatorNode.stop(audioContext.currentTime + 0.55);
+
+    statusElement.textContent = 'Audio test: 440 Hz tone for 0.55 s.';
+    statusElement.className = 'status ok';
+    setAudioDiagnostic('440 Hz test started');
+  } catch (errorValue) {
+    statusElement.textContent = 'Audio test failed: ' + String(errorValue);
+    statusElement.className = 'status error';
+    setAudioDiagnostic('test failed');
+  }
+}
+
+audioTestButton.onclick = runAudioOutputTest;
+
+renderButton.onclick = function() {
+  stopPlayback();
+  renderButton.disabled = true;
+  statusElement.className = 'status';
+  statusElement.textContent = 'Unlocking audio and queueing render...';
+
+  try {
+    const unlockPromise = primeAudioFromGesture();
+    Promise.resolve(unlockPromise).catch(function(errorValue) {
+      statusElement.textContent = 'Audio unlock deferred; render continues. ' + String(errorValue);
+    });
+  } catch (errorValue) {
+    statusElement.textContent = 'Audio init failed; render continues. ' + String(errorValue);
+  }
+
+  ensureWorker().postMessage({type:'render', request:buildRequest()});
+};
+
+playButton.onclick = function() {
+  try {
+    const unlockPromise = primeAudioFromGesture();
+    Promise.resolve(unlockPromise).then(playCached).catch(function(errorValue) {
+      statusElement.textContent = 'Play failed: ' + String(errorValue);
+      statusElement.className = 'status error';
+    });
+  } catch (errorValue) {
+    statusElement.textContent = 'Play failed: ' + String(errorValue);
+    statusElement.className = 'status error';
+  }
+};
+stopButton.onclick = stopPlayback;
+wavButton.onclick = function() {
+  if (!cachedLeft || !cachedRight) return;
+  const wavBlob = encodeWav(cachedLeft, cachedRight, cachedSampleRate);
+  const anchorElement = document.createElement('a');
+  anchorElement.href = URL.createObjectURL(wavBlob);
+  anchorElement.download = 'kendang_step_sequencer_v02.wav';
+  anchorElement.click();
+  setTimeout(function() { URL.revokeObjectURL(anchorElement.href); }, 1000);
+};
+
+presetSelect.onchange = function() { applyPreset(presetSelect.value); };
+stepsSelect.onchange = function() { buildGrid(); };
+for (const controlElement of [bpmInput, swingInput, humanizeInput, masterInput]) controlElement.oninput = updateControlText;
+
+elementById('clear').onclick = function() {
+  presetSelect.value = 'empty';
+  applyPreset('empty');
+};
+
+updateControlText();
+applyPreset('gupekan');
+
+window.KendangSequencerDiagnostics = Object.freeze({
+  get audioContextState() { return audioContext ? audioContext.state : 'not-created'; },
+  get internalRms() { return lastPlaybackInternalRms; },
+  get hasCachedAudio() { return !!(cachedLeft && cachedRight); },
+  get isPlaying() { return !!currentSource; },
+  get sampleRate() { return audioContext ? audioContext.sampleRate : null; },
+  get htmlAudioPlaying() { return !!(htmlAudioElement && !htmlAudioElement.paused); },
+  get htmlAudioCurrentTime() { return htmlAudioElement ? htmlAudioElement.currentTime : 0; },
+  get userActivationActive() { return !!navigator.userActivation?.isActive; },
+  get userActivationEver() { return !!navigator.userActivation?.hasBeenActive; }
+});
+setAudioDiagnostic();
+</script>
+</body>
+</html>
